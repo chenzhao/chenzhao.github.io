@@ -8,6 +8,6 @@ comments = false
 
 你好，我是 CHEN Zhao。
 
-- [文章](/zh/articles/)
+- [文章](articles/)
 - [Explorable explanations](/expl2/)
-- [关于](/zh/about/)
+- [关于](about/)

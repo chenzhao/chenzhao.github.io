@@ -17,8 +17,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_DIR = ROOT / "content"
-API_URL = "https://api.openai.com/v1/responses"
-DEFAULT_MODEL = "gpt-5.6"
+API_URL = "https://api.deepseek.com/chat/completions"
+DEFAULT_MODEL = "deepseek-v4-pro"
 TITLE_MARKER = "<<<TITLE>>>"
 BODY_MARKER = "<<<BODY>>>"
 
@@ -39,11 +39,18 @@ def split_front_matter(text: str) -> tuple[str, str]:
   return text[4:end], text[end + 5:].lstrip("\n")
 
 
+def get_string_field(front_matter: str, key: str) -> str | None:
+  match = re.search(
+    rf"(?m)^{re.escape(key)}\s*=\s*(['\"])(.*?)\1\s*$", front_matter
+  )
+  return match.group(2) if match else None
+
+
 def get_title(front_matter: str) -> str:
-  match = re.search(r"(?m)^title\s*=\s*(['\"])(.*?)\1\s*$", front_matter)
+  match = get_string_field(front_matter, "title")
   if not match:
     raise ValueError("front matter has no simple title field")
-  return match.group(2)
+  return match
 
 
 def set_string_field(front_matter: str, key: str, value: str) -> str:
@@ -53,6 +60,11 @@ def set_string_field(front_matter: str, key: str, value: str) -> str:
   if pattern.search(front_matter):
     return pattern.sub(replacement, front_matter, count=1)
   return front_matter.rstrip() + "\n" + replacement
+
+
+def remove_field(front_matter: str, key: str) -> str:
+  pattern = re.compile(rf"(?m)^{re.escape(key)}\s*=.*\n?")
+  return pattern.sub("", front_matter)
 
 
 def existing_source_hash(path: Path) -> str | None:
@@ -67,16 +79,13 @@ def existing_source_hash(path: Path) -> str | None:
 
 
 def response_text(payload: dict) -> str:
-  parts: list[str] = []
-  for item in payload.get("output", []):
-    if item.get("type") != "message":
-      continue
-    for content in item.get("content", []):
-      if content.get("type") == "output_text":
-        parts.append(content.get("text", ""))
-  if not parts:
-    raise RuntimeError("OpenAI response did not contain output_text")
-  return "".join(parts).strip()
+  try:
+    text = payload["choices"][0]["message"]["content"]
+  except (KeyError, IndexError, TypeError) as error:
+    raise RuntimeError("DeepSeek response did not contain message content") from error
+  if not text:
+    raise RuntimeError("DeepSeek returned empty message content")
+  return text.strip()
 
 
 def translate(title: str, body: str, api_key: str, model: str) -> tuple[str, str]:
@@ -96,10 +105,14 @@ SOURCE MARKDOWN BODY:
 """
   request_body = json.dumps({
     "model": model,
-    "instructions": INSTRUCTIONS,
-    "input": prompt,
-    "reasoning": {"effort": "low"},
-    "max_output_tokens": 50000,
+    "messages": [
+      {"role": "system", "content": INSTRUCTIONS},
+      {"role": "user", "content": prompt},
+    ],
+    "thinking": {"type": "enabled"},
+    "reasoning_effort": "high",
+    "max_tokens": 50000,
+    "stream": False,
   }).encode("utf-8")
   request = urllib.request.Request(
     API_URL,
@@ -115,7 +128,7 @@ SOURCE MARKDOWN BODY:
       result = json.load(response)
   except urllib.error.HTTPError as error:
     detail = error.read().decode("utf-8", errors="replace")
-    raise RuntimeError(f"OpenAI API returned HTTP {error.code}: {detail}") from error
+    raise RuntimeError(f"DeepSeek API returned HTTP {error.code}: {detail}") from error
 
   output = response_text(result)
   if TITLE_MARKER not in output or BODY_MARKER not in output:
@@ -142,10 +155,20 @@ def translate_file(source: Path, api_key: str, model: str, force: bool) -> bool:
 
   front_matter, body = split_front_matter(raw)
   title = get_title(front_matter)
+  title_override = get_string_field(front_matter, "translation_title")
+  body_override = get_string_field(front_matter, "translation_body")
   print(f"translating: {source.relative_to(ROOT)} -> {target.relative_to(ROOT)}")
   translated_title, translated_body = translate(title, body, api_key, model)
+  if title_override is not None:
+    translated_title = title_override
+  if body_override is not None:
+    translated_body = body_override
+  elif not body.strip():
+    translated_body = ""
 
   translated_front_matter = set_string_field(front_matter, "title", translated_title)
+  translated_front_matter = remove_field(translated_front_matter, "translation_title")
+  translated_front_matter = remove_field(translated_front_matter, "translation_body")
   translated_front_matter = set_string_field(
     translated_front_matter, "translation_source_hash", digest
   )
@@ -166,7 +189,7 @@ def parse_args() -> argparse.Namespace:
     help="fail when a Chinese source does not have an English counterpart",
   )
   parser.add_argument(
-    "--model", default=os.environ.get("OPENAI_TRANSLATION_MODEL", DEFAULT_MODEL)
+    "--model", default=os.environ.get("DEEPSEEK_TRANSLATION_MODEL", DEFAULT_MODEL)
   )
   return parser.parse_args()
 
@@ -176,22 +199,33 @@ def main() -> int:
   sources = args.paths or sorted(CONTENT_DIR.rglob("*.zh.md"))
   if args.check:
     missing = []
+    stale = []
     for source in sources:
       path = source if source.is_absolute() else ROOT / source
-      if not target_for(path).exists():
+      target = target_for(path)
+      if not target.exists():
         missing.append(path.relative_to(ROOT))
-    if missing:
-      print("Missing English translations:", file=sys.stderr)
+        continue
+      digest = hashlib.sha256(path.read_bytes()).hexdigest()
+      if existing_source_hash(target) != digest:
+        stale.append(path.relative_to(ROOT))
+    if missing or stale:
+      if missing:
+        print("Missing English translations:", file=sys.stderr)
       for path in missing:
+        print(f"  {path}", file=sys.stderr)
+      if stale:
+        print("Outdated English translations:", file=sys.stderr)
+      for path in stale:
         print(f"  {path}", file=sys.stderr)
       return 1
     print(f"all {len(sources)} Chinese content files have English counterparts")
     return 0
 
-  api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+  api_key = os.environ.get("DEEPSEEK_KEY", "").strip()
   if not api_key:
     print(
-      "OPENAI_API_KEY is required. Configure it locally or as a GitHub Actions secret.",
+      "DEEPSEEK_KEY is required. Configure it locally or as a GitHub Actions secret.",
       file=sys.stderr,
     )
     return 2

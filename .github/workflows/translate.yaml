@@ -33,11 +33,11 @@ jobs:
 
       - name: Generate English translations
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_TRANSLATION_MODEL: gpt-5.6
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
+          DEEPSEEK_TRANSLATION_MODEL: deepseek-v4-pro
         run: |
-          if [[ -z "${OPENAI_API_KEY}" ]]; then
-            echo "OPENAI_API_KEY is not configured; skipping translation."
+          if [[ -z "${DEEPSEEK_KEY}" ]]; then
+            echo "DEEPSEEK_KEY is not configured; skipping translation."
             exit 0
           fi
           python3 scripts/translate_content.py

@@ -262,7 +262,7 @@ def _publish(kind: str, title: str, date_text: str, content: str):
     f.write("\n")
 
   translation_script = REPO_ROOT / "scripts" / "translate_content.py"
-  if os.environ.get("OPENAI_API_KEY") and translation_script.exists():
+  if os.environ.get("DEEPSEEK_KEY") and translation_script.exists():
     subprocess.run(
       [sys.executable, str(translation_script), str(post_path)],
       cwd=str(REPO_ROOT),
