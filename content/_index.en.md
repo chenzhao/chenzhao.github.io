@@ -8,6 +8,6 @@ comments = false
 
 Hi, I am CHEN Zhao.
 
-- [Articles](/articles/)
+- [Articles](/en/articles/)
 - [Explorable explanations](/expl2/)
-- [About](/about/)
+- [About](/en/about/)

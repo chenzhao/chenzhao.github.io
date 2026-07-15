@@ -80,5 +80,19 @@
       {{- end -}}
     </nav>
     {{- end -}}
+
+    <nav
+      class="mt-8 flex items-center justify-center gap-3 text-sm lg:mt-0 ltr:lg:ml-8 rtl:lg:mr-8"
+      aria-label="Language"
+    >
+      {{- range .AllTranslations -}}
+      <a
+        class="no-underline {{- if eq .Language.Lang $.Language.Lang }} font-semibold opacity-100{{ else }} opacity-50 hover:opacity-100{{ end }}"
+        href="{{- .RelPermalink -}}"
+        hreflang="{{- .Language.LanguageCode -}}"
+        >{{- .Language.LanguageName -}}</a
+      >
+      {{- end -}}
+    </nav>
   </div>
 </header>

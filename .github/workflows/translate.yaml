@@ -1,0 +1,55 @@
+name: Translate Chinese content
+
+on:
+  push:
+    branches:
+      - main
+      - draft
+    paths:
+      - 'content/**/*.zh.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: translate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Generate English translations
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_TRANSLATION_MODEL: gpt-5.6
+        run: |
+          if [[ -z "${OPENAI_API_KEY}" ]]; then
+            echo "OPENAI_API_KEY is not configured; skipping translation."
+            exit 0
+          fi
+          python3 scripts/translate_content.py
+
+      - name: Commit translations
+        run: |
+          python3 scripts/translate_content.py --check
+          git add 'content/**/*.en.md'
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Auto-translate Chinese content'
+          git push origin "HEAD:${GITHUB_REF_NAME}"

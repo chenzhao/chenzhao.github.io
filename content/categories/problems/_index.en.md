@@ -3,4 +3,4 @@ title = 'Problems'
 draft = true
 +++
 
-problems cannot solved by AI yet.
+Problems AI Can’t Solve—Yet.

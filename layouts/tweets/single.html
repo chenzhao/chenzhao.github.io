@@ -2,7 +2,9 @@
 
 <article>
   <header class="mb-8">
-    <a class="text-sm no-underline opacity-60 hover:opacity-100" href="{{- "/tweets/" | relURL -}}">← Tweets</a>
+    {{- with site.GetPage "/tweets" -}}
+    <a class="text-sm no-underline opacity-60 hover:opacity-100" href="{{- .RelPermalink -}}">← {{- i18n "tweets_label" -}}</a>
+    {{- end -}}
   </header>
   <section>{{- .Content -}}</section>
   <footer class="mt-10 text-xs opacity-60">

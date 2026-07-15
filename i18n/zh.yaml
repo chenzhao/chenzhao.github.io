@@ -1,0 +1,8 @@
+- id: article_label
+  translation: '文章'
+
+- id: category_label
+  translation: '分类'
+
+- id: tweets_label
+  translation: '短想'

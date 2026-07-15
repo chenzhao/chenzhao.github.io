@@ -69,7 +69,7 @@ INDEX_HTML = """<!doctype html>
 <body>
   <div class="wrap">
     <h1>快速发布文章</h1>
-    <p class="muted">公开长文请在 main 分支发布；私人短文请在 draft 分支发布。短文可以不写标题。</p>
+    <p class="muted">填写中文内容后会自动生成英文版。公开长文请在 main 分支发布；私人短文请在 draft 分支发布。</p>
 
     <form id="postForm">
       <div class="row">
@@ -81,7 +81,7 @@ INDEX_HTML = """<!doctype html>
       </div>
 
       <div class="row">
-        <label for="title">标题（短文可不填）</label>
+        <label for="title">中文标题（短文可不填）</label>
         <input id="title" name="title" type="text" placeholder="请输入长文标题" required />
       </div>
 
@@ -91,7 +91,7 @@ INDEX_HTML = """<!doctype html>
       </div>
 
       <div class="row">
-        <label for="content">正文（Markdown）</label>
+        <label for="content">中文正文（Markdown）</label>
         <textarea id="content" name="content" placeholder="在此输入完整正文..." required></textarea>
       </div>
 
@@ -246,10 +246,10 @@ def _publish(kind: str, title: str, date_text: str, content: str):
   section = "articles" if kind == "article" else "tweets"
   posts_dir = REPO_ROOT / "content" / section
   posts_dir.mkdir(parents=True, exist_ok=True)
-  post_path = posts_dir / f"{slug}.md"
+  post_path = posts_dir / f"{slug}.zh.md"
   i = 1
   while post_path.exists():
-    post_path = posts_dir / f"{slug}-{i}.md"
+    post_path = posts_dir / f"{slug}-{i}.zh.md"
     i += 1
 
   with post_path.open("w", encoding="utf-8") as f:
@@ -261,8 +261,20 @@ def _publish(kind: str, title: str, date_text: str, content: str):
     f.write(content.rstrip("\n"))
     f.write("\n")
 
-  slug_name = post_path.name[:-3]
-  _run_git(["add", str(post_path.relative_to(REPO_ROOT))], REPO_ROOT)
+  translation_script = REPO_ROOT / "scripts" / "translate_content.py"
+  if os.environ.get("OPENAI_API_KEY") and translation_script.exists():
+    subprocess.run(
+      [sys.executable, str(translation_script), str(post_path)],
+      cwd=str(REPO_ROOT),
+      check=True,
+    )
+
+  slug_name = post_path.name.removesuffix(".zh.md")
+  paths_to_add = [str(post_path.relative_to(REPO_ROOT))]
+  english_path = post_path.with_name(slug_name + ".en.md")
+  if english_path.exists():
+    paths_to_add.append(str(english_path.relative_to(REPO_ROOT)))
+  _run_git(["add", *paths_to_add], REPO_ROOT)
   _run_git(["commit", "-m", f"Add {kind}: {display_title}"], REPO_ROOT)
   _run_git(["push", "origin", expected_branch], REPO_ROOT)
 
@@ -271,9 +283,9 @@ def _publish(kind: str, title: str, date_text: str, content: str):
     "private_version": kind == "tweet",
     "path": str(post_path.relative_to(REPO_ROOT)),
     "view_url": (
-      f"http://localhost:1313/tweets/{slug_name}/"
+      f"http://localhost:1313/zh/tweets/{slug_name}/"
       if kind == "tweet"
-      else f"https://chenzhao.github.io/articles/{slug_name}/"
+      else f"https://chenzhao.github.io/zh/articles/{slug_name}/"
     ),
     "actions_url": "https://github.com/chenzhao/chenzhao.github.io/actions/workflows/hugo.yaml",
   }

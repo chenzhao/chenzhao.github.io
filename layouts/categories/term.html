@@ -1,7 +1,7 @@
 {{- define "main" -}}
 
 <header class="mb-14">
-  <span class="mb-1 inline-block text-xs tracking-wider text-orange-500">Category</span>
+  <span class="mb-1 inline-block text-xs tracking-wider text-orange-500">{{- i18n "category_label" -}}</span>
   <h1 class="my-0! pb-2.5">{{- .Title -}}</h1>
   {{- with .Content -}}
   <div class="opacity-70">{{- . -}}</div>

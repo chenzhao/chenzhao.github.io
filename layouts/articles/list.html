@@ -10,7 +10,7 @@
 {{- $paginator := .Paginate (.RegularPages.ByDate.Reverse) -}}
 {{- range $paginator.Pages -}}
 <article class="relative my-12 first-of-type:mt-0">
-  <span class="mb-1 inline-block text-xs tracking-wider text-orange-500">Article</span>
+  <span class="mb-1 inline-block text-xs tracking-wider text-orange-500">{{- i18n "article_label" -}}</span>
   <h2 class="my-0!">{{- .Title -}}</h2>
   <time class="text-xs antialiased opacity-60">{{- .Date | time.Format ":date_medium" -}}</time>
   <a class="absolute inset-0 text-[0px]" href="{{- .RelPermalink -}}">{{- .Title -}}</a>
