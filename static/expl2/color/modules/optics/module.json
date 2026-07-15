@@ -1,0 +1,31 @@
+{
+  "slug": "optics",
+  "order": 1,
+  "status": "content-draft",
+  "title": {
+    "zh": "最基础的光学",
+    "en": "Foundational Optics"
+  },
+  "requiredTopics": ["refraction", "lenses", "luminance", "illuminance"],
+  "sourceBase": "/Users/chenzhao/Desktop/imaging_course_topics_optics_color_sensors_hdr/01_optics_lecture_10h.md",
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"],
+  "entryPoints": {
+    "chapters": "chapters/index.html",
+    "concepts": "concepts/index.html",
+    "labs": "labs/index.html"
+  },
+  "chapters": [
+    "light models and radiometry",
+    "geometrical optics and first-order imaging",
+    "stops, pupils, field of view, depth of field, etendue",
+    "diffraction and resolution limit",
+    "Fourier optics, PSF, OTF, MTF",
+    "aberrations, distortion, chromatic aberration",
+    "polarization, Fresnel, birefringence",
+    "interference, coherence, thin films, speckle",
+    "imaging system design",
+    "integration with digital imaging chain"
+  ],
+  "concepts": ["radiance", "irradiance", "thin lens", "f-number", "NA", "etendue", "Airy disk", "Rayleigh criterion", "PSF", "MTF", "aberration", "polarization"],
+  "labs": ["airy-disk-and-nyquist", "thin-lens-focus-shift", "mtf-budget"]
+}

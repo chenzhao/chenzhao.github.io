@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>图像格式和压缩：DCT 与 JPEG 讲义</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../module.js"></script>
+  </head>
+  <body class="expl2-page color-page compression-page">
+    <main class="expl2-main expl2-secondary-page compression-main">
+      <header class="expl2-header compression-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Module / 模块</a>
+          <a class="expl2-back" href="../../">Modules / 七大模块</a>
+        </div>
+        <p class="expl2-kicker">Lecture notes / 讲义</p>
+        <h1 class="expl2-title">图像压缩：DCT 与 JPEG</h1>
+        <p class="expl2-lead">
+          本页重新梳理图像压缩模块。重点是 DCT 的数学直觉，以及 JPEG 如何把一个 8×8 块编码成比特。
+          句子尽量短。每节只讲一个问题。
+        </p>
+        <nav class="compression-quick-nav" aria-label="Reader navigation">
+          <a href="#raw">01 原始体积</a>
+          <a href="#dct-intuition">03 DCT 直觉</a>
+          <a href="#dct-formula">04 DCT 公式</a>
+          <a href="#jpeg-block">07 JPEG 块</a>
+          <a href="#entropy">09 熵编码</a>
+          <a href="#formats">11 格式比较</a>
+        </nav>
+      </header>
+
+      <article class="compression-reader">
+        <section id="raw" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">01 / 原始图像为什么大</p>
+            <h2>一张图先是一张像素表</h2>
+            <p>未压缩图像直接保存每个像素。宽、高、通道数、位深一起决定体积。</p>
+            <div class="expl2-formula expl2-math">\[\text{bytes}=W\times H\times C\times \frac{b}{8}\]</div>
+            <p>4000×3000 的 8-bit RGB 图像约为 36 MB。网页和相机不能长期直接搬运这样的数据。</p>
+            <p>压缩要利用冗余。常见冗余有四类。</p>
+            <div class="compression-concept-list">
+              <article><h3>空间冗余</h3><p>相邻像素常常相似。天空、皮肤、墙面尤其明显。</p></article>
+              <article><h3>色彩冗余</h3><p>RGB 通道相关。亮度和色度可以分开处理。</p></article>
+              <article><h3>感知冗余</h3><p>人眼对亮度、颜色、低频和高频的敏感度不同。</p></article>
+              <article><h3>统计冗余</h3><p>有些符号更常出现。常见符号可以用更短的码。</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section id="loss-model" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">02 / 无损和有损</p>
+            <h2>有损不是随便丢。无损也不是总能很小。</h2>
+            <p>无损压缩要求解码后完全相同。</p>
+            <div class="expl2-formula expl2-math">\[x'=x\]</div>
+            <p>PNG、WebP lossless 适合图标、截图、二维码和透明 UI。</p>
+            <p>有损压缩允许解码结果不同。但差异要可控。</p>
+            <div class="expl2-formula expl2-math">\[x'\ne x,\qquad D(x,x')\ \text{要小}\]</div>
+            <p>照片常用有损。文字、二维码、医学图像、机器视觉数据要更谨慎。</p>
+          </div>
+        </section>
+
+        <section id="dct-intuition" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">03 / DCT 的直觉</p>
+            <h2>DCT 是换坐标，不是直接压缩</h2>
+            <p>DCT 把“位置语言”换成“频率语言”。</p>
+            <p>原始数据记录每个位置的值。DCT 系数记录每种余弦波占多少。</p>
+            <div class="compression-table-wrap">
+              <table class="compression-table">
+                <thead><tr><th>系数</th><th>含义</th><th>例子</th></tr></thead>
+                <tbody>
+                  <tr><td>DC</td><td>平均水平</td><td>整个块偏亮或偏暗</td></tr>
+                  <tr><td>低频 AC</td><td>缓慢变化</td><td>从左到右变亮</td></tr>
+                  <tr><td>高频 AC</td><td>快速变化</td><td>边缘、文字、纹理、噪声</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>平滑信号的高频系数通常小。小系数可以粗略保存，甚至变成 0。</p>
+            <p>这就是 DCT 适合压缩的原因。</p>
+          </div>
+        </section>
+
+        <section id="dct-formula" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">04 / DCT-II 公式</p>
+            <h2>系数来自正交投影</h2>
+            <p>长度为 \(N\) 的正交归一化 DCT-II 写作：</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              X_k=\alpha(k)\sum_{n=0}^{N-1}x_n
+              \cos\left[\frac{\pi}{N}\left(n+\frac12\right)k\right]
+              \]
+            </div>
+            <div class="expl2-formula expl2-math">
+              \[
+              \alpha(k)=
+              \begin{cases}
+              \sqrt{1/N},&k=0\\
+              \sqrt{2/N},&k>0
+              \end{cases}
+              \]
+            </div>
+            <p>逆变换是同一组基函数的加权和。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              x_n=\sum_{k=0}^{N-1}\alpha(k)X_k
+              \cos\left[\frac{\pi}{N}\left(n+\frac12\right)k\right]
+              \]
+            </div>
+            <p>矩阵写法更短。</p>
+            <div class="expl2-formula expl2-math">\[X=Cx,\qquad x=C^T X,\qquad C^TC=I\]</div>
+            <p>正交性保证可逆。DCT 本身不丢信息。</p>
+          </div>
+        </section>
+
+        <section id="dct-example" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">05 / 1D 手算例子</p>
+            <h2>四个数已经能看出能量集中</h2>
+            <p>对 \(x=[4,3,2,1]\) 做长度 4 的正交 DCT。</p>
+            <div class="expl2-formula expl2-math">\[[4,3,2,1]\xrightarrow{DCT}[5.000000,\ 2.230443,\ 0,\ 0.158513]\]</div>
+            <p>能量没有变。</p>
+            <div class="expl2-formula expl2-math">\[\sum_n x_n^2=\sum_k X_k^2=30\]</div>
+            <p>前两个系数已经包含约 99.92% 的能量。只保留它们，仍能恢复出主要下降趋势。</p>
+            <div class="compression-table-wrap">
+              <table class="compression-table">
+                <thead><tr><th>位置</th><th>原值</th><th>只保留前两个系数后的近似</th></tr></thead>
+                <tbody>
+                  <tr><td>0</td><td>4</td><td>3.95694</td></tr>
+                  <tr><td>1</td><td>3</td><td>3.10355</td></tr>
+                  <tr><td>2</td><td>2</td><td>1.89645</td></tr>
+                  <tr><td>3</td><td>1</td><td>1.04306</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>这就是压缩的雏形。先换坐标。再少量保存重要系数。</p>
+          </div>
+        </section>
+
+        <section id="dct-2d" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">06 / 2D DCT</p>
+            <h2>图像块使用二维余弦基</h2>
+            <p>图像是二维矩阵。二维 DCT 的系数是：</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              F_{u,v}=\alpha(u)\alpha(v)
+              \sum_{x=0}^{N-1}\sum_{y=0}^{N-1}f_{x,y}
+              \cos\left[\frac{\pi}{N}\left(x+\frac12\right)u\right]
+              \cos\left[\frac{\pi}{N}\left(y+\frac12\right)v\right]
+              \]
+            </div>
+            <p>二维 DCT 可以分两次做。一维行变换。再一维列变换。</p>
+            <div class="expl2-formula expl2-math">\[F=CfC^T,\qquad f=C^TFC\]</div>
+            <p>左上角是低频。右下角是高频。</p>
+            <p>JPEG 使用 8×8 块。每个块都有 64 个 DCT 系数。</p>
+          </div>
+        </section>
+
+        <section id="jpeg-block" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">07 / JPEG 单块流程</p>
+            <h2>JPEG 把一个 8×8 块变成一串符号</h2>
+            <div class="compression-pipeline">
+              <span>8×8 像素</span>
+              <span>减 128</span>
+              <span>DCT</span>
+              <span>量化</span>
+              <span>Zigzag</span>
+              <span>RLE</span>
+              <span>Huffman</span>
+            </div>
+            <p>示例亮度块减 128 后，总和为 \(-3323\)。</p>
+            <p>DC 系数是总和除以 8。</p>
+            <div class="expl2-formula expl2-math">\[F(0,0)=\frac{-3323}{8}=-415.375\]</div>
+            <p>这个数表示：该块整体比 128 暗。</p>
+            <p>完整 DCT 后，较大的系数集中在左上角。右下角高频系数较小。</p>
+          </div>
+        </section>
+
+        <section id="quantization" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">08 / 量化</p>
+            <h2>JPEG 的主要损失来自量化</h2>
+            <p>量化把 DCT 系数除以量化步长，再四舍五入。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              \widehat F(u,v)=
+              \operatorname{round}\left(\frac{F(u,v)}{Q(u,v)}\right)
+              \]
+            </div>
+            <p>步长越大，保存越粗。小系数更容易变成 0。</p>
+            <div class="compression-table-wrap">
+              <table class="compression-table">
+                <thead><tr><th>位置</th><th>DCT 系数</th><th>步长</th><th>量化结果</th></tr></thead>
+                <tbody>
+                  <tr><td>(0,0)</td><td>-415.37</td><td>16</td><td>-26</td></tr>
+                  <tr><td>(0,1)</td><td>-30.19</td><td>11</td><td>-3</td></tr>
+                  <tr><td>(0,2)</td><td>-61.20</td><td>10</td><td>-6</td></tr>
+                  <tr><td>(2,2)</td><td>77.13</td><td>16</td><td>5</td></tr>
+                  <tr><td>(0,6)</td><td>-2.39</td><td>51</td><td>0</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>量化表通常左上角步长小。右下角步长大。低频保得细。高频压得粗。</p>
+          </div>
+        </section>
+
+        <section id="entropy" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">09 / Zigzag、RLE、Huffman</p>
+            <h2>量化后的很多 0 要被排成一长串</h2>
+            <p>Zigzag 从左上低频走向右下高频。</p>
+            <p>这样做有一个目的：让高频区域的 0 聚到序列后半段。</p>
+            <p>DC 系数单独编码。JPEG 记录当前块 DC 与前一个块 DC 的差。</p>
+            <div class="expl2-formula expl2-math">\[D_i=DC_i-DC_{i-1}\]</div>
+            <p>AC 系数用 RUN/SIZE 表示。</p>
+            <div class="expl2-formula expl2-math">\[RS=16\times RUN+SIZE\]</div>
+            <p>RUN 是前面连续 0 的个数。SIZE 是当前非零值的幅值类别。</p>
+            <p>若剩下 AC 全为 0，用 EOB 结束。</p>
+            <p>示例块中，原始 8×8 灰度块是 512 bit。单块熵编码载荷为 93 bit。加填充后是 96 bit。</p>
+            <p>这个比例不能直接等同整张图压缩率。完整 JPEG 还要保存文件头、表和图像信息。</p>
+          </div>
+        </section>
+
+        <section id="reconstruction" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">10 / 解码和误差</p>
+            <h2>解码不能撤销量化</h2>
+            <p>解码端先反量化。</p>
+            <div class="expl2-formula expl2-math">\[F'(u,v)=\widehat F(u,v)Q(u,v)\]</div>
+            <p>如果原系数是 \(-30.19\)，步长是 11，量化为 \(-3\)。反量化得到 \(-33\)。</p>
+            <p>误差已经存在。IDCT 只能把这个误差带回像素域。</p>
+            <div class="expl2-formula expl2-math">\[f'=A^TF'A,\qquad P'(x,y)=\operatorname{round}(f'(x,y)+128)\]</div>
+            <p>示例块重建后的 MSE 为 35.5625。PSNR 为 32.62 dB。</p>
+            <div class="expl2-formula expl2-math">\[PSNR=10\log_{10}\frac{255^2}{MSE}\]</div>
+            <p>块效应来自独立 8×8 分块和强量化。振铃来自高频成分被粗略处理。</p>
+          </div>
+        </section>
+
+        <section id="formats" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">11 / 其他格式的位置</p>
+            <h2>先理解 JPEG，再看其他格式更容易</h2>
+            <div class="compression-table-wrap">
+              <table class="compression-table">
+                <thead><tr><th>格式</th><th>核心路线</th><th>适合</th><th>注意</th></tr></thead>
+                <tbody>
+                  <tr><td>PNG</td><td>行过滤 + DEFLATE</td><td>UI、截图、二维码、透明图</td><td>照片通常很大</td></tr>
+                  <tr><td>JPEG</td><td>8×8 DCT + 量化 + Huffman</td><td>通用照片</td><td>块效应、振铃、反复保存损失</td></tr>
+                  <tr><td>WebP</td><td>VP8 帧内预测或 lossless transforms</td><td>Web 照片、透明图、动画</td><td>文字和细线要测试</td></tr>
+                  <tr><td>HEIC/HEIF</td><td>HEVC intra + HEIF 容器</td><td>手机照片、HDR、图像序列</td><td>兼容性和授权复杂</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>现代格式常比 JPEG 多一步：先预测，再编码残差。</p>
+            <div class="expl2-formula expl2-math">\[x=\hat x+r\]</div>
+            <p>预测越准，残差越小。残差再变换、量化、熵编码。</p>
+          </div>
+        </section>
+
+        <section id="choice" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">12 / 选型和小结</p>
+            <h2>格式选择先看用途，不先看压缩率</h2>
+            <div class="compression-concept-list">
+              <article><h3>自然照片</h3><p>通用优先选 JPEG。Web 体积优先看 WebP/AVIF。手机生态可看 HEIC。</p></article>
+              <article><h3>截图、二维码、UI</h3><p>先选 PNG 或 WebP lossless。不要用低质量 JPEG。</p></article>
+              <article><h3>透明商品图</h3><p>兼容优先 PNG。体积优先 WebP。Apple 工作流可考虑 HEIF。</p></article>
+              <article><h3>HDR 和高位深</h3><p>传统 JPEG 不理想。看 HEIF、AVIF、JPEG XL 和目标平台支持。</p></article>
+            </div>
+            <p>本模块最重要的结论有四条。</p>
+            <ol>
+              <li>DCT 是可逆的正交变换。它本身不是损失来源。</li>
+              <li>自然图像常有能量集中。低频系数更重要。</li>
+              <li>JPEG 的主要有损步骤是量化。</li>
+              <li>压缩格式是算法、感知、速度、生态和兼容性的折中。</li>
+            </ol>
+          </div>
+        </section>
+      </article>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../">Module / 模块</a>
+        <a href="../concepts/">Concepts / 概念</a>
+        <a href="../labs/">Labs / 练习</a>
+      </footer>
+    </main>
+  </body>
+</html>

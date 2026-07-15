@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Large Language Models: Tokens, Context, Sampling Directory / 目录</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main expl2-secondary-page">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back / 返回</a>
+          <a class="expl2-back" href="../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Forward and reverse index / 正向目录与反向索引</p>
+        <h1 class="expl2-title">Large Language Models: Tokens, Context, Sampling Directory / 目录</h1>
+      </header>
+      <section class="expl2-secondary-grid">
+        <article class="expl2-card"><h2>Forward directory / 顺序目录</h2><ol><li><a href="../">Main page / 主页面</a></li><li>Chapter 0 intuition / 第 0 章直觉</li><li>Core explanation sections / 核心解释章节</li><li><a href="../concept-tree/">Concept tree / 概念树</a></li><li><a href="../single/">Single-page reading / 单页阅读</a></li></ol></article>
+        <article class="expl2-card"><h2>Concept lookup / 概念查找</h2><ul><li><a href="../concepts/token/">Token / token</a>: The basic unit in a sequence \(x_{1:n}\).</li>
+<li><a href="../concepts/context-window/">Context window / 上下文窗口</a>: The directly visible token range \(x_{t-L+1:t}\).</li>
+<li><a href="../concepts/temperature/">Temperature / 温度</a>: A sampling parameter in \(p_i=\frac{e^{z_i/T}}{\sum_j e^{z_j/T}}\).</li>
+<li><a href="../concepts/grounding/">Grounding / 扎实度</a>: A claim-support relation such as \(G=\frac{\text{supported claims}}{\text{all claims}}\).</li></ul></article>
+        <article class="expl2-card"><h2>Visual lookup / 图像查找</h2><ul><li>Token chips / Token 标记</li>
+<li>Candidate probability bars / 候选概率条</li>
+<li>Pipeline cards / 流程卡片</li>
+<li>Reliability score panels / 可靠性评分面板</li></ul></article>
+        <article class="expl2-card"><h2>Interaction lookup / 操作查找</h2><ul><li>Prompt text area / 提示文本框</li>
+<li>Context size slider / 上下文大小滑块</li>
+<li>Temperature slider / 温度滑块</li>
+<li>Candidate count control / 候选数量控制</li>
+<li>Context and tool toggles / 上下文与工具开关</li>
+<li>Language switch / 语言切换</li></ul></article>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../concept-tree/">Concept tree / 概念树</a>
+        <a href="../directory/">Directory / 目录</a>
+        <a href="../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "slug": "image-formats-compression",
+  "order": 4,
+  "status": "content-draft",
+  "title": {
+    "zh": "计算机图像格式和压缩",
+    "en": "Image Formats and Compression"
+  },
+  "requiredTopics": ["pixel formats", "bit depth", "sampling", "compression"],
+  "sourceBase": [
+    "/Users/chenzhao/Desktop/image_compression_history_survey.md",
+    "/Users/chenzhao/Desktop/dct_math_introduction.md",
+    "/Users/chenzhao/Desktop/jpeg_dct_compression_example.md"
+  ],
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"],
+  "entryPoints": {
+    "chapters": "chapters/index.html",
+    "concepts": "concepts/index.html",
+    "labs": "labs/index.html"
+  },
+  "chapters": [
+    "raw images and redundancy",
+    "lossless vs lossy",
+    "DCT intuition",
+    "DCT-II formula and orthogonality",
+    "1D DCT worked example",
+    "2D DCT and image blocks",
+    "JPEG block pipeline",
+    "quantization",
+    "zigzag, DC difference, AC RLE, Huffman",
+    "reconstruction and artifacts",
+    "format comparison",
+    "format selection"
+  ],
+  "concepts": [
+    "raw size",
+    "redundancy",
+    "lossless",
+    "lossy",
+    "projection",
+    "orthogonal basis",
+    "DCT-II",
+    "DC coefficient",
+    "AC coefficient",
+    "Parseval identity",
+    "2D DCT",
+    "energy compaction",
+    "level shift",
+    "quantization",
+    "quantization table",
+    "zigzag scan",
+    "DC differential coding",
+    "AC run-length coding",
+    "Huffman coding",
+    "EOB",
+    "artifacts",
+    "PNG",
+    "WebP",
+    "HEIC/HEIF"
+  ],
+  "labs": [
+    "raw-size-calculator",
+    "dct-lowpass-playground",
+    "quantization-playground",
+    "format-chooser"
+  ]
+}

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HDR：完整章节读本</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">HDR / 模块</a>
+          <a class="expl2-back" href="../../">Modules / 七大模块</a>
+        </div>
+        <p class="expl2-kicker">Chapter reader / 章节读本</p>
+        <h1 class="expl2-title">HDR 专题</h1>
+        <p class="expl2-lead">从动态范围到交付信令：HDR 的难点在全链路一致，而不是单一亮度参数。</p>
+        <nav class="course-quick-nav" aria-label="HDR chapters">
+          <a href="#foundation">01 基础</a>
+          <a href="#transfer">02 PQ/HLG</a>
+          <a href="#mapping">04 映射</a>
+          <a href="#display">07 显示</a>
+          <a href="#delivery">08 交付</a>
+        </nav>
+      </header>
+
+      <article class="course-reader">
+        <section id="foundation" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">01 / HDR 的物理与视觉基础</p>
+            <h2>动态范围是比值，HDR 是可控地呈现这个比值</h2>
+            <p>动态范围可用比值、dB 或 stops 表示。0.005 cd/m² 到 1000 cd/m² 是 200000:1，约 17.6 stops，已经远超传统 SDR 的舒适表达。</p>
+            <div class="expl2-formula expl2-math">\[DR=\frac{L_{max}}{L_{min}},\qquad DR_{dB}=20\log_{10}(DR),\qquad DR_{stops}=\log_2(DR)\]</div>
+            <p>HDR 不只是更高峰值亮度，也包括更低黑位、更细暗部层次、更大颜色体积和更合理的 specular highlights。Diffuse white 通常不是峰值亮度，峰值应留给镜面高光。</p>
+            <p>scene-referred 数值与场景光成比例，如 raw、ACES scene-linear、OpenEXR；display-referred 数值描述目标显示输出，如 PQ master。二者不能混用。</p>
+          </div>
+        </section>
+
+        <section id="transfer" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">02 / PQ、HLG、OETF/EOTF/OOTF</p>
+            <h2>PQ 是绝对显示亮度，HLG 是相对广播系统</h2>
+            <p>OETF 把场景光变为视频信号，EOTF 把视频信号变为显示光，OOTF 描述场景到显示的整体呈现。</p>
+            <p>PQ 把非线性码值映射到最高 10000 cd/m² 的绝对亮度范围。PQ 码值不是线性亮度：100 nits 已在 10-bit code 520 左右。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              Y=\left(\frac{\max[(E'^{1/m_2}-c_1),0]}{c_2-c_3E'^{1/m_2}}\right)^{1/m_1},
+              \qquad F_D=10000Y
+              \]
+            </div>
+            <p>HLG 低段近似平方根，高段对数，通常不依赖 metadata，更适合直播与广播链路。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              E'=\begin{cases}\sqrt{3E},&0\le E\le1/12\\a\ln(12E-b)+c,&1/12<E\le1\end{cases}
+              \]
+            </div>
+          </div>
+        </section>
+
+        <section id="formats" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">03 / HDR 格式与标准生态</p>
+            <h2>HDR 格式差异主要体现在 transfer、metadata 和设备适配</h2>
+            <div class="course-table-wrap"><table class="course-table"><thead><tr><th>格式</th><th>Transfer</th><th>Metadata</th><th>典型用途</th></tr></thead><tbody><tr><td>HDR10</td><td>PQ</td><td>静态：mastering display、MaxCLL、MaxFALL</td><td>最通用消费 HDR</td></tr><tr><td>HLG</td><td>HLG</td><td>通常无</td><td>广播/直播</td></tr><tr><td>Dolby Vision</td><td>PQ</td><td>动态 metadata + trims</td><td>高端流媒体/电视/移动</td></tr><tr><td>HDR10+</td><td>PQ</td><td>动态 metadata</td><td>开放动态 metadata 生态</td></tr><tr><td>ACES/EXR</td><td>scene-linear/log</td><td>制作系统，不是消费 HDR 格式</td><td>VFX、母版、归档</td></tr></tbody></table></div>
+            <p>动态 metadata 的价值不是让所有画面更亮，而是让低能力显示更接近创作意图。</p>
+          </div>
+        </section>
+
+        <section id="mapping" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">04 / Tone mapping 与 color volume mapping</p>
+            <h2>把 4000 nits master 放到 1000 nits TV 上，不是简单 clip</h2>
+            <p>Tone mapping 要让高光 roll-off、暗部保留、中间调和肤色稳定、局部对比自然、色相尽量不漂，并适应目标显示峰值、黑位、色域和环境光。</p>
+            <p>Global tone mapping 稳定、无 halo、便于硬件，但局部细节有限；local tone mapping 能保细节，却容易出现 halo、局部反转和时域闪烁。</p>
+            <p>HDR/WCG 是亮度×色度的颜色体积。高亮高饱和色如果只做 RGB clip，会 hue shift；只压亮度可能超色域；只降饱和又可能丢创作意图。</p>
+          </div>
+        </section>
+
+        <section id="capture" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">05 / HDR capture 与 merge</p>
+            <h2>HDR 合成要同时处理噪声、饱和、运动和 flicker</h2>
+            <div class="course-pipeline"><span>Scene radiance</span><span>optics/flare</span><span>sensor exposures</span><span>raw linearization</span><span>HDR merge</span><span>deghost/denoise</span></div>
+            <p>Bracketing HDR 用短曝光保高光、长曝光保暗部。合成权重常按信噪比和饱和风险设计。</p>
+            <div class="expl2-formula expl2-math">\[I_{HDR}=\frac{\sum_i w_i I_i/t_i}{\sum_i w_i}\]</div>
+            <p>运动对象会造成 ghost；LED、屏幕和车灯 flicker 会被多曝光和 rolling 时序放大。镜头 flare 抬黑位，是 HDR 的硬限制之一。</p>
+          </div>
+        </section>
+
+        <section id="mastering" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">06 / Grading、mastering、metadata、SDR downmap</p>
+            <h2>HDR master 要同时服务高端显示、普通显示和 SDR 版本</h2>
+            <p>典型链路是 Camera raw/log → IDT/normalization → scene-linear or log grading → HDR reference monitor grade → metadata analysis/trims → SDR downmap/QC → delivery packages。</p>
+            <p>静态 metadata 包括 mastering display primaries/white、min/max luminance、MaxCLL、MaxFALL。动态 metadata 可按场景、镜头或帧给 tone mapping 指导。</p>
+            <p>SDR downmap 不是 clip 到 100 nits，还要处理色域 P3/BT.2020 到 Rec.709、肤色、字幕、暗部、高光和场景间一致性。</p>
+          </div>
+        </section>
+
+        <section id="display" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">07 / HDR display 与 calibration</p>
+            <h2>1000 nits 小窗口不等于所有 HDR 都能完美显示</h2>
+            <p>OLED/QD-OLED 黑位强、像素级调光，但受 ABL、全屏亮度和老化限制；MiniLED LCD 峰值和全屏亮度高，但有 local dimming halo 和分区黑位限制。</p>
+            <p>HDR 校准至少看 PQ/HLG EOTF tracking、D65 白点、P3/BT.2020 覆盖和体积、ColorChecker ΔE、peak/full-field luminance、black level/near-black、tone mapping 行为。</p>
+          </div>
+        </section>
+
+        <section id="delivery" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">08 / HDR delivery 与压缩接口</p>
+            <h2>交付错误通常是信号标错，而不只是码率不够</h2>
+            <p>HDR 通常至少需要 10-bit；8-bit 配合 PQ 也容易在暗部和渐变中 banding。消费视频常用 4:2:0，但 HDR/WCG 下色度误差更显眼。</p>
+            <p>交付必须标清 transfer characteristics、colour primaries、matrix coefficients、mastering display metadata、content light level metadata 和动态 metadata payload。</p>
+            <div class="course-note">常见错误：PQ 内容标成 SDR、P3 in BT.2020 container 处理错误、缺 MaxCLL/MaxFALL、HDR 字幕太亮、4:2:0 污染 UI、在非线性码值上调色。</div>
+          </div>
+        </section>
+
+        <section id="cgcv" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">09 / HDR in CG、Games、CV</p>
+            <h2>HDR buffer 在渲染和视觉算法里有不同目标</h2>
+            <p>CG/VFX 的物理渲染通常输出 scene-linear HDR buffer，再经过 exposure、grading、tone mapper/output transform 到显示。游戏实时维护 HDR framebuffer，但 UI/HUD 亮度应独立控制，tone mapper 要时域稳定。</p>
+            <p>CV 里 HDR 可帮助逆光行人、车牌、室内外同时可见和夜间高光不饱和；但 tone mapping 可能改变局部对比和纹理，带来 domain shift。</p>
+          </div>
+        </section>
+
+        <section id="frontiers" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">10 / 评价指标与研究前沿</p>
+            <h2>HDR 评价必须绑定显示设备和观看环境</h2>
+            <p>主观评价要控制屏幕峰值和黑位、环境光、观看距离、surround、内容类型、reference master。传统 PSNR/SSIM 不足，因为 code value 与感知差异强非线性。</p>
+            <p>研究方向包括 ambient-aware HDR、dynamic metadata 自动生成、神经 tone mapping、live HDR production、HDR+HFR+WCG 联合压缩、AR/VR HDR、display capability signaling 和动态 metadata 新生态。</p>
+          </div>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

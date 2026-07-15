@@ -1,0 +1,83 @@
+.example-main {
+  max-width: 840px;
+}
+
+.example-noscript {
+  display: grid;
+  gap: 14px;
+  border-bottom: 1px solid var(--expl2-line);
+}
+
+.example-noscript h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 5vw, 4rem);
+  line-height: 1.02;
+}
+
+.example-noscript p:not(.expl2-kicker) {
+  max-width: 760px;
+  color: var(--expl2-muted);
+}
+
+.example-tool output {
+  display: block;
+  margin-top: 20px;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+
+.expl2-secondary-page .expl2-header {
+  margin-bottom: 28px;
+}
+
+.expl2-secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.expl2-secondary-grid .expl2-card,
+.expl2-reading-body .expl2-card {
+  display: grid;
+  gap: 10px;
+}
+
+.expl2-secondary-grid h2,
+.expl2-reading-body h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.expl2-secondary-grid ul,
+.expl2-secondary-grid ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.expl2-secondary-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.expl2-reading-body {
+  display: grid;
+  gap: 28px;
+  border-top: 1px solid var(--expl2-line);
+  padding-top: 36px;
+}
+
+.expl2-reading-body section {
+  display: grid;
+  gap: 12px;
+}
+
+@media (max-width: 760px) {
+  .expl2-secondary-grid {
+    grid-template-columns: 1fr;
+  }
+}

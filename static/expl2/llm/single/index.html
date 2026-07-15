@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Large Language Models: Tokens, Context, Sampling Single Page / 单页版</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main expl2-secondary-page">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back / 返回</a>
+          <a class="expl2-back" href="../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Linear reading version / 线性阅读版</p>
+        <h1 class="expl2-title">Large Language Models: Tokens, Context, Sampling Single Page / 单页版</h1>
+      </header>
+      <article class="expl2-reading-body">
+        <section><p class="expl2-eyebrow">Chapter 0 / 第 0 章</p><h2>Intuition first / 先看直觉</h2><p>The LLM project explains language models as token processors, context readers, probabilistic samplers, and grounded tool users.</p><p>LLM 项目把大语言模型解释为 token 处理器、上下文阅读器、概率采样器和依托资料/工具的协作者。</p></section>
+<section><p class="expl2-eyebrow">Concept 1 / 概念 1</p><h2>Token / token</h2><p>The basic text unit an LLM processes: a character, word, word piece, number, or punctuation mark; a prompt is a sequence \(x_{1:n}\).</p><p>模型处理文本的基本单位，可能是字、词、词片段、数字或标点；提示词可以看成序列 \(x_{1:n}\)。</p><div class="expl2-card"><strong>Example / 例子</strong><p>token chips and text input shows the concept in operation. token 标记与文本输入展示这个概念如何运作。</p></div></section>
+<section><p class="expl2-eyebrow">Concept 2 / 概念 2</p><h2>Context window / 上下文窗口</h2><p>The range \(x_{t-L+1:t}\) of tokens the model can directly read now, including instructions, history, documents, and tool results.</p><p>模型当前能直接读取的 token 范围 \(x_{t-L+1:t}\)，包含指令、问题、历史、资料和工具结果。</p><div class="expl2-card"><strong>Example / 例子</strong><p>visible-window slider shows the concept in operation. 可见窗口滑块展示这个概念如何运作。</p></div></section>
+<section><p class="expl2-eyebrow">Concept 3 / 概念 3</p><h2>Temperature / 温度</h2><p>A sampling parameter in \(p_i=\frac{e^{z_i/T}}{\sum_j e^{z_j/T}}\) that shapes the probability distribution; lower is steadier, higher is more diverse.</p><p>采样时调节概率分布形状的参数，常写作 \(p_i=\frac{e^{z_i/T}}{\sum_j e^{z_j/T}}\)；低温更稳定，高温更发散。</p><div class="expl2-card"><strong>Example / 例子</strong><p>candidate probability bars shows the concept in operation. 候选概率条展示这个概念如何运作。</p></div></section>
+<section><p class="expl2-eyebrow">Concept 4 / 概念 4</p><h2>Grounding / 扎实度</h2><p>How much an answer rests on current context, documents, or tool outputs; a simple audit score is \(G=\frac{\text{supported claims}}{\text{all claims}}\).</p><p>回答是否依托当前上下文、资料或工具结果；一个简化检查分数是 \(G=\frac{\text{有证据支持的断言}}{\text{全部断言}}\)。</p><div class="expl2-card"><strong>Example / 例子</strong><p>context/tool toggles and score panels shows the concept in operation. 上下文/工具开关与评分面板展示这个概念如何运作。</p></div></section>
+        <section><p class="expl2-eyebrow">Takeaway / 收束</p><h2>One line for review / 复习主线</h2><p>The single-page version keeps all concept definitions in the reading flow so the required ideas can be understood without jumping to the concept tree.</p><p>单页版把所有概念定义放进阅读流，因此读者不跳转概念树也能理解必要概念。</p></section>
+      </article>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../concept-tree/">Concept tree / 概念树</a>
+        <a href="../directory/">Directory / 目录</a>
+        <a href="../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

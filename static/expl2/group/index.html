@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Group Theory: A First Map</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <section class="group-fallback" aria-labelledby="group-fallback-title">
+      <p class="expl2-kicker">Abstract Algebra / 抽象代数</p>
+      <h1 id="group-fallback-title">Group Theory: From Remainders to Symmetry</h1>
+      <p>
+        Group theory studies composable reversible structure. This page explains
+        the four group axioms, cyclic groups and generators, square symmetries,
+        and subgroups with cosets. If the interactive scripts do not load, the
+        main takeaway is still this: a group is a set of elements or actions
+        that can be combined safely, has an identity action, and lets every
+        action be undone.
+      </p>
+      <p>
+        群论研究可以组合、可以撤销的结构。本页介绍群的四条公理、循环群与生成元、
+        正方形对称、以及子群和陪集。即使交互脚本没有加载，核心直觉仍然是：
+        群是一批元素或动作，它们可以稳定组合，有单位元，并且每个动作都有逆元。
+      </p>
+    </section>
+
+    <main
+      id="expl2-app"
+      class="expl2-main group-main"
+      v-scope="GroupApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header group-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            data-i18n-attr="aria-label:languageSwitchLabel"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+        <div class="group-reading-map" aria-labelledby="group-map-title">
+          <h2 id="group-map-title" data-i18n="mapTitle"></h2>
+          <ol>
+            <li data-i18n="mapItem1"></li>
+            <li data-i18n="mapItem2"></li>
+            <li data-i18n="mapItem3"></li>
+            <li data-i18n="mapItem4"></li>
+          </ol>
+        </div>
+        <div class="group-concepts expl2-card">
+          <strong data-i18n="conceptsLabel"></strong>
+          <p>
+            <button type="button" data-expl2-concept="group" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="generator" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="symmetry" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="coset" data-expl2-concept-label="auto"></button>
+          </p>
+        </div>
+      </header>
+      <nav class="expl2-card expl2-secondary-nav" aria-label="Secondary expl2 pages">
+        <a href="./concept-tree/">Concept tree / 概念树</a>
+        <a href="./directory/">Directory / 目录</a>
+        <a href="./single/">Single page / 单页版</a>
+      </nav>
+
+      <section class="expl2-section is-single group-overview" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="overviewEyebrow"></p>
+          <h2 data-i18n="overviewTitle"></h2>
+          <p class="expl2-short-text" data-i18n="overviewText1"></p>
+          <p class="expl2-short-text" data-i18n="overviewText2"></p>
+          <p class="group-cue" data-i18n="overviewCue"></p>
+        </div>
+      </section>
+
+      <section class="expl2-section group-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="axiomEyebrow"></p>
+          <h2 data-i18n="axiomTitle"></h2>
+          <p class="expl2-short-text" data-i18n="axiomText1"></p>
+          <p class="expl2-short-text" data-i18n="axiomText2"></p>
+          <ul class="group-axioms">
+            <li>
+              <strong data-i18n="axiomClosureName"></strong>
+              <span data-i18n="axiomClosureText"></span>
+            </li>
+            <li>
+              <strong data-i18n="axiomAssociativeName"></strong>
+              <span data-i18n="axiomAssociativeText"></span>
+            </li>
+            <li>
+              <strong data-i18n="axiomIdentityName"></strong>
+              <span data-i18n="axiomIdentityText"></span>
+            </li>
+            <li>
+              <strong data-i18n="axiomInverseName"></strong>
+              <span data-i18n="axiomInverseText"></span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="expl2-tool group-mod-tool">
+          <div class="group-tool-heading">
+            <h3 data-i18n="modToolTitle"></h3>
+            <p class="expl2-short-text" data-i18n="modToolText"></p>
+          </div>
+          <div class="group-control-grid">
+            <label class="expl2-control">
+              <span data-i18n="modSizeLabel"></span>
+              <input type="range" min="3" max="9" v-model="modN" @input="normalizeAddition(); renderMath()" />
+              <output>{{ modN }}</output>
+            </label>
+            <label class="expl2-control">
+              <span data-i18n="modALabel"></span>
+              <input type="range" min="0" :max="modN - 1" v-model="addA" @input="renderMath()" />
+              <output>{{ addA }}</output>
+            </label>
+            <label class="expl2-control">
+              <span data-i18n="modBLabel"></span>
+              <input type="range" min="0" :max="modN - 1" v-model="addB" @input="renderMath()" />
+              <output>{{ addB }}</output>
+            </label>
+          </div>
+          <p class="group-result">{{ additionSentence() }}</p>
+          <div class="group-table-wrap">
+            <table class="group-cayley" data-i18n-attr="aria-label:modTableLabel">
+              <thead>
+                <tr>
+                  <th scope="col">+</th>
+                  <th
+                    v-for="value in elements(modN)"
+                    :key="`head-${value}`"
+                    scope="col"
+                    :class="{ 'is-identity': value === 0 }"
+                  >
+                    {{ value }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in additionTable()" :key="`row-${row.value}`">
+                  <th scope="row" :class="{ 'is-identity': row.value === 0 }">{{ row.value }}</th>
+                  <td
+                    v-for="cell in row.cells"
+                    :key="cell.key"
+                    :class="{ 'is-identity': cell.value === 0, 'is-selected': cell.selected }"
+                  >
+                    {{ cell.value }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="group-caption">{{ modCaption() }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section group-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="cycleEyebrow"></p>
+          <h2 data-i18n="cycleTitle"></h2>
+          <p class="expl2-short-text" data-i18n="cycleText1"></p>
+          <p class="expl2-short-text" data-i18n="cycleText2"></p>
+          <p class="expl2-short-text" data-i18n="cycleText3"></p>
+        </div>
+
+        <div class="expl2-tool group-cycle-tool">
+          <div class="group-tool-heading">
+            <h3 data-i18n="cycleToolTitle"></h3>
+            <p class="expl2-short-text" data-i18n="cycleToolText"></p>
+          </div>
+          <div class="group-control-grid">
+            <label class="expl2-control">
+              <span data-i18n="cycleSizeLabel"></span>
+              <input type="range" min="4" max="14" v-model="cycleN" @input="normalizeCycle(); renderMath()" />
+              <output>{{ cycleN }}</output>
+            </label>
+            <label class="expl2-control">
+              <span data-i18n="generatorLabel"></span>
+              <input type="range" min="1" :max="cycleN - 1" v-model="generator" @input="renderMath()" />
+              <output>{{ generator }}</output>
+            </label>
+          </div>
+          <div class="group-orbit" data-i18n-attr="aria-label:cycleOrbitLabel">
+            <span
+              v-for="(value, index) in cycleOrbit()"
+              :key="`orbit-${index}-${value}`"
+              class="group-token"
+            >
+              {{ value }}
+            </span>
+          </div>
+          <div class="group-summary-grid">
+            <div>
+              <span data-i18n="cycleGcdLabel"></span>
+              <strong>{{ gcd(cycleN, generator) }}</strong>
+            </div>
+            <div>
+              <span data-i18n="cycleSizeResultLabel"></span>
+              <strong>{{ cycleOrbit().length }}</strong>
+            </div>
+            <div>
+              <span data-i18n="cycleGeneratorResultLabel"></span>
+              <strong>{{ isGenerator() ? t("yes") : t("no") }}</strong>
+            </div>
+          </div>
+          <p class="group-caption">{{ cycleCaption() }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section group-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="symmetryEyebrow"></p>
+          <h2 data-i18n="symmetryTitle"></h2>
+          <p class="expl2-short-text" data-i18n="symmetryText1"></p>
+          <p class="expl2-short-text" data-i18n="symmetryText2"></p>
+          <p class="expl2-short-text" data-i18n="symmetryText3"></p>
+        </div>
+
+        <div class="expl2-tool group-symmetry-tool">
+          <div class="group-tool-heading">
+            <h3 data-i18n="symmetryToolTitle"></h3>
+            <p class="expl2-short-text" data-i18n="symmetryToolText"></p>
+          </div>
+          <div class="group-control-grid">
+            <label class="expl2-control">
+              <span data-i18n="firstMoveLabel"></span>
+              <select v-model="firstOp">
+                <option v-for="option in operationOptions()" :key="`first-${option.id}`" :value="option.id">
+                  {{ option.label }}
+                </option>
+              </select>
+            </label>
+            <label class="expl2-control">
+              <span data-i18n="secondMoveLabel"></span>
+              <select v-model="secondOp">
+                <option v-for="option in operationOptions()" :key="`second-${option.id}`" :value="option.id">
+                  {{ option.label }}
+                </option>
+              </select>
+            </label>
+          </div>
+          <div class="group-square-stage">
+            <div class="group-square-board" data-i18n-attr="aria-label:squareBoardLabel">
+              <div
+                v-for="cell in squareCells()"
+                :key="cell.key"
+                class="group-square-cell"
+                :class="cell.className"
+              >
+                {{ cell.label }}
+              </div>
+            </div>
+            <div class="group-composition">
+              <p>{{ compositionSentence() }}</p>
+              <p>{{ commutativeSentence() }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section group-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="subgroupEyebrow"></p>
+          <h2 data-i18n="subgroupTitle"></h2>
+          <p class="expl2-short-text" data-i18n="subgroupText1"></p>
+          <p class="expl2-short-text" data-i18n="subgroupText2"></p>
+          <p class="expl2-short-text" data-i18n="subgroupText3"></p>
+        </div>
+
+        <div class="expl2-tool group-subgroup-tool">
+          <div class="group-tool-heading">
+            <h3 data-i18n="subgroupToolTitle"></h3>
+            <p class="expl2-short-text" data-i18n="subgroupToolText"></p>
+          </div>
+          <div class="group-control-grid">
+            <label class="expl2-control">
+              <span data-i18n="subgroupSizeLabel"></span>
+              <input type="range" min="6" max="18" v-model="subgroupN" @input="normalizeSubgroup(); renderMath()" />
+              <output>{{ subgroupN }}</output>
+            </label>
+            <label class="expl2-control">
+              <span data-i18n="subgroupStepLabel"></span>
+              <input type="range" min="1" :max="subgroupN - 1" v-model="subgroupStep" @input="renderMath()" />
+              <output>{{ subgroupStep }}</output>
+            </label>
+          </div>
+          <p class="group-result">{{ subgroupSentence() }}</p>
+          <div class="group-cosets" data-i18n-attr="aria-label:cosetListLabel">
+            <div v-for="coset in cosets()" :key="coset.key" class="group-coset-row">
+              <strong>{{ coset.name }}</strong>
+              <span>
+                <span
+                  v-for="value in coset.elements"
+                  :key="`${coset.key}-${value}`"
+                  class="group-token"
+                >
+                  {{ value }}
+                </span>
+              </span>
+            </div>
+          </div>
+          <p class="group-caption">{{ cosetCaption() }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">5. 同态 / Homomorphisms</p>
+          <h2>保持运算的翻译 / Translations that preserve operation</h2>
+          <p class="expl2-short-text">同态把一个群翻译到另一个群，同时保留“先组合再翻译”和“先翻译再组合”的一致性。A homomorphism translates one group into another while preserving composition.</p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>如果一个映射会破坏运算，它只是普通函数；如果它保留运算，它就能把一个群的结构搬到另一个地方。同态让我们比较不同表面的同一种结构。</p>
+            <p>If a map breaks the operation, it is just a function. If it preserves the operation, it carries group structure from one setting to another and lets us compare different-looking systems.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>结构检查 / Structure check</strong><div class="expl2-formula expl2-math">\[f(a*b)=f(a)*f(b)\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">6. 核 / Kernel</p>
+          <h2>哪些动作被翻译成“什么都不做” / Which actions collapse to identity</h2>
+          <p class="expl2-short-text">核记录同态中被压扁到单位元的元素，它告诉我们翻译丢掉了多少信息。The kernel records what the translation forgets.</p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>当多个元素都被送到单位元，翻译就把这些差别视为不重要。核不仅是一个集合，还是一个子群；它是理解商群和结构压缩的入口。</p>
+            <p>When several elements map to the identity, the translation treats their differences as irrelevant. The kernel is itself a subgroup and is the gateway to quotients and compression.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>信息漏斗 / Information funnel</strong><div class="expl2-formula expl2-math">\[\ker f=\{g\in G:f(g)=e_H\}\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">7. 商群 / Quotient groups</p>
+          <h2>把陪集当成新的元素 / Treat cosets as new elements</h2>
+          <p class="expl2-short-text">商群把一个子群内部的差别折叠掉，只保留陪集之间如何组合。A quotient folds away differences inside a subgroup and keeps how cosets combine.</p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>陪集已经把群分成整齐层。商群进一步说：把每一层看成一个新元素。这样可以从复杂群中提取一个更粗、更容易理解的结构。</p>
+            <p>Cosets already partition the group. A quotient takes the next step: each layer becomes a new element, giving a coarser structure that is easier to reason about.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>分层压缩 / Layer compression</strong><div class="expl2-formula expl2-math">\[G/H=\{aH:a\in G\}\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">8. 群作用 / Group actions</p>
+          <h2>群通过作用连接到对象 / Groups meet objects through actions</h2>
+          <p class="expl2-short-text">群作用说明一个抽象群如何移动某个集合里的对象，例如旋转正方形的角。A group action explains how abstract elements move objects.</p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>群不一定直接由几何动作组成，但它可以作用在几何对象、解集、颜色排列或数据状态上。作用把抽象运算变成可以观察的运动。</p>
+            <p>A group need not be made of geometric motions, but it can act on shapes, solution sets, colorings, or data states. Actions turn abstract composition into observable movement.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>作用图 / Action map</strong><div class="expl2-formula expl2-math">\[\alpha:G\times X\to X,\qquad (g,x)\mapsto g\cdot x\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single group-conclusion" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="takeawayEyebrow"></p>
+          <h2 data-i18n="takeawayTitle"></h2>
+          <p class="expl2-short-text" data-i18n="takeawayText1"></p>
+          <p class="expl2-short-text" data-i18n="takeawayText2"></p>
+          <p class="expl2-short-text" data-i18n="takeawayText3"></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Optics / 最基础的光学</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Modules / 模块</a>
+          <a class="expl2-back" href="../../">Color / 主入口</a>
+        </div>
+        <p class="expl2-kicker">Module 01 / 内容草稿</p>
+        <h1 class="expl2-title">Optics / 最基础的光学</h1>
+        <p class="expl2-lead">
+          这一模块覆盖“从场景光到像面光分布”的基础：辐射量、折射与薄透镜、光阑和景深、
+          衍射极限、PSF/MTF、像差、偏振、干涉，以及成像系统规格设计。
+        </p>
+        <nav class="course-quick-nav" aria-label="Optics navigation">
+          <a href="./chapters/">完整章节</a>
+          <a href="./concepts/">核心概念</a>
+          <a href="./labs/">交互练习</a>
+          <a href="./module.json">module.json</a>
+        </nav>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="course-stat-grid">
+          <article class="expl2-card"><strong>10 章</strong><p>从光谱、透镜、光阑到 Fourier optics 和系统设计。</p></article>
+          <article class="expl2-card"><strong>12 个概念</strong><p>radiance、irradiance、f-number、NA、étendue、Airy disk、MTF 等。</p></article>
+          <article class="expl2-card"><strong>3 个练习</strong><p>Airy disk、薄透镜和 MTF 预算，帮助把公式变成设计量感。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Core question</p>
+          <h2>镜头不是“把图像变清楚”的黑盒</h2>
+          <p>
+            光学系统把场景的 radiance 转换成像面的 irradiance，同时引入衍射、离焦、像差、畸变、
+            偏振响应、眩光和光谱透过率。后端 ISP 可以锐化和校正几何，但不能创造从未到达传感器的光子。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              N_e=\int_t\int_A\int_\lambda E_e(x,y,\lambda,t)\,QE(\lambda)\frac{\lambda}{hc}\,d\lambda\,dA\,dt
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool">
+          <div class="course-flow" aria-label="Optics pipeline">
+            <span>场景光谱</span><span>镜头透过率</span><span>光阑/瞳</span><span>PSF/MTF</span><span>像面照度</span><span>传感器电子数</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Reading map</p>
+          <h2>学习路线</h2>
+        </div>
+        <div class="course-card-grid">
+          <article class="expl2-card"><h3>辐射量</h3><p>区分 radiance、irradiance、exposure、photon flux，建立光子数量感。</p></article>
+          <article class="expl2-card"><h3>一阶成像</h3><p>用 Snell、薄透镜、ABCD 矩阵、f-number 和 NA 计算基本规格。</p></article>
+          <article class="expl2-card"><h3>清晰度预算</h3><p>把衍射、像差、像素孔径、运动和显示 MTF 放到同一个系统链路里。</p></article>
+          <article class="expl2-card"><h3>真实误差</h3><p>理解畸变、色差、偏振、薄膜、speckle 和 flare 如何影响颜色、HDR 与 CV。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-link-grid">
+          <a class="expl2-card" href="./chapters/"><strong>完整章节读本</strong><span>10 课时内容压缩为可阅读的 expl2 章节。</span></a>
+          <a class="expl2-card" href="./concepts/"><strong>核心概念表</strong><span>把公式和术语集中成可回查索引。</span></a>
+          <a class="expl2-card" href="./labs/"><strong>交互练习</strong><span>用数值输入观察 diffraction、focus 和 MTF 预算。</span></a>
+          <a class="expl2-card" href="../../modules/"><strong>回到七大模块</strong><span>和颜色、传感器、HDR、压缩等模块连接阅读。</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P、NP 与 P vs NP</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page nphard-page">
+    <noscript>
+      <div class="expl2-main noscript-note">
+        <h1>P、NP 与 P vs NP / P, NP, and P vs NP</h1>
+        <p>
+          这页需要 JavaScript 来运行交互和语言切换；正文主题是可计算、P、NP、NP-hard
+          与 P vs NP 的区别。
+        </p>
+        <p>
+          This page needs JavaScript for interactions and language switching. Its core topic is
+          the difference between computable, efficiently solvable, efficiently checkable,
+          NP-hard, and P vs NP.
+        </p>
+      </div>
+    </noscript>
+    <main
+      id="expl2-app"
+      class="expl2-main"
+      v-scope="NphardApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header nphard-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            data-i18n-attr="aria-label:languageSwitch"
+            aria-label="语言"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker">可计算理论入门</p>
+        <h1 class="expl2-title" data-i18n="title">P、NP 与 P vs NP</h1>
+        <p class="expl2-lead" data-i18n="lead">
+          计算机科学不只问“能不能算”，也问“要花多久算”。这页用一组小模型解释：
+          可计算理论如何划边界，P 为什么代表高效求解，NP 为什么代表高效验证，
+          NP-hard 为什么是“至少一样难”，以及 P vs NP 到底悬在哪里。
+        </p>
+        <div class="reading-map" data-i18n-attr="aria-label:mapLabel" aria-label="章节地图">
+          <span data-i18n="mapZero">0 先看直觉</span>
+          <span data-i18n="mapOne">1 可计算</span>
+          <span data-i18n="mapTwo">2 P</span>
+          <span data-i18n="mapThree">3 NP</span>
+          <span data-i18n="mapFour">4 NP-hard</span>
+          <span data-i18n="mapFive">5 P vs NP</span>
+          <span data-i18n="mapSix">6 NP-complete</span>
+          <span data-i18n="mapSeven">7 为什么重要</span>
+          <span data-i18n="mapEight">8 证明要什么</span>
+          <span data-i18n="mapNine">9 收束</span>
+        </div>
+      </header>
+
+      <nav class="expl2-card expl2-secondary-nav" data-i18n-attr="aria-label:localNavLabel" aria-label="项目内导航">
+        <a href="./concept-tree/" data-i18n="conceptTreeLink">概念树</a>
+        <a href="./directory/" data-i18n="directoryLink">目录</a>
+        <a href="./single/" data-i18n="singleLink">单页版</a>
+      </nav>
+
+      <section class="expl2-section is-single nphard-overview" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterZeroEyebrow">第 0 章：先看直觉</p>
+          <h2 data-i18n="chapterZeroTitle">找答案和验答案，可能完全不是一回事</h2>
+          <p class="expl2-short-text" data-i18n="chapterZeroTextA">
+            想象朋友说“我能用这几张优惠券正好凑出 22 元”。如果他把优惠券递给你，你只要把数字加起来就能检查；
+            但如果他什么都不给，你可能要试很多组合。P vs NP 的入口，就是这个“寻找”和“验证”的落差。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterZeroTextB">
+            这页先把问题分层：有些问题连通用算法都没有；有些能算而且已知高效；有些答案好验但不好找；
+            还有些问题至少和整个 NP 家族一样难。后面的九章会把这条路线展开。
+          </p>
+          <details class="expl2-long-text">
+            <summary data-i18n="chapterZeroLongSummary">展开：为什么要从“是/否问题”开始</summary>
+            <p data-i18n="chapterZeroLongText">
+              P、NP、NP-complete 这些术语在正式理论中主要描述判定问题，也就是答案只有“是”或“否”的问题。很多优化任务可以改写成判定版，例如“最短路有多短”可以改成“是否存在长度不超过 K 的路径”。这样做让不同问题可以放在同一个比较框架里。
+            </p>
+            <div class="expl2-formula expl2-math" data-i18n="decisionFormula">
+              \[\Pi=\{x\mid \operatorname{answer}(x)=\text{yes}\}\]
+            </div>
+          </details>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="outlineModelTitle">1. 先建模</strong>
+              <p class="expl2-short-text" data-i18n="outlineModelText">把“最短路线是多少”改成“是否存在长度不超过 K 的路线”。判定版让不同问题可以比较。</p>
+            </article>
+            <article>
+              <strong data-i18n="outlineCostTitle">2. 再看增长</strong>
+              <p class="expl2-short-text expl2-math" data-i18n="outlineCostText">同样是能算，\(n^3\) 和 \(2^n\) 在规模变大后是两种世界。</p>
+            </article>
+            <article>
+              <strong data-i18n="outlineVerifyTitle">3. 区分找和验</strong>
+              <p class="expl2-short-text" data-i18n="outlineVerifyText">子集和的候选集合很好检查，但从零开始找候选集合会遭遇组合爆炸。</p>
+            </article>
+            <article>
+              <strong data-i18n="outlineReduceTitle">4. 用归约比较难度</strong>
+              <p class="expl2-short-text" data-i18n="outlineReduceText">如果 SAT 能翻译成某问题，那个问题至少继承了 SAT 的困难。</p>
+            </article>
+          </div>
+          <div class="nphard-concepts expl2-card">
+            <strong data-i18n="conceptsLabel">关键概念</strong>
+            <p>
+              <button type="button" data-expl2-concept="decidable" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="p" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="np" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="certificate" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="nphard" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="reduction" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="pVsNp" data-expl2-concept-label="auto"></button>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterOneEyebrow">第一章：可计算理论</p>
+          <h2 data-i18n="chapterOneTitle">先问一个问题有没有通用算法</h2>
+          <p class="expl2-short-text" data-i18n="chapterOneTextA">
+            一个计算问题通常是一批输入配一个期望输出。可计算理论先不关心速度，
+            而是问：是否存在一套机械步骤，对所有合法输入都能停下来并给出正确答案？
+            如果能，这个问题就是可判定的。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterOneTextB">
+            这个边界并不平凡。停机问题说明：给定一段程序和输入，判断程序最终会不会停，
+            不存在一个万能算法能对所有情况都正确回答。复杂度理论研究的是可判定问题中的下一层：
+            哪些问题不只是能算，而且能在现实规模下有效地算。
+          </p>
+          <p class="expl2-short-text expl2-math" data-i18n="chapterOneFormula">
+            形式化地说，可判定语言 \(L\) 存在一个算法 \(A\)，使得对任意输入 \(x\)，\(A(x)\) 都会停机并正确判断 \(x\in L\)。
+          </p>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="haltingSketchTitle">停机问题的反证骨架</strong>
+              <p class="expl2-short-text" data-i18n="haltingSketchText">假设有万能判定器 H(P,x)。构造程序 D(P)：如果 H 说 P(P) 会停，D 就故意死循环；如果 H 说不会停，D 就立刻停。问 D(D) 会怎样，就得到矛盾。</p>
+            </article>
+            <article>
+              <strong data-i18n="decidableExampleTitle">可判定但不一定高效</strong>
+              <p class="expl2-short-text" data-i18n="decidableExampleText">国际象棋在有限棋盘上理论可判定，但这不等于人类能轻松穷举。可计算理论解决“有没有算法”，复杂度理论再问“代价多大”。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="expl2-tool boundary-tool">
+          <h3 data-i18n="boundaryToolTitle">三种边界的对比</h3>
+          <p class="expl2-short-text" data-i18n="boundaryToolIntro">
+            选择一个问题，观察它落在“能否判定”和“是否高效”的哪一层。
+          </p>
+          <div class="case-buttons" role="group" data-i18n-attr="aria-label:caseButtons">
+            <button
+              v-for="item in problemCases"
+              :key="item.id"
+              type="button"
+              :aria-pressed="selectedCase === item.id"
+              @click="selectedCase = item.id"
+            >
+              {{ label(item.label) }}
+            </button>
+          </div>
+          <div class="boundary-meter" aria-hidden="true">
+            <div :class="['meter-step', selectedProblem().decidable ? 'is-on' : '']">
+              <span data-i18n="decidableLabel">可判定</span>
+            </div>
+            <div :class="['meter-step', selectedProblem().efficient ? 'is-on' : '']">
+              <span data-i18n="efficientLabel">已知高效</span>
+            </div>
+            <div :class="['meter-step', selectedProblem().open ? 'is-open' : '']">
+              <span data-i18n="openLabel">开放/困难</span>
+            </div>
+          </div>
+          <p class="tool-note">{{ label(selectedProblem().note) }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterTwoEyebrow">第二章：P 与增长率</p>
+          <h2 data-i18n="chapterTwoTitle">P 不是“小输入很快”，而是增长方式温和</h2>
+          <p class="expl2-short-text expl2-math" data-i18n="chapterTwoTextA">
+            P 是 Polynomial time，多项式时间。它把“高效”形式化为：存在一个算法，
+            它的步数最多像 \(n\)、\(n^2\)、\(n^3\) 或 \(n^k\) 那样随输入规模 \(n\) 增长。
+            常数和机器速度会影响短跑，多项式与指数的差别决定长跑。
+          </p>
+          <p class="expl2-short-text expl2-math" data-i18n="chapterTwoTextB">
+            注意 P 是最坏情况的理论分类，不等于“所有实例都瞬间完成”。一个 \(n^3\) 算法也可能很慢，
+            一个指数算法也可能在小输入上很快。P 的价值在于：规模继续增加时，我们仍然有可预期的上界。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterTwoFormula">
+            \[\mathrm{P}=\bigcup_{k\ge 1}\mathrm{TIME}(n^k)\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="inputSizeTitle">输入规模不是数值大小</strong>
+              <p class="expl2-short-text" data-i18n="inputSizeText">数字 T 的输入长度约是 log T。子集和的动态规划 O(nT) 对 T 看似多项式，但对输入位数可能仍是指数级，这叫伪多项式。</p>
+            </article>
+            <article>
+              <strong data-i18n="worstCaseTitle">P 说的是最坏情况上界</strong>
+              <p class="expl2-short-text" data-i18n="worstCaseText">一个算法在随机样本上快，不代表属于 P；需要证明对所有长度为 n 的输入，都有统一的多项式上界。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="expl2-tool growth-tool">
+          <div class="tool-heading">
+            <h3 data-i18n="growthToolTitle">增长率模拟器</h3>
+          <p class="expl2-short-text" data-i18n="growthToolIntro">
+              假设每一步用 1 微秒，调节规模 n，比较多项式、指数和阶乘增长。
+            </p>
+            <p class="expl2-short-text expl2-math" data-i18n="growthFormula">
+              比较 \(n^2\)、\(n^3\)、\(2^n\) 和 \(n!\) 时，关键不是某个点，而是 \(n\to\infty\) 时的增长趋势。
+            </p>
+          </div>
+          <label class="expl2-control">
+            <span data-i18n="sizeLabel">输入规模 n</span>
+            <input type="range" min="5" max="35" v-model="size" @input="renderMath()" />
+          </label>
+          <output class="size-readout">{{ size }}</output>
+          <div class="growth-rows">
+            <div class="growth-row" v-for="row in growthRows()" :key="row.name">
+              <strong class="expl2-math">{{ row.name }}</strong>
+              <div class="growth-track" aria-hidden="true">
+                <div :class="['growth-fill', row.tone]" :style="{ width: row.width + '%' }"></div>
+              </div>
+              <span>{{ row.label }}</span>
+            </div>
+          </div>
+          <p class="tool-note" data-i18n="growthCaveat">
+            条形宽度使用对数比例。否则指数和阶乘会让多项式条形几乎看不见。
+          </p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterThreeEyebrow">第三章：NP 与证据</p>
+          <h2 data-i18n="chapterThreeTitle">寻找答案可能很难，检查答案可以很快</h2>
+          <p class="expl2-short-text" data-i18n="chapterThreeTextA">
+            NP 不是“非多项式”的缩写。它来自 nondeterministic polynomial time，
+            在入门理解里可以先记成：对一个“是”的答案，存在一份短证据，
+            验证器可以在多项式时间内检查这份证据。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterThreeTextB">
+            例如子集和问题问：给定一组数，是否能挑出一些刚好凑成目标值？
+            如果有人给出被挑中的数，验证只需要求和并比较目标。真正困难的是：
+            没有人告诉你证据时，怎样避免枚举所有可能子集。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterThreeFormula">
+            \[\mathrm{NP}=\{L\mid \exists V,c,\;x\in L\iff \exists y,\ |y|\le |x|^c\land V(x,y)=1\}\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="satCertTitle">SAT 的证据</strong>
+              <p class="expl2-short-text" data-i18n="satCertText">布尔公式是否可满足？证据是一组变量赋值。验证器只需把赋值代回公式，逐个子句检查是否为真。</p>
+            </article>
+            <article>
+              <strong data-i18n="hamCertTitle">哈密顿路径的证据</strong>
+              <p class="expl2-short-text" data-i18n="hamCertText">图中是否有一条路经过每个点恰好一次？证据是一串顶点顺序。验证器检查相邻顶点有边且没有重复。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="expl2-tool verifier-tool">
+          <div class="tool-heading">
+            <h3 data-i18n="verifierToolTitle">子集和验证器</h3>
+            <p class="expl2-short-text" data-i18n="verifierToolIntro">
+              目标是 22。勾选一组数，页面只做验证；它不会替你聪明地搜索。
+            </p>
+          </div>
+          <div class="number-grid" data-i18n-attr="aria-label:numberGrid" aria-label="候选数字">
+            <label class="number-choice" v-for="value in subsetNumbers" :key="value">
+              <input
+                type="checkbox"
+                :checked="selectedNumbers.includes(value)"
+                @change="toggleNumber(value)"
+              />
+              <span>{{ value }}</span>
+            </label>
+          </div>
+          <div :class="['verdict', subsetSum() === target ? 'is-success' : '']">
+            {{ verifierText() }}
+          </div>
+          <p class="expl2-short-text expl2-math subset-formula" data-i18n="subsetFormula">
+            证据成立时满足 \(\sum_{i\in S}a_i=22\)。
+          </p>
+          <div class="mini-stats">
+            <div>
+              <span data-i18n="searchSpaceLabel">暴力寻找</span>
+              <strong>{{ 2 ** subsetNumbers.length }}</strong>
+              <small data-i18n="searchSpaceUnit">个候选子集</small>
+            </div>
+            <div>
+              <span data-i18n="verifyCostLabel">检查证据</span>
+              <strong>{{ subsetNumbers.length }}</strong>
+              <small data-i18n="verifyCostUnit">次加法以内</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterFourEyebrow">第四章：NP-hard 与归约</p>
+          <h2 data-i18n="chapterFourTitle">“至少一样难”来自把一个问题翻译成另一个问题</h2>
+          <p class="expl2-short-text" data-i18n="chapterFourTextA">
+            归约是复杂度理论的翻译器。如果任何 NP 问题都能在多项式时间内翻译成问题 X，
+            那么 X 就是 NP-hard：解决 X 至少不比解决整个 NP 家族容易。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterFourTextB">
+            如果 X 同时属于 NP，它就是 NP-complete。NP-complete 问题像路标：
+            只要其中一个被证明有多项式时间算法，整个 NP 都会落进 P；反过来，
+            只要证明其中一个不在 \(\mathrm P\)，就能得到 \(\mathrm P\ne\mathrm{NP}\)。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterFourFormula">
+            \[A\le_p B \quad\Longleftrightarrow\quad \exists f\in\mathrm{polytime},\;x\in A\iff f(x)\in B\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="reductionDirectionTitle">归约方向不能反</strong>
+              <p class="expl2-short-text" data-i18n="reductionDirectionText">要证明 B 难，应该把已知困难的 A 翻译到 B。若只证明 B 能翻译到 A，只能说明 B 不比 A 更难。</p>
+            </article>
+            <article>
+              <strong data-i18n="reductionUseTitle">归约的两种读法</strong>
+              <p class="expl2-short-text" data-i18n="reductionUseText">如果 A≤pB 且 B 有快速算法，A 也快；如果 A 已知很难且 A≤pB，那么 B 至少同样难。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="expl2-tool reduction-tool">
+          <div class="tool-heading">
+            <h3 data-i18n="reductionToolTitle">归约地图</h3>
+            <p class="expl2-short-text" data-i18n="reductionToolIntro">
+              选择一个目标问题，观察“已知困难问题可以翻译过去”这句话的含义。
+            </p>
+          </div>
+          <div class="case-buttons" role="group" data-i18n-attr="aria-label:reductionButtons">
+            <button
+              v-for="item in reductionCases"
+              :key="item.id"
+              type="button"
+              :aria-pressed="selectedReduction === item.id"
+              @click="selectedReduction = item.id"
+            >
+              {{ label(item.label) }}
+            </button>
+          </div>
+          <div class="reduction-diagram" aria-hidden="true">
+            <div class="bubble source">SAT</div>
+            <div class="arrow">→</div>
+            <div class="bubble target">{{ label(selectedReductionCase().shortLabel) }}</div>
+          </div>
+          <p class="tool-note">{{ label(selectedReductionCase().note) }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterFiveEyebrow">第五章：P vs NP</p>
+          <h2 data-i18n="chapterFiveTitle">容易验证是否等于容易找到？</h2>
+          <p class="expl2-short-text" data-i18n="chapterFiveTextA">
+            我们已经知道 P 包含在 NP 里：会快速求解的问题，当然也能快速验证。
+            未知的是 NP 里那些有短证据的问题，是否都存在某种尚未发现的快速搜索方法。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterFiveTextB">
+            大多数研究者相信 \(\mathrm P\ne\mathrm{NP}\)，但这仍是开放问题。它重要不是因为某个单一谜题，
+            而是因为它连接了搜索、证明、密码、优化、程序验证和自动推理。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterFiveFormula">
+            \[\mathrm{P}\subseteq\mathrm{NP},\qquad \mathrm{P}\stackrel{?}{=}\mathrm{NP}\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="searchVsDecisionTitle">搜索版和判定版会互相牵动</strong>
+              <p class="expl2-short-text" data-i18n="searchVsDecisionText">对子集和，若能快速回答“是否存在解”，可以逐个尝试保留或删去数字，多次调用判定器构造出一个解。</p>
+            </article>
+            <article>
+              <strong data-i18n="notMagicTitle">P=NP 不等于马上万事可解</strong>
+              <p class="expl2-short-text" data-i18n="notMagicText">即使 P=NP，算法的次数可能是 n^100 或常数巨大；理论结论会改变边界，但工程上还要看具体算法。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="expl2-tool relation-tool">
+          <div class="mode-switch" role="group" data-i18n-attr="aria-label:relationButtons">
+            <button type="button" :aria-pressed="relationMode === 'separate'" @click="relationMode = 'separate'; renderMath()">
+              \(\mathrm P\ne\mathrm{NP}\)?
+            </button>
+            <button type="button" :aria-pressed="relationMode === 'same'" @click="relationMode = 'same'; renderMath()">
+              \(\mathrm P=\mathrm{NP}\)?
+            </button>
+          </div>
+          <div :class="['relation-diagram', relationMode]" aria-hidden="true">
+            <div class="np-oval">
+              <span>NP</span>
+              <div class="p-oval">P</div>
+              <div class="npc-oval">NP-complete</div>
+            </div>
+          </div>
+          <p class="tool-note">{{ relationText() }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterSixEyebrow">第六章：NP-complete</p>
+          <h2 data-i18n="chapterSixTitle">NP-complete 是“既在 NP 里，又足够难”</h2>
+          <p class="expl2-short-text" data-i18n="chapterSixTextA">
+            NP-hard 只说一个问题至少和 NP 中所有问题一样难；NP-complete 还要求它自己也属于 NP。也就是说，它的“是”答案必须有短证据可快速检查。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterSixTextB">
+            这就是为什么判定版常被拿来讲理论：它们既能表达搜索困难，又能让“证据能否快速验证”这件事变得清楚。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterSixFormula">
+            \[X\in\mathrm{NP}\text{-}\mathrm{complete}\iff X\in\mathrm{NP}\land \forall L\in\mathrm{NP},\;L\le_p X\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="cookLevinTitle">第一个路标：Cook-Levin</strong>
+              <p class="expl2-short-text" data-i18n="cookLevinText">SAT 是第一个被证明 NP-complete 的问题。直觉是：把“验证器的运行历史”编码成一个布尔公式。</p>
+            </article>
+            <article>
+              <strong data-i18n="npcChainTitle">常见链条</strong>
+              <p class="expl2-short-text" data-i18n="npcChainText">SAT → 3-SAT → Clique → Vertex Cover → Hamiltonian Cycle。每一步都是保持答案的多项式翻译。</p>
+            </article>
+          </div>
+        </div>
+        <div class="expl2-tool checklist-tool">
+          <h3 data-i18n="completeToolTitle">NP-complete 检查表</h3>
+          <div class="checklist-grid" aria-hidden="true">
+            <div>
+              <span>1</span>
+              <strong data-i18n="completeCheckOne">属于 NP</strong>
+              <p class="expl2-short-text" data-i18n="completeCheckOneText">给出证据后，可以在多项式时间内验证。</p>
+            </div>
+            <div>
+              <span>2</span>
+              <strong data-i18n="completeCheckTwo">NP-hard</strong>
+              <p class="expl2-short-text" data-i18n="completeCheckTwoText">每个 NP 问题都能高效归约到它。</p>
+            </div>
+            <div>
+              <span>3</span>
+              <strong data-i18n="completeCheckThree">于是成为路标</strong>
+              <p class="expl2-short-text" data-i18n="completeCheckThreeText">解决一个，就会牵动整个 NP 家族。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterSevenEyebrow">第七章：为什么重要</p>
+          <h2 data-i18n="chapterSevenTitle">P vs NP 影响的是“自动找到结构”的能力</h2>
+          <p class="expl2-short-text" data-i18n="chapterSevenTextA">
+            如果 \(\mathrm P=\mathrm{NP}\)，许多需要搜索证据的任务都会突然拥有通用快速算法。密码、规划、排程、芯片验证和自动证明都会被重新理解。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterSevenTextB">
+            如果 \(\mathrm P\ne\mathrm{NP}\)，它解释了为什么很多问题可以被人类或程序轻松检查，却仍然没有统一的快速寻找方法。
+          </p>
+          <p class="expl2-short-text expl2-math" data-i18n="chapterSevenFormula">
+            密码学常依赖单向直觉：计算 \(f(x)\) 容易，反求 \(x\) 困难。
+          </p>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="scheduleExampleTitle">排程例子</strong>
+              <p class="expl2-short-text" data-i18n="scheduleExampleText">给 30 门课排考场，约束包括不冲突、容量、教师时间。给出排表后检查很快，从零找排表却可能爆炸。</p>
+            </article>
+            <article>
+              <strong data-i18n="proofExampleTitle">自动证明例子</strong>
+              <p class="expl2-short-text" data-i18n="proofExampleText">一份短证明可以逐行检查；但自动找到证明可能要在巨大的推理树中搜索。</p>
+            </article>
+          </div>
+        </div>
+        <div class="expl2-tool impact-tool">
+          <h3 data-i18n="impactToolTitle">影响地图</h3>
+          <div class="impact-grid">
+            <article>
+              <strong data-i18n="impactCryptoTitle">密码</strong>
+              <p class="expl2-short-text" data-i18n="impactCryptoText">许多方案依赖“验证容易、反推困难”的落差。</p>
+            </article>
+            <article>
+              <strong data-i18n="impactOptTitle">优化</strong>
+              <p class="expl2-short-text" data-i18n="impactOptText">排程、路线和资源分配常会碰到组合爆炸。</p>
+            </article>
+            <article>
+              <strong data-i18n="impactProofTitle">证明</strong>
+              <p class="expl2-short-text" data-i18n="impactProofText">短证明容易检查，但自动找到证明可能很难。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapterEightEyebrow">第八章：证明要什么</p>
+          <h2 data-i18n="chapterEightTitle">一个例子跑得快，不等于证明 \(\mathrm P=\mathrm{NP}\)</h2>
+          <p class="expl2-short-text" data-i18n="chapterEightTextA">
+            P vs NP 是关于所有输入规模、所有实例、所有 NP 问题的命题。一个启发式算法在常见数据上很好用，不足以证明最坏情况下有多项式时间算法。
+          </p>
+          <p class="expl2-short-text" data-i18n="chapterEightTextB">
+            真正的证明必须给出通用算法或不可避免的下界。它要处理的是整个问题类，而不是某个漂亮样例。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="chapterEightFormula">
+            \[\mathrm{P}\ne\mathrm{NP}\ \text{可由}\ \mathrm{SAT}\notin\bigcup_{k\ge1}\mathrm{TIME}(n^k)\ \text{推出}\]
+          </div>
+          <details class="expl2-long-text">
+            <summary data-i18n="chapterEightLongSummary">展开：常见误解</summary>
+            <p data-i18n="chapterEightLongText">
+              “没有找到快速算法”不能证明 \(\mathrm P\ne\mathrm{NP}\)；“某些实例很快”也不能证明 \(\mathrm P=\mathrm{NP}\)。复杂度理论要的是严格上界或下界，所以直觉、实验和工程经验只能提供线索，不能替代证明。
+            </p>
+          </details>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="proofBarrierTitle">为什么证明难</strong>
+              <p class="expl2-short-text" data-i18n="proofBarrierText">已有许多证明技术会碰到障碍，例如相对化、自然证明和代数化。它们不是结论，而是在提醒“常规套路不够”。</p>
+            </article>
+            <article>
+              <strong data-i18n="heuristicTitle">启发式不等于复杂度结论</strong>
+              <p class="expl2-short-text" data-i18n="heuristicText">SAT solver 在工业实例上很强，但这说明实例结构可利用，不说明所有 SAT 实例都有多项式时间算法。</p>
+            </article>
+          </div>
+        </div>
+        <div class="expl2-tool proof-tool">
+          <h3 data-i18n="proofToolTitle">证明目标对照</h3>
+          <div class="proof-grid">
+            <div>
+              <strong data-i18n="proofWouldTitle">需要证明</strong>
+              <p class="expl2-short-text" data-i18n="proofWouldText">对整个 NP 家族给出统一多项式算法，或证明某个 NP-complete 问题不可能有多项式算法。</p>
+            </div>
+            <div>
+              <strong data-i18n="proofNotTitle">不够证明</strong>
+              <p class="expl2-short-text" data-i18n="proofNotText">只展示若干实例、平均数据、工程启发式，或“我们试过还没找到”。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single conclusion-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="conclusionEyebrow">第九章：结论</p>
+          <h2 data-i18n="conclusionTitle">一条主线：能算、好算、好检查，不是同一件事</h2>
+          <p class="expl2-short-text" data-i18n="conclusionTextA">
+            可计算理论告诉我们，有些问题根本没有通用判定算法。复杂度理论进一步区分：
+            在可判定的问题里，哪些能高效求解，哪些只能高效验证，哪些至少和 NP 中所有问题一样难。
+          </p>
+          <p class="expl2-short-text" data-i18n="conclusionTextB">
+            读 P vs NP 时，最重要的直觉不是背术语，而是抓住这组差别：
+            “我能不能确认一个答案是对的？”与“我能不能自己快速找到这个答案？”可能相距很远。
+          </p>
+          <div class="expl2-formula expl2-math" data-i18n="conclusionFormula">
+            \[\text{可判定}\supseteq\mathrm{NP}\supseteq\mathrm{P},\qquad \mathrm{NP}\text{-}\mathrm{complete}\subseteq\mathrm{NP}\]
+          </div>
+          <div class="nphard-example-grid">
+            <article>
+              <strong data-i18n="finalChecklistTitle">读完应能判断</strong>
+              <p class="expl2-short-text" data-i18n="finalChecklistText">给一个新问题，先问是不是判定问题；再问是否已知 P；若属于 NP，找证据和验证器；若要证明困难，找从已知 NP-complete 问题来的归约。</p>
+            </article>
+            <article>
+              <strong data-i18n="finalExampleTitle">完整例子：旅行商</strong>
+              <p class="expl2-short-text" data-i18n="finalExampleText">“最短巡回路线多长”是优化版；“是否存在长度不超过 K 的巡回路线”是判定版。给出路线后容易验，判定版是 NP-complete，优化版是 NP-hard。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <footer class="expl2-footer">
+        <a href="./concept-tree/" data-i18n="conceptTreeLink">概念树</a>
+        <span aria-hidden="true"> · </span>
+        <a href="./directory/" data-i18n="directoryLink">目录</a>
+        <span aria-hidden="true"> · </span>
+        <a href="./single/" data-i18n="singleLink">单页版</a>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Large Language Models: Tokens, Context, Sampling Concept Tree / 概念树</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main expl2-secondary-page">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back / 返回</a>
+          <a class="expl2-back" href="../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Concept dependency tree / 概念依赖图</p>
+        <h1 class="expl2-title">Large Language Models: Tokens, Context, Sampling Concept Tree / 概念树</h1>
+      </header>
+      <section class="expl2-section is-single"><p class="expl2-lead">The LLM project explains language models as token processors, context readers, probabilistic samplers, and grounded tool users. LLM 项目把大语言模型解释为 token 处理器、上下文阅读器、概率采样器和依托资料/工具的协作者。</p></section>
+      <section class="expl2-secondary-grid">
+<article class="expl2-card"><p class="expl2-eyebrow">1</p><h2><a href="../concepts/token/">Token / token</a></h2><p><strong>Definition:</strong> The basic text unit an LLM processes: a character, word, word piece, number, or punctuation mark.</p><p><strong>定义：</strong>模型处理文本的基本单位，可能是字、词、词片段、数字或标点。</p><div class="expl2-formula expl2-math">\[x_{1:n}=(x_1,x_2,\ldots,x_n)\]</div><p><strong>Upstream:</strong> Chapter 0 intuition. <strong>Downstream:</strong> Context window.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">2</p><h2><a href="../concepts/context-window/">Context window / 上下文窗口</a></h2><p><strong>Definition:</strong> The range of tokens the model can directly read now, including instructions, history, documents, and tool results.</p><p><strong>定义：</strong>模型当前能直接读取的 token 范围，包含指令、问题、历史、资料和工具结果。</p><div class="expl2-formula expl2-math">\[x_{t-L+1:t}\]</div><p><strong>Upstream:</strong> Token. <strong>Downstream:</strong> Temperature.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">3</p><h2><a href="../concepts/temperature/">Temperature / 温度</a></h2><p><strong>Definition:</strong> A sampling parameter that shapes the probability distribution; lower is steadier, higher is more diverse.</p><p><strong>定义：</strong>采样时调节概率分布形状的参数；低温更稳定，高温更发散。</p><div class="expl2-formula expl2-math">\[p_i=\frac{e^{z_i/T}}{\sum_j e^{z_j/T}}\]</div><p><strong>Upstream:</strong> Context window. <strong>Downstream:</strong> Grounding.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">4</p><h2><a href="../concepts/grounding/">Grounding / 扎实度</a></h2><p><strong>Definition:</strong> How much an answer rests on current context, documents, or tool outputs instead of parameter memory alone.</p><p><strong>定义：</strong>回答是否依托当前上下文、资料或工具结果，而不是只依赖模型参数记忆。</p><div class="expl2-formula expl2-math">\[G=\frac{\text{supported claims}}{\text{all claims}}\]</div><p><strong>Upstream:</strong> Temperature. <strong>Downstream:</strong> takeaway and review.</p></article>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../concept-tree/">Concept tree / 概念树</a>
+        <a href="../directory/">Directory / 目录</a>
+        <a href="../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

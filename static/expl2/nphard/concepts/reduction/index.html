@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>归约 / Reduction</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../../static-math.js"></script>
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main single-article">
+      <a class="expl2-back" href="../../">返回主页面 / Back to main</a>
+      <h1 class="expl2-title">归约 / Reduction</h1>
+      <p class="expl2-lead">归约把一个问题高效翻译成另一个问题，用来比较问题难度。A reduction efficiently translates one problem into another to compare difficulty.</p>
+      <div class="expl2-formula expl2-math">\[A\le_p B\iff \exists f\in\mathrm{polytime},\ x\in A\iff f(x)\in B\]</div>
+      <h2>例子 / Example</h2>
+      <p>如果 SAT 可以多项式时间翻译成子集和，那么一个通用快速子集和算法也会给 SAT 带来快速算法。</p>
+      <p>If SAT reduces to subset sum in polynomial time, a general fast subset-sum solver would also give SAT a fast solver.</p>
+      <h2>关系 / Relations</h2>
+      <p>前置：P、NP。后继：NP-hard。Upstream: P and NP. Downstream: NP-hard.</p>
+      <nav class="static-nav"><a href="../../concept-tree/">概念树 / Concept tree</a><a href="../../directory/">目录 / Directory</a></nav>
+    </main>
+  </body>
+</html>

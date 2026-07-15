@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P、NP 与 P vs NP：目录</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">返回主页面 / Back to main</a>
+        </div>
+        <p class="expl2-kicker">Directory / 目录</p>
+        <h1 class="expl2-title">P、NP 与 P vs NP：正向目录与反向索引</h1>
+        <p class="expl2-lead">
+          用这页查找章节、概念、图示和可操作区域。Use this page to find chapters, concepts, visuals, and interactive areas.
+        </p>
+        <nav class="static-nav" aria-label="secondary pages">
+          <a href="../concept-tree/">概念树 / Concept tree</a>
+          <a href="../single/">单页版 / Single page</a>
+        </nav>
+      </header>
+
+      <section class="directory-grid">
+        <article class="directory-block">
+          <h2>阅读顺序 / Reading order</h2>
+          <ul>
+            <li><a href="../">主交互页 / Main interactive page</a></li>
+            <li>第 0 章：找答案与验答案 / Chapter 0</li>
+            <li>第 1 章：可计算理论 / Computability</li>
+            <li>第 2 章：P 与增长率 / P and growth</li>
+            <li>第 3 章：NP 与证据 / NP and certificates</li>
+            <li>第 4 章：NP-hard 与归约 / NP-hardness</li>
+            <li>第 5 章：P vs NP</li>
+            <li>第 6 章：NP-complete / NP-complete</li>
+            <li>第 7 章：为什么重要 / Why it matters</li>
+            <li>第 8 章：证明要什么 / What proof needs</li>
+            <li>第 9 章：结论 / Takeaway</li>
+          </ul>
+        </article>
+        <article class="directory-block">
+          <h2>概念 / Concepts</h2>
+          <ul>
+            <li><a href="../concepts/decidable/">可判定 / Decidable</a>: \(\forall x,\ A(x)\downarrow\)</li>
+            <li><a href="../concepts/p/">P</a>: \(\mathrm{P}=\bigcup_{k\ge1}\mathrm{TIME}(n^k)\)</li>
+            <li><a href="../concepts/np/">NP</a>: \(\exists y,\ |y|\le |x|^c\land V(x,y)=1\)</li>
+            <li><a href="../concepts/certificate/">证据 / Certificate</a>: \(V(x,y)=1\)</li>
+            <li><a href="../concepts/reduction/">归约 / Reduction</a>: \(A\le_p B\)</li>
+            <li><a href="../concepts/nphard/">NP-hard</a>: \(\forall L\in\mathrm{NP}, L\le_p X\)</li>
+            <li><a href="../concepts/p-vs-np/">P vs NP</a>: \(\mathrm{P}\stackrel{?}{=}\mathrm{NP}\)</li>
+          </ul>
+        </article>
+        <article class="directory-block">
+          <h2>图示 / Visuals</h2>
+          <ul>
+            <li>三格边界图：第 1 章 / Boundary meter: Chapter 1</li>
+            <li>对数增长条：第 2 章 / Growth bars: Chapter 2</li>
+            <li>求和证据读数：第 3 章 / Certificate sum: Chapter 3</li>
+            <li>SAT 归约箭头：第 4 章 / Reduction arrow: Chapter 4</li>
+            <li>P/NP 集合图：第 5 章 / Set diagram: Chapter 5</li>
+            <li>NP-complete 检查表：第 6 章 / Checklist: Chapter 6</li>
+            <li>影响地图：第 7 章 / Impact map: Chapter 7</li>
+            <li>证明目标对照：第 8 章 / Proof contrast: Chapter 8</li>
+          </ul>
+        </article>
+        <article class="directory-block">
+          <h2>可操作区域 / Interactive areas</h2>
+          <ul>
+            <li>问题案例按钮 / Problem case buttons</li>
+            <li>输入规模滑块 / Input-size slider</li>
+            <li>子集和复选框 / Subset-sum checkboxes</li>
+            <li>归约目标按钮 / Reduction target buttons</li>
+            <li>P vs NP 模式按钮 / P vs NP mode buttons</li>
+            <li>语言切换 / Language switch</li>
+          </ul>
+        </article>
+        <article class="directory-block">
+          <h2>静态版本 / Static reading</h2>
+          <ul>
+            <li><a href="../single/">单页线性阅读 / Single-page reading</a></li>
+            <li><a href="../concept-tree/">概念依赖图 / Concept dependency tree</a></li>
+          </ul>
+        </article>
+      </section>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

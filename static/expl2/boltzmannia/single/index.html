@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boltzmannia Single Page</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page single-reading">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back to Boltzmannia / 返回 Boltzmannia</a>
+          <a class="expl2-back" href="../directory/">Directory / 目录</a>
+        </div>
+        <p class="expl2-kicker">Single-page version / 单页静态版</p>
+        <h1 class="expl2-title">Boltzmannia</h1>
+        <p class="expl2-lead">
+          A continuous reading version from thermodynamics to Boltzmann machines.
+          这是一份从热力学到玻尔兹曼机的连续阅读版。
+        </p>
+      </header>
+
+      <article class="reading-body">
+        <section>
+          <p class="expl2-eyebrow">Chapter 0 / 第 0 章</p>
+          <h2>Start with a landscape / 先从地形开始</h2>
+          <p>
+            Imagine a ball on uneven terrain. It tends to stay in valleys, but heat can still jostle it up a slope.
+            This is the intuitive picture behind Boltzmannia: probability is not arbitrary; it is shaped by energy,
+            temperature, and the number of microscopic ways a visible situation can happen.
+          </p>
+          <p>
+            想象一个小球落在起伏地形上。它倾向于停在低谷，但热扰动仍可能把它推上斜坡。Boltzmannia 的直觉就是这样：
+            概率不是随意分配的，而是由能量、温度，以及同一个可见情形背后的微观实现方式共同塑造。
+          </p>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Chapter 1 / 第一章</p>
+          <h2>Thermal equilibrium / 热平衡</h2>
+          <p>
+            The Boltzmann distribution says a state with energy \(E\) receives weight
+            \(e^{-E/(kT)}\). Low-energy states are favored, high-energy states remain possible,
+            and temperature controls how sharp the preference is.
+          </p>
+          <p>
+            玻尔兹曼分布说，能量为 \(E\) 的状态得到权重 \(e^{-E/(kT)}\)。
+            低能状态更受偏爱，高能状态仍有机会出现，而温度控制这种偏爱的强弱。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              P(E)=Z^{-1}e^{-E/(kT)}
+            \]
+          </div>
+          <div class="concept-inline">
+            <strong>Temperature / 温度</strong>
+            <p>
+              Definition: temperature sets the tolerance for high-energy states. Example: when the slider is high,
+              high-energy levels remain visible. Why it matters: the same idea becomes sampling temperature in the machine.
+            </p>
+            <p>
+              定义：温度设置系统对高能状态的容忍度。例子：滑块越高，高能级越可见。重要性：同一思想会变成机器中的抽样温度。
+            </p>
+          </div>
+          <div class="static-control">
+            <label>Illustrative temperature / 示意温度 <input type="range" min="0" max="100" value="35" /></label>
+            <p>Lower setting: sharper low-energy preference. Higher setting: flatter exploration. 低值代表更强低能偏好，高值代表更平坦探索。</p>
+          </div>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Chapter 2 / 第二章</p>
+          <h2>Entropy and microstates / 熵与微观态</h2>
+          <p>
+            Entropy, written as \(S=k\log W\), counts microscopic realizations. If many detailed arrangements
+            all look like the same macrostate, that macrostate becomes typical even before we mention learning.
+          </p>
+          <p>
+            熵可写成 \(S=k\log W\)，它计数微观实现方式。如果很多具体排列都看起来像同一个宏观状态，
+            这个宏观状态就会自然变得典型。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              W=\binom{N}{K},\qquad S=k\log W
+            \]
+          </div>
+          <div class="concept-inline">
+            <strong>Entropy / 熵</strong>
+            <p>
+              Definition: entropy is the logarithmic count of microstates behind a macrostate. Example: five active particles
+              among ten has more arrangements than zero active particles.
+            </p>
+            <p>
+              定义：熵是某个宏观状态背后微观态数量的对数计数。例子：十个粒子中五个打开，比零个打开有更多排列方式。
+            </p>
+          </div>
+          <div class="static-control">
+            <label>Excited count / 激发数 <input type="range" min="0" max="10" value="5" /></label>
+            <p>Middle counts usually have more combinations. 中间值通常有更多组合方式。</p>
+          </div>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Chapter 3 / 第三章</p>
+          <h2>Boltzmann machines / 玻尔兹曼机</h2>
+          <p>
+            A Boltzmann machine transfers this language to neural networks. Visible units represent data,
+            hidden units represent latent explanations, and weights define an energy for every configuration.
+            The model samples states according to the probabilities implied by those energies.
+          </p>
+          <p>
+            玻尔兹曼机把这套语言迁移到神经网络。可见单元表示数据，隐藏单元表示潜在解释，权重为每个组合状态定义能量；
+            模型再按这些能量隐含的概率进行抽样。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              E(v,h)=-b^\top v-c^\top h-v^\top Wh,\qquad p(v,h)\propto e^{-E(v,h)/T}
+            \]
+          </div>
+          <div class="concept-inline">
+            <strong>Boltzmann machine / 玻尔兹曼机</strong>
+            <p>
+              Definition: a probabilistic neural model that gives configurations an energy score. Example: two visible units
+              can learn that <code>00</code> and <code>11</code> are more data-like than mismatched pairs.
+            </p>
+            <p>
+              定义：给神经元组合状态分配能量分数的概率模型。例子：两个可见单元可以学到 <code>00</code> 和 <code>11</code> 比不匹配组合更像数据。
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Chapter 4 / 第四章</p>
+          <h2>Learning the landscape / 学习能量景观</h2>
+          <p>
+            Training edits the terrain. The positive phase lowers states seen in real data; the negative phase looks at
+            the model's own samples and pushes back against unsupported states that became too probable.
+          </p>
+          <p>
+            训练是在编辑地形。正相压低真实数据中的状态，负相查看模型自己的抽样，并纠正那些缺乏数据支持却概率过高的状态。
+          </p>
+          <div class="concept-inline">
+            <strong>Energy landscape / 能量景观</strong>
+            <p>
+              Definition: an assignment of energy height to every state. Example: learning lowers data states into valleys
+              and raises unsupported states relative to them.
+            </p>
+            <p>
+              定义：给每个状态分配能量高度。例子：学习会把数据状态压成低谷，并相对抬高缺乏支持的状态。
+            </p>
+          </div>
+          <div class="static-control">
+            <label>Training progress / 训练进度 <input type="range" min="0" max="100" value="68" /></label>
+            <p>As learning progresses, data-like states become deeper valleys. 随着学习推进，数据式状态会变成更深的低谷。</p>
+          </div>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Concept index / 概念索引</p>
+          <h2>Four anchors / 四个锚点</h2>
+          <ul>
+            <li><a href="../concepts/temperature/">Temperature / 温度</a>: exploration tolerance for high-energy states.</li>
+            <li><a href="../concepts/entropy/">Entropy / 熵</a>: count of microscopic realizations.</li>
+            <li><a href="../concepts/energy-landscape/">Energy landscape / 能量景观</a>: terrain of state energies.</li>
+            <li><a href="../concepts/boltzmann-machine/">Boltzmann machine / 玻尔兹曼机</a>: learned probabilistic energy model.</li>
+          </ul>
+        </section>
+
+        <section>
+          <p class="expl2-eyebrow">Takeaway / 收束</p>
+          <h2>One line of thought / 一条思想线</h2>
+          <p>
+            Boltzmannia is about a reusable pattern: many possible states exist, energy makes some states easier to occupy,
+            entropy explains why some descriptions are typical, and learning can reshape the energy map so useful patterns
+            become easier to sample.
+          </p>
+          <p>
+            Boltzmannia 关注的是一个可复用模式：许多状态同时存在，能量让某些状态更容易出现，熵解释为什么某些描述更典型，
+            学习则能改造能量地图，让有用模式更容易被抽样。
+          </p>
+        </section>
+      </article>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../">Main interactive page / 主交互页</a>
+        <a href="../concept-tree/">Concept tree / 概念树</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

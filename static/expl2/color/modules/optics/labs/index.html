@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>光学交互练习</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Optics / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Labs / 交互练习</p>
+        <h1 class="expl2-title">光学量感练习</h1>
+        <p class="expl2-lead">先从 Airy disk 和 Nyquist 的关系开始，用数字判断像素、光圈和衍射谁先成为限制。</p>
+      </header>
+      <section id="optics-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 01</p>
+          <h2>Airy disk 与像素采样</h2>
+          <p class="expl2-math">圆孔衍射斑直径 \(d=2.44\lambda N\)，像素 Nyquist \(f_N=1/(2p)\)。</p>
+        </div>
+        <div class="expl2-tool course-lab-tool">
+          <label class="expl2-control"><span>波长 λ / nm</span><input id="optics-wavelength" type="number" min="350" max="900" value="550" /></label>
+          <label class="expl2-control"><span>光圈 N</span><input id="optics-fnumber" type="number" min="0.7" step="0.1" value="4" /></label>
+          <label class="expl2-control"><span>像素 pitch / µm</span><input id="optics-pitch" type="number" min="0.5" step="0.1" value="2" /></label>
+          <output id="optics-output" class="course-output" aria-live="polite"></output>
+        </div>
+      </section>
+      <section class="expl2-section is-single">
+        <div class="course-concept-list">
+          <article><h3>扩展练习：薄透镜</h3><p>用 \(1/f=1/s+1/s'\) 计算 50 mm 镜头从无穷远对焦到 2 m 时，像距移动多少。</p></article>
+          <article><h3>扩展练习：MTF 预算</h3><p>给定镜头 MTF、像素 aperture MTF、运动 MTF，相乘估算系统 MTF，并讨论锐化不能恢复什么。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

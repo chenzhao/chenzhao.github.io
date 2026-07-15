@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Explorable Explanation</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <noscript>
+      <section class="expl2-main template-noscript" aria-labelledby="template-noscript-title">
+        <p class="expl2-kicker">Explorable Explanation / 可探索解释</p>
+        <h1 id="template-noscript-title">New Explanation / 新解释</h1>
+        <p>
+          This template shows the basic expl2 structure: a bilingual overview,
+          clickable key concept definitions, a focused interaction, and a
+          closing takeaway. Enable JavaScript for language switching and the
+          interactive controls.
+        </p>
+        <p>
+          这个模板展示 expl2 的基本结构：双语概览、可点击关键概念定义、
+          一个聚焦交互和结论。启用 JavaScript 后可以使用语言切换和交互控件。
+        </p>
+      </section>
+    </noscript>
+
+    <main
+      id="expl2-app"
+      class="expl2-main"
+      v-scope="TemplateApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            data-i18n-attr="aria-label:languageSwitchLabel"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+      </header>
+      <nav class="expl2-card expl2-secondary-nav" aria-label="Secondary expl2 pages">
+        <a href="./concept-tree/">Concept tree / 概念树</a>
+        <a href="./directory/">Directory / 目录</a>
+        <a href="./single/">Single page / 单页版</a>
+      </nav>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="overviewEyebrow"></p>
+          <h2 data-i18n="overviewTitle"></h2>
+          <p class="expl2-short-text" data-i18n="overviewText"></p>
+          <p>
+            <span data-i18n="overviewConceptPrefix"></span>
+            <button type="button" data-expl2-concept="exampleConcept" data-expl2-concept-label="auto"></button>
+            <span data-i18n="overviewConceptSuffix"></span>
+          </p>
+        </div>
+
+        <div class="expl2-card">
+          <strong data-i18n="simpleExampleTitle"></strong>
+          <p data-i18n="simpleExampleText"></p>
+          <p class="expl2-short-text expl2-math" data-i18n="formulaExampleText"></p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="sectionEyebrow"></p>
+          <h2 data-i18n="sectionTitle"></h2>
+          <p class="expl2-short-text" data-i18n="sectionText"></p>
+        </div>
+
+        <div class="expl2-tool template-tool">
+          <label class="expl2-control">
+            <span data-i18n="valueLabel"></span>
+            <input type="range" min="0" max="100" v-model="value" />
+          </label>
+          <output>{{ value }}</output>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter2Eyebrow"></p>
+          <h2 data-i18n="chapter2Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter2Text"></p>
+        </div>
+        <div class="expl2-tool template-visual" role="img" data-i18n-attr="aria-label:chapter2Visual">
+          <span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter3Eyebrow"></p>
+          <h2 data-i18n="chapter3Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter3Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-lines" role="img" data-i18n-attr="aria-label:chapter3Visual">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter4Eyebrow"></p>
+          <h2 data-i18n="chapter4Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter4Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-stack" role="img" data-i18n-attr="aria-label:chapter4Visual">
+          <span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter5Eyebrow"></p>
+          <h2 data-i18n="chapter5Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter5Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-grid" role="img" data-i18n-attr="aria-label:chapter5Visual">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter6Eyebrow"></p>
+          <h2 data-i18n="chapter6Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter6Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-cards" role="img" data-i18n-attr="aria-label:chapter6Visual">
+          <span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter7Eyebrow"></p>
+          <h2 data-i18n="chapter7Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter7Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-chain" role="img" data-i18n-attr="aria-label:chapter7Visual">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter8Eyebrow"></p>
+          <h2 data-i18n="chapter8Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter8Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-detail" role="img" data-i18n-attr="aria-label:chapter8Visual">
+          <span></span><span></span>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="chapter9Eyebrow"></p>
+          <h2 data-i18n="chapter9Title"></h2>
+          <p class="expl2-short-text" data-i18n="chapter9Text"></p>
+        </div>
+        <div class="expl2-tool template-visual is-finish" role="img" data-i18n-attr="aria-label:chapter9Visual">
+          <span></span><span></span><span></span>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

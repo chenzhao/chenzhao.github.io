@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>图像压缩交互练习</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../module.js"></script>
+  </head>
+  <body class="expl2-page color-page compression-page">
+    <main class="expl2-main expl2-secondary-page compression-main">
+      <header class="expl2-header compression-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Module / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Labs / 交互练习</p>
+        <h1 class="expl2-title">DCT 和 JPEG 量感练习</h1>
+        <p class="expl2-lead">
+          这些练习不模拟完整 JPEG。它们只帮助建立四个直觉：原始图像有多大，DCT 低频能保留多少形状，
+          量化为什么制造 0，以及格式选择为什么依赖用途。
+        </p>
+      </header>
+
+      <section id="raw-size-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 01</p>
+          <h2>原始体积计算器</h2>
+          <p class="expl2-math">
+            调整宽、高、通道数和位深，观察 \(S=W\times H\times C\times b/8\) 怎样快速膨胀。
+          </p>
+        </div>
+        <div class="expl2-tool compression-lab-tool">
+          <label class="expl2-control">
+            <span>宽度 W</span>
+            <input id="raw-width" type="number" min="1" value="4000" />
+          </label>
+          <label class="expl2-control">
+            <span>高度 H</span>
+            <input id="raw-height" type="number" min="1" value="3000" />
+          </label>
+          <label class="expl2-control">
+            <span>通道数 C</span>
+            <input id="raw-channels" type="number" min="1" value="3" />
+          </label>
+          <label class="expl2-control">
+            <span>每通道 bit 数 b</span>
+            <input id="raw-bits" type="number" min="1" value="8" />
+          </label>
+          <output id="raw-size-output" class="compression-output" aria-live="polite"></output>
+        </div>
+      </section>
+
+      <section id="dct-lowpass-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 02</p>
+          <h2>DCT 低频近似</h2>
+          <p class="expl2-math">例子固定为 \(x=[4,3,2,1]\)。DCT 系数为 \([5,2.230443,0,0.158513]\)。</p>
+        </div>
+        <div class="expl2-tool compression-lab-tool">
+          <label class="expl2-control">
+            <span>保留前几个 DCT 系数</span>
+            <input id="dct-keep" type="range" min="1" max="4" step="1" value="2" />
+          </label>
+          <div class="dct-bars" aria-hidden="true"></div>
+          <output id="dct-output" class="compression-output" aria-live="polite"></output>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 03</p>
+          <h2>量化把系数推向 0</h2>
+          <p class="expl2-math">
+            真实 JPEG 有量化表；这个玩具练习只用一个步长 \(q\)。q 越大，更多系数变成 0，
+            后续 zig-zag、RLE 和熵编码越容易工作。
+          </p>
+        </div>
+        <div class="expl2-tool compression-lab-tool">
+          <label class="expl2-control">
+            <span>量化步长 q</span>
+            <input id="quant-step" type="range" min="1" max="48" value="12" />
+          </label>
+          <div class="quant-grid" aria-hidden="true"></div>
+          <output id="quant-output" class="compression-output" aria-live="polite"></output>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 04</p>
+          <h2>格式选择器</h2>
+          <p>
+            下面的建议是启发式，不是规范答案。真正上线前还要看目标平台、浏览器支持、CDN 策略、
+            编码器参数、质量评估和编辑工作流。
+          </p>
+        </div>
+        <form id="format-chooser" class="expl2-tool compression-lab-tool">
+          <fieldset class="compression-fieldset">
+            <legend>图像类型</legend>
+            <label><input type="radio" name="image-type" value="photo" checked /> 自然照片</label>
+            <label><input type="radio" name="image-type" value="graphic" /> logo / UI / 二维码</label>
+            <label><input type="radio" name="image-type" value="screenshot" /> 截图 / 文字</label>
+          </fieldset>
+          <label><input id="needs-alpha" type="checkbox" /> 需要透明通道</label>
+          <label><input id="needs-animation" type="checkbox" /> 需要动画或序列</label>
+          <label><input id="needs-hdr" type="checkbox" /> 需要 HDR / 高位深 / 广色域</label>
+          <label><input id="web-first" type="checkbox" checked /> Web 分发优先</label>
+          <output id="format-output" class="compression-output compression-format-output" aria-live="polite"></output>
+        </form>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../">Module / 模块</a>
+        <a href="../chapters/">Chapters / 章节</a>
+        <a href="../concepts/">Concepts / 概念</a>
+      </footer>
+    </main>
+  </body>
+</html>

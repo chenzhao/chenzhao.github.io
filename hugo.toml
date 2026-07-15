@@ -9,6 +9,7 @@ theme = "paper"
 
 
 [params]
+  mainSections = ['articles', 'tweets']
   # color style
   color = 'linen'                           # linen, wheat, gray, light
 
@@ -38,6 +39,21 @@ theme = "paper"
   favicon = "favicon.ico"                   # customize the default favicon
   appleTouchIcon = "apple-touch-icon.png"   # customize the default Apple touch icon
 
+[menus]
+  [[menus.main]]
+    name = 'Articles'
+    pageRef = '/articles'
+    weight = 10
+  [[menus.main]]
+    name = 'Tweets'
+    pageRef = '/tweets'
+    weight = 20
+    params = { localOnly = true }
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 30
+
   # RTL supprot
   # direction = "rtl"                         # RTL support for Right-to-left languages
 
@@ -50,4 +66,3 @@ theme = "paper"
   # mapping = 'pathname'
   # theme = 'light'
   # lang = 'zh-CN'
-

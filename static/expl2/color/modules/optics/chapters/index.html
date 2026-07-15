@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>最基础的光学：完整章节读本</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Optics / 模块</a>
+          <a class="expl2-back" href="../../">Modules / 七大模块</a>
+        </div>
+        <p class="expl2-kicker">Chapter reader / 章节读本</p>
+        <h1 class="expl2-title">最基础的光学</h1>
+        <p class="expl2-lead">从场景光到像面光分布：这套章节给后续传感器、颜色、HDR、CV/CG 提供共同物理语言。</p>
+        <nav class="course-quick-nav" aria-label="Optics chapters">
+          <a href="#radiometry">01 辐射量</a>
+          <a href="#lens">02 透镜</a>
+          <a href="#diffraction">04 衍射</a>
+          <a href="#mtf">05 MTF</a>
+          <a href="#design">09 设计</a>
+        </nav>
+      </header>
+
+      <article class="course-reader">
+        <section id="radiometry" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">01 / 光、场、光谱与辐射量</p>
+            <h2>同一束光，有三种工作模型</h2>
+            <p>电磁波模型解释偏振、衍射、干涉和薄膜；光线模型适合结构尺度远大于波长的折射、反射和成像；光子模型进入低照度、shot noise、SPAD 和 QIS。</p>
+            <div class="expl2-formula expl2-math">\[c=\lambda\nu,\qquad E_{photon}=\frac{hc}{\lambda}\]</div>
+            <p>radiance \(L_e\) 描述场景方向上的亮，irradiance \(E_e\) 描述落到像面单位面积的功率。镜头改变像面曝光，不改变物体本身 radiance。</p>
+            <div class="course-note">低照度时，最硬的限制是光子数。若 550 nm 下 1 µm² 像素只收到约 3 个光子，再聪明的后端也无法凭空恢复稳定细节。</div>
+          </div>
+        </section>
+
+        <section id="lens" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">02 / 几何光学与一阶成像</p>
+            <h2>薄透镜公式给出第一层设计量感</h2>
+            <p>Fermat 原理说光线走光程取极值的路径；界面折射满足 Snell 定律。近轴成像里，薄透镜公式和放大率足够估算对焦、倍率和工作距离。</p>
+            <div class="expl2-formula expl2-math">\[n_1\sin\theta_1=n_2\sin\theta_2,\qquad \frac{1}{f}=\frac{1}{s}+\frac{1}{s'},\qquad m=-\frac{s'}{s}\]</div>
+            <p>ABCD 矩阵把自由传播和薄透镜写成矩阵连乘，是 relay lens、显微、远心和变焦设计的草图语言。</p>
+            <div class="expl2-formula expl2-math">\[\begin{bmatrix}1&d\\0&1\end{bmatrix},\qquad \begin{bmatrix}1&0\\-1/f&1\end{bmatrix}\]</div>
+          </div>
+        </section>
+
+        <section id="stops" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">03 / 光阑、瞳、视场、景深</p>
+            <h2>入瞳决定通光和虚化，视场光阑决定看见哪里</h2>
+            <p>孔径光阑限制轴上光束，入瞳是从物方看到的孔径光阑像。机械孔径不一定等于入瞳直径，复杂镜头会被前组镜片放大或缩小。</p>
+            <div class="expl2-formula expl2-math">\[N=\frac{f}{D},\qquad NA\approx\frac{1}{2N},\qquad T=\frac{N}{\sqrt{\tau}}\]</div>
+            <p>景深不是硬边界，而是“弥散圆小于可接受阈值”的工程约定。手机虚化弱主要因为实际入瞳直径和焦距短，不是因为等效焦距本身。</p>
+            <div class="expl2-formula expl2-math">\[c\approx D\frac{|\Delta z|}{s'},\qquad G=n^2A\Omega\]</div>
+            <p>étendue 提醒我们：被动无损光学不能把大面积、大角度的光任意压缩到小面积、小角度里。</p>
+          </div>
+        </section>
+
+        <section id="diffraction" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">04 / 衍射与分辨率极限</p>
+            <h2>光圈太小，几何光线模型会输给波动光学</h2>
+            <p>圆孔衍射形成 Airy pattern。第一暗环半径和直径由波长与 f-number 决定，所以缩小光圈能降低像差，却会扩大衍射斑。</p>
+            <div class="expl2-formula expl2-math">\[r=1.22\lambda N,\qquad d=2.44\lambda N,\qquad \theta_R=1.22\frac{\lambda}{D}\]</div>
+            <p>理想衍射受限圆孔的 incoherent cutoff frequency 近似为 \(f_c=1/(\lambda N)\)。像素 Nyquist 是 \(f_N=1/(2p)\)。谁更低，谁先成为上限。</p>
+            <div class="expl2-formula expl2-math">\[f_c=\frac{1}{\lambda N},\qquad f_N=\frac{1}{2p}\]</div>
+          </div>
+        </section>
+
+        <section id="mtf" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">05 / Fourier optics、PSF、OTF、MTF</p>
+            <h2>清晰度要看系统如何传递不同空间频率</h2>
+            <p>在小视场、固定焦平面、非相干成像近似下，成像可看成原图与 PSF 卷积再加噪声。频域里，OTF 描述系统对频率的复数响应，MTF 是其幅值。</p>
+            <div class="expl2-formula expl2-math">\[g(x,y)=f(x,y)*h(x,y)+n(x,y),\qquad G(u,v)=F(u,v)H(u,v)+N(u,v)\]</div>
+            <p>若多个模糊环节近似独立且线性移不变，系统 MTF 可粗略相乘。像素孔径本身也会降低高频对比度。</p>
+            <div class="expl2-formula expl2-math">\[MTF_{sys}=MTF_{lens}MTF_{sensor}MTF_{motion}\cdots,\qquad MTF_{pixel}(f)=\left|\frac{\sin(\pi fp)}{\pi fp}\right|\]</div>
+          </div>
+        </section>
+
+        <section id="aberration" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">06 / 像差、畸变与色差</p>
+            <h2>“软”和“弯”可能来自不同错误</h2>
+            <p>Seidel 五大单色像差包括球差、彗差、像散、场曲和畸变。色差又分轴向色差和横向色差。Zernike 多项式常用于分解圆形孔径上的波前误差。</p>
+            <div class="expl2-formula expl2-math">\[P(\rho,\theta)=A(\rho,\theta)e^{i2\pi W(\rho,\theta)/\lambda},\qquad S\approx e^{-(2\pi\sigma/\lambda)^2}\]</div>
+            <p>畸变是镜头投影函数偏离理想模型；透视是相机位置与投影几何造成的近大远小。二者不能混为一谈。</p>
+          </div>
+        </section>
+
+        <section id="polarization" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">07 / 偏振、Fresnel、双折射</p>
+            <h2>偏振会进入反光、显示、车载和 AR 系统</h2>
+            <p>Jones vector 适合完全偏振相干光；Stokes vector 可描述部分偏振。界面反射随入射角、折射率和偏振态变化，Brewster 角处 p 偏振反射趋近于零。</p>
+            <div class="expl2-formula expl2-math">\[\tan\theta_B=\frac{n_2}{n_1},\qquad \delta=\frac{2\pi\Delta n d}{\lambda}\]</div>
+            <p>sensor cover glass、microlens、CFA、LCD/OLED 和 AR 光机会有角度与偏振依赖。偏振不是实验室特例，它会影响真实成像效率和眩光。</p>
+          </div>
+        </section>
+
+        <section id="interference" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">08 / 干涉、相干性、薄膜与散斑</p>
+            <h2>相干性决定条纹、镀膜和 speckle 的可见程度</h2>
+            <p>谱宽越窄，相干长度越长。双缝条纹间距由波长、屏距和缝距决定。薄膜干涉还要考虑反射相位翻转。</p>
+            <div class="expl2-formula expl2-math">\[L_c\approx\frac{\lambda^2}{\Delta\lambda},\qquad \Delta x=\frac{\lambda z}{d},\qquad t=\frac{\lambda_0}{4n}\]</div>
+            <p>激光照射粗糙表面形成 speckle，它更像乘性噪声。降低相干性、角度/波长/时间复用和多帧平均都可缓解。</p>
+          </div>
+        </section>
+
+        <section id="design" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">09 / 成像系统设计方法</p>
+            <h2>从任务倒推 FOV、采样、MTF、曝光和照明</h2>
+            <p>机器视觉规格通常从最小特征尺寸、视场、工作距离开始，再决定对象面采样、镜头 MTF、景深、曝光时间、运动模糊、光源波长和角度。</p>
+            <p>读 50 µm 线宽二维码，如果要求每条线至少 4 pixel，则对象面 pixel pitch 应小于 12.5 µm；40 mm FOV 需要横向约 3200 像素。此时再看镜头在任务频率处的 MTF，而不是只看“几百万像素镜头”。</p>
+          </div>
+        </section>
+
+        <section id="integration" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">10 / 与数字成像链路集成</p>
+            <h2>光学误差会流入传感器、颜色、HDR、CV 和 CG</h2>
+            <p>镜头透过率、镀膜、暗角和角度响应会改变有效光谱响应；flare 抬黑位，限制真实 HDR；PSF、畸变和曝光误差会让 CV 标定或神经渲染把光学误差误当成几何或材质。</p>
+            <div class="course-concept-list">
+              <article><h3>到传感器</h3><p>像面 irradiance、曝光时间、pixel area、QE 和光谱共同决定电子数和 SNR。</p></article>
+              <article><h3>到颜色</h3><p>镜头光谱透过率和 lens shading 会改变各通道有效响应，CCM 无法完美补偿空间变化。</p></article>
+              <article><h3>到 HDR</h3><p>flare 会把高光能量散射到暗部，再高 sensor DR 也无法恢复被污染的局部对比。</p></article>
+              <article><h3>到 CV/CG</h3><p>真实镜头不只是 pinhole；景深、bokeh、色差、rolling shutter 和 PSF 都可能进入模型误差。</p></article>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <footer class="expl2-footer course-footer-links">
+        <a href="../">Optics / 模块</a>
+        <a href="../concepts/">Concepts / 概念</a>
+        <a href="../labs/">Labs / 练习</a>
+      </footer>
+    </main>
+  </body>
+</html>

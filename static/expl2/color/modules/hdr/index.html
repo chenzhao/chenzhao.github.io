@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HDR / HDR 专题</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Modules / 模块</a>
+          <a class="expl2-back" href="../../">Color / 主入口</a>
+        </div>
+        <p class="expl2-kicker">Module 05 / 内容草稿</p>
+        <h1 class="expl2-title">HDR / High Dynamic Range</h1>
+        <p class="expl2-lead">
+          HDR 不只是“更亮”。它连接场景动态范围、PQ/HLG、HDR10/Dolby Vision/HDR10+、
+          tone mapping、母版制作、显示校准、metadata、色彩空间和压缩交付。
+        </p>
+        <nav class="course-quick-nav" aria-label="HDR navigation">
+          <a href="./chapters/">完整章节</a>
+          <a href="./concepts/">核心概念</a>
+          <a href="./labs/">交互练习</a>
+          <a href="./module.json">module.json</a>
+        </nav>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="course-stat-grid">
+          <article class="expl2-card"><strong>10 章</strong><p>从动态范围和 transfer functions 到 mastering、display、delivery 和 CG/CV。</p></article>
+          <article class="expl2-card"><strong>14 个概念</strong><p>stops、scene/display-referred、PQ、HLG、MaxCLL、tone mapping、ICtCp 等。</p></article>
+          <article class="expl2-card"><strong>3 个练习</strong><p>动态范围/stops、PQ code 量感、HDR 交付 QC 清单。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Core question</p>
+          <h2>HDR 是采集、表示、创作和显示能力的端到端协议</h2>
+          <p>从 raw/scene-linear 到 HDR master，再到 SDR downmap 和 streaming delivery，每一步都要说明亮度语义、色域、transfer function、metadata 和目标显示能力。</p>
+          <div class="expl2-formula expl2-math">
+            \[
+              DR=\frac{L_{max}}{L_{min}},\qquad
+              DR_{dB}=20\log_{10}(DR),\qquad
+              DR_{stops}=\log_2(DR)
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool">
+          <div class="course-flow" aria-label="HDR pipeline">
+            <span>scene radiance</span><span>capture/merge</span><span>scene-linear</span><span>grade/master</span><span>metadata</span><span>display tone map</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-card-grid">
+          <article class="expl2-card"><h3>PQ / HLG</h3><p>PQ 是绝对显示亮度系统，HLG 是更适合广播兼容的相对系统。</p></article>
+          <article class="expl2-card"><h3>格式生态</h3><p>HDR10、HLG、Dolby Vision、HDR10+、HDR Vivid 各有 metadata 和适配策略。</p></article>
+          <article class="expl2-card"><h3>Tone mapping</h3><p>高光 roll-off、暗部保留、肤色稳定、色域压缩和时域一致性必须一起考虑。</p></article>
+          <article class="expl2-card"><h3>交付接口</h3><p>bit depth、YCbCr/ICtCp、chroma subsampling、transfer、primaries 和 metadata 缺一不可。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-link-grid">
+          <a class="expl2-card" href="./chapters/"><strong>完整章节读本</strong><span>按 10 课时路线读 HDR 全链路。</span></a>
+          <a class="expl2-card" href="./concepts/"><strong>核心概念表</strong><span>集中查看 HDR 公式、标准术语和交付信号。</span></a>
+          <a class="expl2-card" href="./labs/"><strong>交互练习</strong><span>计算 stops 和 PQ code，练 HDR QC。</span></a>
+          <a class="expl2-card" href="../../modules/"><strong>回到七大模块</strong><span>连接 optics、sensors、color theory、compression。</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

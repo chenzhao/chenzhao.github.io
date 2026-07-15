@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>传感器交互练习</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Sensors / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Labs / 交互练习</p>
+        <h1 class="expl2-title">SNR 与动态范围量感</h1>
+        <p class="expl2-lead">用 electrons、read noise 和 full well 建立传感器指标的第一层直觉。</p>
+      </header>
+      <section id="sensors-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 01</p>
+          <h2>SNR / DR 计算器</h2>
+          <p class="expl2-math">\(SNR=N_e/\sqrt{N_e+N_d+\sigma_{read}^2}\)，\(DR_{stops}=\log_2(FWC/\sigma_{read})\)。</p>
+        </div>
+        <div class="expl2-tool course-lab-tool">
+          <label class="expl2-control"><span>信号电子数 \(N_e\)</span><input id="sensor-electrons" type="number" min="0" value="10000" /></label>
+          <label class="expl2-control"><span>暗电流电子数 \(N_d\)</span><input id="sensor-dark" type="number" min="0" value="0" /></label>
+          <label class="expl2-control"><span>read noise / e-</span><input id="sensor-read" type="number" min="0.1" step="0.1" value="1.5" /></label>
+          <label class="expl2-control"><span>full well / e-</span><input id="sensor-fullwell" type="number" min="1" value="20000" /></label>
+          <output id="sensors-output" class="course-output" aria-live="polite"></output>
+        </div>
+      </section>
+      <section class="expl2-section is-single">
+        <div class="course-concept-list">
+          <article><h3>扩展练习：rolling shutter</h3><p>给定读取时间 20 ms 和横向速度 20 m/s，估算上下行时间差里物体移动多少距离。</p></article>
+          <article><h3>扩展练习：HDR 方案</h3><p>为车载逆光、手机夜景和高速工业检测分别选择 staggered、DCG、LOFIC、global shutter 或外部照明控制。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

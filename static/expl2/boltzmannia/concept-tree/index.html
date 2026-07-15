@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boltzmannia Concept Tree</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back to Boltzmannia / 返回 Boltzmannia</a>
+          <a class="expl2-back" href="../directory/">Directory / 目录</a>
+        </div>
+        <p class="expl2-kicker">Concept tree / 概念树</p>
+        <h1 class="expl2-title">Boltzmannia</h1>
+        <p class="expl2-lead">
+          This tree shows how the core ideas depend on each other: intuition first,
+          then temperature and entropy, then energy landscapes, and finally Boltzmann machines.
+          这张树说明核心概念怎样互相依赖：先有直觉图像，再到温度与熵，再到能量景观，最后进入玻尔兹曼机。
+        </p>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="tree-flow" aria-label="Boltzmannia dependency graph">
+          <article>
+            <span>0</span>
+            <strong>Intuitive landscape / 直觉地形</strong>
+            <p>A ball prefers valleys but heat can still push it uphill. 小球偏向低谷，但热扰动仍能把它推上高处。</p>
+          </article>
+          <article>
+            <span>1</span>
+            <strong>Temperature / 温度</strong>
+            <p>Controls how strongly energy differences affect probability. 控制能量差如何影响概率。</p>
+          </article>
+          <article>
+            <span>2</span>
+            <strong>Entropy / 熵</strong>
+            <p>Counts how many microstates realize the same macrostate. 计数同一宏观状态背后的微观实现方式。</p>
+          </article>
+          <article>
+            <span>3</span>
+            <strong>Energy landscape / 能量景观</strong>
+            <p>Turns all states into terrain where valleys are more probable. 把所有状态画成地形，低谷更常出现。</p>
+          </article>
+          <article>
+            <span>4</span>
+            <strong>Boltzmann machine / 玻尔兹曼机</strong>
+            <p>Uses a learned energy landscape to sample data-like states. 用可学习的能量景观抽样数据式状态。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="concept-grid">
+        <article class="concept-card">
+          <p class="expl2-eyebrow">Concept / 概念</p>
+          <h2><a href="../concepts/temperature/">Temperature / 温度</a></h2>
+          <p><strong>Definition:</strong> Temperature sets the tolerance for high-energy states. 温度表示系统对高能状态的容忍程度。</p>
+          <div class="expl2-formula expl2-math">\[P(E)=Z^{-1}e^{-E/(kT)}\]</div>
+          <p><strong>Depends on:</strong> the Chapter 0 terrain image. <strong>Feeds:</strong> Boltzmann distribution, sampling randomness, machine temperature.</p>
+        </article>
+        <article class="concept-card">
+          <p class="expl2-eyebrow">Concept / 概念</p>
+          <h2><a href="../concepts/entropy/">Entropy / 熵</a></h2>
+          <p><strong>Definition:</strong> Entropy measures how many microscopic ways support one macroscopic description. 熵衡量一个宏观描述背后有多少微观方式。</p>
+          <div class="expl2-formula expl2-math">\[S=k\log W\]</div>
+          <p><strong>Depends on:</strong> macrostate and microstate distinction. <strong>Feeds:</strong> typicality, equilibrium, learning intuition.</p>
+        </article>
+        <article class="concept-card">
+          <p class="expl2-eyebrow">Concept / 概念</p>
+          <h2><a href="../concepts/energy-landscape/">Energy landscape / 能量景观</a></h2>
+          <p><strong>Definition:</strong> An energy landscape maps every state to a height; lower height means higher probability. 能量景观把每个状态映射成高度，越低越常出现。</p>
+          <div class="expl2-formula expl2-math">\[p(x)=Z^{-1}e^{-E(x)/T}\]</div>
+          <p><strong>Depends on:</strong> temperature, energy, probability. <strong>Feeds:</strong> machine state scoring and training.</p>
+        </article>
+        <article class="concept-card">
+          <p class="expl2-eyebrow">Concept / 概念</p>
+          <h2><a href="../concepts/boltzmann-machine/">Boltzmann machine / 玻尔兹曼机</a></h2>
+          <p><strong>Definition:</strong> A probabilistic neural model that defines probabilities through an energy function. 玻尔兹曼机是用能量函数定义概率的神经网络模型。</p>
+          <div class="expl2-formula expl2-math">\[P(v,h)=Z^{-1}e^{-E(v,h)/T}\]</div>
+          <p><strong>Depends on:</strong> temperature, entropy, and energy landscape. <strong>Feeds:</strong> positive phase, negative phase, contrastive learning.</p>
+        </article>
+      </section>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../">Main / 主页面</a>
+        <a href="../directory/">Directory / 目录</a>
+        <a href="../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

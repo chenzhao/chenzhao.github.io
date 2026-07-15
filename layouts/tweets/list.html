@@ -1,0 +1,35 @@
+{{- define "main" -}}
+
+<header class="mb-14">
+  <h1 class="my-0! pb-2.5">{{- .Title -}}</h1>
+  {{- with .Content -}}
+  <div class="opacity-70">{{- . -}}</div>
+  {{- end -}}
+</header>
+
+{{- $paginator := .Paginate (.RegularPages.ByDate.Reverse) -}}
+<div class="not-prose space-y-8">
+  {{- range $paginator.Pages -}}
+  <article class="rounded-xl bg-black/[3%] p-6 dark:bg-white/[8%]">
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+      {{- .Content -}}
+    </div>
+    <a class="mt-4 inline-block text-xs opacity-60 no-underline hover:opacity-100" href="{{- .RelPermalink -}}">
+      <time>{{- .Date | time.Format ":date_medium" -}}</time>
+    </a>
+  </article>
+  {{- end -}}
+</div>
+
+{{- if gt $paginator.TotalPages 1 -}}
+<nav class="mt-14 flex">
+  {{- if $paginator.HasPrev -}}
+  <a class="btn not-prose" href="{{- $paginator.Prev.URL -}}">← {{- i18n "prev_page" -}}</a>
+  {{- end -}}
+  {{- if $paginator.HasNext -}}
+  <a class="btn not-prose ml-auto" href="{{- $paginator.Next.URL -}}">{{- i18n "next_page" -}} →</a>
+  {{- end -}}
+</nav>
+{{- end -}}
+
+{{- end -}}

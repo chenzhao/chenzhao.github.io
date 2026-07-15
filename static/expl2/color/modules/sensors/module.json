@@ -1,0 +1,31 @@
+{
+  "slug": "sensors",
+  "order": 3,
+  "status": "content-draft",
+  "title": {
+    "zh": "传感器原理",
+    "en": "Sensor Principles"
+  },
+  "requiredTopics": ["pixels", "color filter arrays", "noise", "dynamic range"],
+  "sourceBase": "/Users/chenzhao/Desktop/imaging_course_topics_optics_color_sensors_hdr/03_sensors_survey_10h.md",
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"],
+  "entryPoints": {
+    "chapters": "chapters/index.html",
+    "concepts": "concepts/index.html",
+    "labs": "labs/index.html"
+  },
+  "chapters": [
+    "image sensor technology map",
+    "photodiode and pixel physics",
+    "noise, SNR, photon transfer",
+    "CMOS pixel and readout chain",
+    "global shutter and high-speed imaging",
+    "sensor-side HDR",
+    "CFA, multispectral, and color sampling",
+    "SPAD, ToF, and QIS",
+    "event-based sensors",
+    "characterization, selection, and research frontiers"
+  ],
+  "concepts": ["QE", "BSI", "PPD", "FWC", "shot noise", "read noise", "SNR", "PTC", "CDS", "rolling shutter", "global shutter", "DCG", "CFA", "SPAD", "event camera"],
+  "labs": ["snr-and-dynamic-range", "rolling-shutter-motion", "sensor-hdr-choice"]
+}

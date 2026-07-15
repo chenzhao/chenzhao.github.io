@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>颜色理论交互练习</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Color Theory / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Labs / 交互练习</p>
+        <h1 class="expl2-title">颜色空间量感练习</h1>
+        <p class="expl2-lead">先用最常见的错误开始：在 sRGB 编码值上直接做平均。</p>
+      </header>
+      <section id="color-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 01</p>
+          <h2>sRGB 平均为什么会偏暗</h2>
+          <p>改变两个 sRGB code 值，比较“直接平均”和“转线性光后平均”的差异。</p>
+        </div>
+        <div class="expl2-tool course-lab-tool">
+          <label class="expl2-control"><span>像素 A / 0-255</span><input id="color-a" type="number" min="0" max="255" value="0" /></label>
+          <label class="expl2-control"><span>像素 B / 0-255</span><input id="color-b" type="number" min="0" max="255" value="255" /></label>
+          <output id="color-output" class="course-output" aria-live="polite"></output>
+        </div>
+      </section>
+      <section class="expl2-section is-single">
+        <div class="course-concept-list">
+          <article><h3>扩展练习：profile 错误</h3><p>解释“P3 图片被当成 sRGB 显示”和“sRGB 图片被 assign 到 P3”的视觉结果为什么不同。</p></article>
+          <article><h3>扩展练习：白平衡失败</h3><p>设计一个室内钨丝灯 + 窗外 D65 + 彩色 LED 的混合光场景，说明单灰卡为什么不够。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

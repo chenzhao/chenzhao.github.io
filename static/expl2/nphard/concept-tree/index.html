@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P、NP 与 P vs NP：概念树</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">返回主页面 / Back to main</a>
+        </div>
+        <p class="expl2-kicker">Concept Tree / 概念树</p>
+        <h1 class="expl2-title">P、NP 与 P vs NP：概念依赖图</h1>
+        <p class="expl2-lead">
+          从“可判定”开始，理解高效求解 P，再理解高效验证 NP、证据、归约、NP-hard，最后到 P vs NP。
+          Start with decidability, then P, NP, certificates, reductions, NP-hardness, and finally P vs NP.
+        </p>
+        <nav class="static-nav" aria-label="secondary pages">
+          <a href="../directory/">目录 / Directory</a>
+          <a href="../single/">单页版 / Single page</a>
+        </nav>
+      </header>
+
+      <section class="concept-tree-list">
+        <article class="tree-node">
+          <h2><a href="../concepts/decidable/">可判定 / Decidable</a></h2>
+          <p>定义计算问题是否存在通用判定算法。A general algorithm halts and answers yes/no for all valid inputs.</p>
+          <div class="expl2-formula expl2-math">\[\forall x,\ A(x)\downarrow\ \text{and decides }x\in L\]</div>
+          <ul>
+            <li>前置 / Upstream: 计算问题 / computational problem</li>
+            <li>后继 / Downstream: P, NP</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/p/">P</a></h2>
+          <p>可判定问题中已知能多项式时间求解的一类。Decision problems known to be solvable in polynomial time.</p>
+          <div class="expl2-formula expl2-math">\[\mathrm{P}=\bigcup_{k\ge1}\mathrm{TIME}(n^k)\]</div>
+          <ul>
+            <li>前置 / Upstream: 可判定 / decidable</li>
+            <li>后继 / Downstream: P vs NP</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/np/">NP</a></h2>
+          <p>“是”的答案有短证据并可多项式时间验证。Yes instances have short certificates checkable in polynomial time.</p>
+          <div class="expl2-formula expl2-math">\[x\in L\iff \exists y,\ |y|\le |x|^c\land V(x,y)=1\]</div>
+          <ul>
+            <li>前置 / Upstream: 可判定 / decidable</li>
+            <li>后继 / Downstream: 证据, NP-hard, P vs NP</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/certificate/">证据 / Certificate</a></h2>
+          <p>验证器用来快速检查候选答案的短说明。A short witness used by a verifier.</p>
+          <div class="expl2-formula expl2-math">\[V(x,y)=1\]</div>
+          <ul>
+            <li>前置 / Upstream: NP</li>
+            <li>后继 / Downstream: P vs NP</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/reduction/">归约 / Reduction</a></h2>
+          <p>把一个问题高效翻译成另一个问题。An efficient translation between problems.</p>
+          <div class="expl2-formula expl2-math">\[A\le_p B\iff x\in A\Longleftrightarrow f(x)\in B\]</div>
+          <ul>
+            <li>前置 / Upstream: P, NP</li>
+            <li>后继 / Downstream: NP-hard</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/nphard/">NP-hard</a></h2>
+          <p>至少和 NP 中所有问题一样难。At least as hard as every problem in NP.</p>
+          <div class="expl2-formula expl2-math">\[\forall L\in\mathrm{NP},\ L\le_p X\]</div>
+          <ul>
+            <li>前置 / Upstream: NP, 归约 / reduction</li>
+            <li>后继 / Downstream: P vs NP</li>
+          </ul>
+        </article>
+        <article class="tree-node">
+          <h2><a href="../concepts/p-vs-np/">P vs NP</a></h2>
+          <p>询问快速验证是否意味着快速求解。Does efficiently checkable imply efficiently solvable?</p>
+          <div class="expl2-formula expl2-math">\[\mathrm{P}\subseteq\mathrm{NP},\qquad \mathrm{P}\stackrel{?}{=}\mathrm{NP}\]</div>
+          <ul>
+            <li>前置 / Upstream: P, NP, 证据, NP-hard</li>
+            <li>后继 / Downstream: 密码学、优化、自动证明 / cryptography, optimization, automated proof</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

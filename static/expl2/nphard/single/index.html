@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P、NP 与 P vs NP：单页版</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <script defer src="../../_shared/expl2.js"></script>
+    <script defer src="../static-math.js"></script>
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main single-article">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">返回主页面 / Back to main</a>
+        </div>
+        <p class="expl2-kicker">Single Page / 单页版</p>
+        <h1 class="expl2-title">P、NP 与 P vs NP</h1>
+        <p class="expl2-lead">
+          这是一份线性阅读版本，把核心章节和概念定义放在同一页。
+          This linear version keeps the core chapters and concept definitions on one page.
+        </p>
+      </header>
+
+      <article>
+        <h2>0. 先看直觉 / Intuition first</h2>
+        <p>朋友说可以用几张优惠券正好凑出 22 元。给出优惠券后，检查很快；什么都不给时，寻找组合可能很慢。</p>
+        <p>A friend says some coupons add exactly to 22. Checking the handed-over coupons is quick; finding them from scratch may be slow.</p>
+        <p>新版主线：先把任务建模成判定问题，再分清可计算、可高效求解、可高效验证，最后用归约比较难度。</p>
+        <p>The revised path is: model the task as a decision problem, separate computable from efficiently solvable and efficiently checkable, then compare difficulty with reductions.</p>
+
+        <h2>概念定义 / Concept definitions</h2>
+        <ul>
+          <li><strong>可判定 / Decidable:</strong> 有算法总会停下来并回答。An algorithm always halts and answers yes/no.</li>
+          <li><strong>P:</strong> 已知多项式时间可解。Known solvable in polynomial time.</li>
+          <li><strong>NP:</strong> “是”的答案有短证据可快速验证。Yes answers have short certificates verifiable quickly.</li>
+          <li><strong>证据 / Certificate:</strong> 让验证器快速检查的候选答案说明。A short witness checked by a verifier.</li>
+          <li><strong>归约 / Reduction:</strong> 高效地把一个问题翻译成另一个问题。An efficient translation between problems.</li>
+          <li><strong>NP-hard:</strong> 至少和 NP 中所有问题一样难。At least as hard as every problem in NP.</li>
+          <li><strong>P vs NP:</strong> 快速验证是否意味着快速求解？Does efficiently checkable imply efficiently solvable?</li>
+        </ul>
+        <div class="expl2-formula expl2-math">
+          \[\mathrm{P}=\bigcup_{k\ge1}\mathrm{TIME}(n^k),\qquad
+          \mathrm{P}\subseteq\mathrm{NP}\]
+        </div>
+
+        <h2>1. 可计算理论 / Computability</h2>
+        <p>可计算理论先问是否存在通用算法。停机问题说明有些问题不是慢，而是没有覆盖所有输入的判定算法。</p>
+        <p>Computability first asks whether a general algorithm exists. The halting problem shows that some problems are not merely slow; no universal decision algorithm exists.</p>
+        <p class="expl2-math">可判定语言满足：对每个输入 \(x\)，算法 \(A(x)\) 停机并正确判断 \(x\in L\)。</p>
+        <p>停机问题的反证骨架：若有 \(H(P,x)\)，就构造一个程序 \(D(P)\) 专门反着做；再问 \(D(D)\) 会导致矛盾。</p>
+        <p>Halting proof sketch: if \(H(P,x)\) existed, build \(D(P)\) to do the opposite; asking about \(D(D)\) creates a contradiction.</p>
+
+        <h2>2. P 与增长率 / P and growth</h2>
+        <p class="expl2-math">P 用多项式时间刻画高效。\(n^2\)、\(n^3\) 会增长，但比 \(2^n\) 和 \(n!\) 温和得多。</p>
+        <p class="expl2-math">P formalizes efficiency as polynomial time. \(n^2\) and \(n^3\) grow, but far more gently than \(2^n\) and \(n!\).</p>
+        <p class="expl2-math">增长比较写作 \(n^2,n^3,2^n,n!\)，核心是 \(n\to\infty\) 时谁更快变大。</p>
+        <p class="expl2-math">注意输入规模：子集和的 \(O(nT)\) 算法对数值 \(T\) 是多项式，但对 \(T\) 的二进制长度可能是指数级。</p>
+        <p class="expl2-math">Mind input size: subset-sum \(O(nT)\) is polynomial in numeric \(T\), but can be exponential in the bit-length of \(T\).</p>
+
+        <h2>3. NP 与证据 / NP and certificates</h2>
+        <p>NP 的入门直觉是：答案若为“是”，就有短证据可快速检查。子集和中，被选数字就是证据。</p>
+        <p>The first intuition for NP is that yes answers have short certificates. In subset sum, the selected numbers are the certificate.</p>
+        <div class="expl2-formula expl2-math">
+          \[x\in L\iff \exists y,\ |y|\le |x|^c\land V(x,y)=1\]
+        </div>
+        <p>SAT 的证据是一组变量赋值；哈密顿路径的证据是一串顶点顺序。二者都说明“短证据”和“验证器”是 NP 的核心。</p>
+        <p>For SAT the certificate is an assignment; for Hamiltonian path it is an ordered vertex list. Both show why certificates and verifiers define NP.</p>
+
+        <h2>4. NP-hard 与归约 / NP-hardness and reductions</h2>
+        <p>归约把一个问题翻译成另一个问题。若所有 NP 问题都能翻译到 X，X 就是 NP-hard。</p>
+        <p>A reduction translates one problem into another. If every NP problem reduces to X, then X is NP-hard.</p>
+        <div class="expl2-formula expl2-math">
+          \[A\le_p B\iff \exists f\in\mathrm{polytime},\ x\in A\iff f(x)\in B\]
+        </div>
+        <p>方向很重要：要证明 B 难，必须从已知困难的 A 出发证明 \(A\le_p B\)。</p>
+        <p>Direction matters: to prove B hard, start from a known-hard A and show \(A\le_p B\).</p>
+
+        <h2>5. P vs NP</h2>
+        <p class="expl2-math">P 包含在 NP 里；未知的是 NP 是否也包含在 P 里。大多数研究者猜想 \(\mathrm{P}\ne\mathrm{NP}\)。</p>
+        <p class="expl2-math">P is contained in NP; the open question is whether NP is contained in P. Most researchers conjecture \(\mathrm{P}\ne\mathrm{NP}\).</p>
+        <p>对子集和，如果有快速判定器，可以反复询问保留/删去某个数后是否仍有解，从而构造一个解。</p>
+        <p>For subset sum, a fast decider can be queried repeatedly while keeping or dropping numbers to construct an actual solution.</p>
+
+        <h2>6. NP-complete</h2>
+        <p>NP-complete 问题既属于 NP，又是 NP-hard。它们的“是”答案可快速验证，同时足够代表整个 NP 家族的困难。</p>
+        <p>NP-complete problems are both in NP and NP-hard. Their yes answers are quickly checkable, and their difficulty represents the whole NP family.</p>
+        <div class="expl2-formula expl2-math">
+          \[X\in\mathrm{NP}\text{-}\mathrm{complete}\iff X\in\mathrm{NP}\land \forall L\in\mathrm{NP},L\le_p X\]
+        </div>
+        <p>SAT 是第一个 NP-complete 问题；常见归约链条包括 SAT → 3-SAT → Clique → Vertex Cover → Hamiltonian Cycle。</p>
+        <p>SAT was the first NP-complete problem; a common reduction chain is SAT → 3-SAT → Clique → Vertex Cover → Hamiltonian Cycle.</p>
+
+        <h2>7. 为什么重要 / Why it matters</h2>
+        <p>P vs NP 影响密码、优化、排程、程序验证和自动证明，因为这些领域常依赖“验证容易、寻找困难”的差别。</p>
+        <p>P vs NP touches cryptography, optimization, scheduling, program verification, and automated proof because these areas often rely on the gap between easy checking and hard finding.</p>
+        <p>排考场、芯片验证、自动找证明都常见这种模式：给出方案后检查很快，但从零搜索方案可能巨大。</p>
+        <p>Exam scheduling, chip verification, and automated proof all share the pattern: checking a proposal is fast, searching from scratch may be huge.</p>
+
+        <h2>8. 证明要什么 / What proof needs</h2>
+        <p class="expl2-math">一个算法在若干例子上跑得快，不足以证明 \(\mathrm{P}=\mathrm{NP}\)；长期没有找到快速算法，也不足以证明 \(\mathrm{P}\ne\mathrm{NP}\)。</p>
+        <p class="expl2-math">An algorithm running quickly on some examples does not prove \(\mathrm{P}=\mathrm{NP}\); not finding a fast algorithm for a long time does not prove \(\mathrm{P}\ne\mathrm{NP}\).</p>
+        <p>SAT solver 在工业例子上强，不等于所有 SAT 都有多项式算法；相对化、自然证明、代数化等障碍提示常规证明路线不够。</p>
+        <p>SAT solvers being strong on industrial instances does not imply polynomial time for all SAT; barriers such as relativization, natural proofs, and algebrization show why standard proof routes are insufficient.</p>
+
+        <h2>9. 结论 / Takeaway</h2>
+        <p>能算、好算、好检查不是同一件事。P vs NP 正是把“我能确认答案”和“我能快速找到答案”分开。</p>
+        <p>Computable, efficiently solvable, and efficiently checkable are different. P vs NP separates confirming an answer from finding one quickly.</p>
+        <div class="expl2-formula expl2-math">
+          \[\text{decidable}\supseteq\mathrm{NP}\supseteq\mathrm{P},\qquad
+          \mathrm{P}\stackrel{?}{=}\mathrm{NP}\]
+        </div>
+        <p>完整例子：旅行商优化版问最短巡回路线多长，是 NP-hard；判定版问是否存在长度不超过 K 的路线，是 NP-complete。</p>
+        <p>Full example: TSP optimization asks for the shortest tour and is NP-hard; the decision version asks whether a tour of length at most K exists and is NP-complete.</p>
+      </article>
+    </main>
+  </body>
+</html>

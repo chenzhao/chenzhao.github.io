@@ -1,0 +1,11 @@
+{
+  "slug": "computer-vision",
+  "order": 7,
+  "status": "architecture-only",
+  "title": {
+    "zh": "计算机视觉",
+    "en": "Computer Vision"
+  },
+  "requiredTopics": ["image formation", "features", "geometry", "recognition"],
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"]
+}

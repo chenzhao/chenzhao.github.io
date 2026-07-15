@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wittgenstein's Philosophy</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <noscript>
+      <section class="expl2-main noscript-note" aria-labelledby="wittgenstein-noscript-title">
+        <p class="expl2-kicker">Language, logic, and philosophical therapy / 语言、逻辑与哲学治疗</p>
+        <h1 id="wittgenstein-noscript-title">Wittgenstein's Philosophy / 维特根斯坦哲学</h1>
+        <p>
+          This explanation introduces Wittgenstein through a path from early picture theory to later language-games,
+          meaning as use, private language, rule-following, forms of life, and philosophical therapy.
+        </p>
+        <p>
+          这篇介绍维特根斯坦哲学：从早期图像论出发，转向语言游戏、意义即使用、私人语言、
+          遵守规则、生活形式，以及把哲学当作澄清误解的治疗。
+        </p>
+      </section>
+    </noscript>
+
+    <main
+      id="expl2-app"
+      class="expl2-main witt-main"
+      v-scope="WittgensteinApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header witt-header">
+        <div class="expl2-topbar">
+          <div class="expl2-lang-switch" role="group" data-i18n-attr="aria-label:languageSwitch">
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">中文</button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">EN</button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+      </header>
+
+      <nav class="expl2-card expl2-secondary-nav" aria-label="Wittgenstein secondary pages">
+        <a href="./concept-tree/">Concept tree / 概念树</a>
+        <a href="./directory/">Directory / 目录</a>
+        <a href="./single/">Single page / 单页版</a>
+      </nav>
+
+      <section class="expl2-section is-single witt-overview" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[0].eyebrow }}</p>
+          <h2>{{ text().chapters[0].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[0].short">{{ paragraph }}</p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[0].long">{{ paragraph }}</p>
+          </details>
+          <div class="concept-strip expl2-card">
+            <strong>{{ text().conceptsLabel }}</strong>
+            <p>
+              <button type="button" data-expl2-concept="pictureTheory" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="languageGame" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="meaningAsUse" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="formOfLife" data-expl2-concept-label="auto"></button>
+            </p>
+          </div>
+        </div>
+        <div class="timeline-visual" role="img" :aria-label="text().visuals.timeline">
+          <div v-for="period in text().periods" class="period-card">
+            <span>{{ period.label }}</span>
+            <strong>{{ period.title }}</strong>
+            <p>{{ period.text }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[1].eyebrow }}</p>
+          <h2>{{ text().chapters[1].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[1].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="pictureTheory" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[1].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[1].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool picture-tool">
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ text().controls.match }}</span>
+              <strong>{{ match }}%</strong>
+            </span>
+            <input type="range" min="0" max="100" v-model="match" />
+          </label>
+          <p class="tool-note">{{ text().controls.matchNote }}</p>
+          <div class="match-board" :style="'--match: ' + match + '%'">
+            <div class="world-model">
+              <span v-for="item in worldItems()" :class="item.kind" :style="item.style"></span>
+            </div>
+            <div class="sentence-model">
+              <span v-for="item in sentenceItems()" :class="item.kind" :style="item.style"></span>
+            </div>
+          </div>
+          <p class="tool-summary">{{ text().controls.matchSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[2].eyebrow }}</p>
+          <h2>{{ text().chapters[2].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[2].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="logicalForm" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[2].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[2].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool ladder-tool" role="img" :aria-label="text().visuals.ladder">
+          <div class="ladder">
+            <span v-for="step in text().ladder">{{ step }}</span>
+          </div>
+          <p class="tool-summary">{{ text().controls.ladderSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[3].eyebrow }}</p>
+          <h2>{{ text().chapters[3].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[3].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="languageGame" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[3].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[3].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool game-tool">
+          <label class="expl2-control">
+            <span>{{ text().controls.gameLabel }}</span>
+            <select v-model="gameIndex">
+              <option v-for="(game, index) in text().games" :value="index">{{ game.name }}</option>
+            </select>
+          </label>
+          <div class="game-card">
+            <strong>{{ currentGame().name }}</strong>
+            <p>{{ currentGame().sentence }}</p>
+            <span>{{ currentGame().use }}</span>
+          </div>
+          <p class="tool-summary">{{ text().controls.gameSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[4].eyebrow }}</p>
+          <h2>{{ text().chapters[4].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[4].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="meaningAsUse" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[4].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[4].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool use-tool">
+          <div class="use-grid">
+            <article v-for="item in text().uses">
+              <span>{{ item.word }}</span>
+              <strong>{{ item.scene }}</strong>
+              <p>{{ item.meaning }}</p>
+            </article>
+          </div>
+          <p class="tool-summary">{{ text().controls.useSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[5].eyebrow }}</p>
+          <h2>{{ text().chapters[5].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[5].short">{{ paragraph }}</p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[5].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool resemblance-tool" role="img" :aria-label="text().visuals.resemblance">
+          <div class="resemblance-row" v-for="row in text().resemblance">
+            <span>{{ row.item }}</span>
+            <i v-for="mark in row.pattern" :class="{ active: mark }"></i>
+          </div>
+          <p class="tool-summary">{{ text().controls.resemblanceSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[6].eyebrow }}</p>
+          <h2>{{ text().chapters[6].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[6].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="privateLanguage" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[6].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[6].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool private-tool">
+          <label class="expl2-control">
+            <span>{{ text().controls.criteriaLabel }}</span>
+            <select v-model="criteria">
+              <option value="private">{{ text().controls.criteriaPrivate }}</option>
+              <option value="public">{{ text().controls.criteriaPublic }}</option>
+            </select>
+          </label>
+          <div class="criteria-card" :class="criteria">
+            <strong>{{ criteriaText().title }}</strong>
+            <p>{{ criteriaText().text }}</p>
+          </div>
+          <p class="tool-summary">{{ text().controls.criteriaSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[7].eyebrow }}</p>
+          <h2>{{ text().chapters[7].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[7].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="ruleFollowing" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[7].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[7].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool rule-tool">
+          <div class="sequence-line">
+            <span v-for="number in ruleNumbers()">{{ number }}</span>
+          </div>
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ text().controls.ruleLabel }}</span>
+              <strong>{{ ruleStep }}</strong>
+            </span>
+            <input type="range" min="1" max="4" v-model="ruleStep" />
+          </label>
+          <p class="tool-summary">{{ ruleInterpretation() }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[8].eyebrow }}</p>
+          <h2>{{ text().chapters[8].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[8].short">{{ paragraph }}</p>
+          <p class="concept-line">
+            <button type="button" data-expl2-concept="formOfLife" data-expl2-concept-label="auto"></button>
+            <span>{{ text().chapters[8].conceptNote }}</span>
+          </p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[8].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="expl2-tool life-tool" role="img" :aria-label="text().visuals.life">
+          <div class="life-rings">
+            <span v-for="ring in text().lifeRings">{{ ring }}</span>
+          </div>
+          <p class="tool-summary">{{ text().controls.lifeSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single conclusion-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().chapters[9].eyebrow }}</p>
+          <h2>{{ text().chapters[9].title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().chapters[9].short">{{ paragraph }}</p>
+          <details class="expl2-long-text">
+            <summary>{{ text().detailsLabel }}</summary>
+            <p v-for="paragraph in text().chapters[9].long">{{ paragraph }}</p>
+          </details>
+        </div>
+        <div class="therapy-board" role="img" :aria-label="text().visuals.therapy">
+          <article v-for="card in text().therapy">
+            <span>{{ card.label }}</span>
+            <strong>{{ card.title }}</strong>
+            <p>{{ card.text }}</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

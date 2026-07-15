@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Temperature - Boltzmannia</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../../concept-tree/">Concept tree / 概念树</a>
+          <a class="expl2-back" href="../../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Key concept / 核心概念</p>
+        <h1 class="expl2-title">Temperature / 温度</h1>
+        <p class="expl2-lead">
+          Temperature is the knob that decides how much high-energy states are still allowed to appear.
+          温度是一个旋钮：它决定高能状态还剩多少出现机会。
+        </p>
+      </header>
+
+      <section class="concept-detail">
+        <article class="expl2-card">
+          <h2>Definition / 定义</h2>
+          <p>
+            In the Boltzmann distribution, probability is weighted by \(e^{-E/(kT)}\).
+            If \(T\) is small, a modest energy increase is punished strongly. If \(T\)
+            is large, the same energy increase matters less.
+          </p>
+          <p>
+            在玻尔兹曼分布中，概率权重是 \(e^{-E/(kT)}\)。温度低时，小小的能量升高也会被强烈压低；温度高时，同样的能量差影响变弱。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              p_i=\frac{e^{-E_i/(kT)}}{\sum_j e^{-E_j/(kT)}}
+            \]
+          </div>
+        </article>
+        <article class="expl2-card">
+          <h2>Example / 例子</h2>
+          <p>
+            On the main page, move the temperature slider. Low temperature concentrates probability in the first energy level;
+            high temperature spreads probability across several levels.
+          </p>
+          <p>
+            在主页面移动温度滑块：低温时概率集中在最低能级，高温时概率会铺到多个能级。
+          </p>
+        </article>
+        <article class="expl2-card">
+          <h2>Why it matters / 为什么重要</h2>
+          <p>
+            The same concept reappears in Boltzmann machines as sampling temperature. It controls exploration:
+            too cold and the model gets stuck, too hot and it ignores the landscape.
+          </p>
+          <p>
+            这个概念会在玻尔兹曼机里变成抽样温度。它控制探索：太冷容易卡在低谷，太热又会忽略地形。
+          </p>
+        </article>
+      </section>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../entropy/">Next: Entropy / 下一页：熵</a>
+        <a href="../../directory/">Directory / 目录</a>
+      </footer>
+    </main>
+    <script src="../../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>
