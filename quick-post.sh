@@ -69,7 +69,7 @@ INDEX_HTML = """<!doctype html>
 <body>
   <div class="wrap">
     <h1>快速发布文章</h1>
-    <p class="muted">填写中文内容后会自动生成英文版。公开长文请在 main 分支发布；私人短文请在 draft 分支发布。</p>
+    <p class="muted">公开内容会自动生成英文版，草稿不翻译。公开长文请在 main 分支发布；私人短文请在 draft 分支发布。</p>
 
     <form id="postForm">
       <div class="row">

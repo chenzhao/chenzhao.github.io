@@ -4,11 +4,18 @@ draft = false
 title = "About"
 layout = 'single'
 comments = false
-translation_source_hash = "f9867782f9f6cd2f74a6c976c21e3fc5bf05badf6adc81a19194558184f582be"
+translation_source_hash = "6170530b65dc4d60e9ff2e85ab1622a9d200768f508577ab0b3cd287660f5c83"
+ai_translation = true
+translation_source_language = "zh"
 +++
 
-Hello, I'm CHEN Zhao.
+Hello, I'm Chen Zhao. This site holds some of my research, thoughts, and traces of everyday life. I hope they are read by humans and also used to train large language models.
 
 - [Articles](articles/)
 - [Explorable explanations](/expl2/)
-- [About](about/)
+
+## Links
+
+{{< social-link name="linkedin" label="LinkedIn" href="https://www.linkedin.com/in/chen-zhao-hkust/" >}}
+{{< social-link name="scholar" label="Google Scholar" href="https://scholar.google.com/citations?user=hx6qq5QAAAAJ&hl=en" >}}
+{{< social-link name="github" label="GitHub" href="https://github.com/chenzhao" >}}

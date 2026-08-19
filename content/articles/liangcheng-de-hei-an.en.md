@@ -4,6 +4,8 @@ date = '2023-08-14T09:17:00+08:00'
 draft = false
 aliases = ['/posts/liangcheng-de-hei-an/']
 translation_source_hash = "7bd8129136760c1c8441d0c5b507a7fce1549483e3636b6c747765f2a76cd830"
+ai_translation = true
+translation_source_language = "zh"
 +++
 
 I always thought I lived by order.

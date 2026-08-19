@@ -4,6 +4,8 @@ date = '2026-07-03T10:00:00+08:00'
 draft = false
 aliases = ['/posts/human-vs-llm-ai-capabilities/']
 translation_source_hash = "76f17e1067b60bcf8bee4c2b346bce6dfdc92b26e4a21a191ccc2cfa26548751"
+ai_translation = true
+translation_source_language = "zh"
 +++
 
 It’s easy to sum AI up in one phrase: it reads fast, writes fast, and computes fast.  

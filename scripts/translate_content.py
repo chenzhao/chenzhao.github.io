@@ -53,10 +53,26 @@ def get_title(front_matter: str) -> str:
   return match
 
 
+def is_draft(front_matter: str) -> bool:
+  return bool(re.search(r"(?mi)^draft\s*=\s*true\s*$", front_matter))
+
+
+def translation_disabled(front_matter: str) -> bool:
+  return bool(re.search(r"(?mi)^translate\s*=\s*false\s*$", front_matter))
+
+
 def set_string_field(front_matter: str, key: str, value: str) -> str:
   encoded = json.dumps(value, ensure_ascii=False)
   pattern = re.compile(rf"(?m)^{re.escape(key)}\s*=.*$")
   replacement = f"{key} = {encoded}"
+  if pattern.search(front_matter):
+    return pattern.sub(replacement, front_matter, count=1)
+  return front_matter.rstrip() + "\n" + replacement
+
+
+def set_bool_field(front_matter: str, key: str, value: bool) -> str:
+  pattern = re.compile(rf"(?m)^{re.escape(key)}\s*=.*$")
+  replacement = f"{key} = {'true' if value else 'false'}"
   if pattern.search(front_matter):
     return pattern.sub(replacement, front_matter, count=1)
   return front_matter.rstrip() + "\n" + replacement
@@ -172,6 +188,12 @@ def translate_file(source: Path, api_key: str, model: str, force: bool) -> bool:
   translated_front_matter = set_string_field(
     translated_front_matter, "translation_source_hash", digest
   )
+  translated_front_matter = set_bool_field(
+    translated_front_matter, "ai_translation", True
+  )
+  translated_front_matter = set_string_field(
+    translated_front_matter, "translation_source_language", "zh"
+  )
   rendered = f"+++\n{translated_front_matter.rstrip()}\n+++\n"
   if translated_body:
     rendered += f"\n{translated_body.rstrip()}\n"
@@ -183,6 +205,11 @@ def parse_args() -> argparse.Namespace:
   parser = argparse.ArgumentParser()
   parser.add_argument("paths", nargs="*", type=Path)
   parser.add_argument("--force", action="store_true")
+  parser.add_argument(
+    "--include-drafts",
+    action="store_true",
+    help="translate draft content too (drafts are skipped by default)",
+  )
   parser.add_argument(
     "--check",
     action="store_true",
@@ -196,19 +223,29 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
   args = parse_args()
-  sources = args.paths or sorted(CONTENT_DIR.rglob("*.zh.md"))
+  candidates = args.paths or sorted(CONTENT_DIR.rglob("*.zh.md"))
+  sources = []
+  for source in candidates:
+    path = source if source.is_absolute() else ROOT / source
+    front_matter, _ = split_front_matter(path.read_text(encoding="utf-8"))
+    if not args.include_drafts and is_draft(front_matter):
+      print(f"skipping draft: {path.relative_to(ROOT)}")
+      continue
+    if translation_disabled(front_matter):
+      print(f"skipping Chinese-only content: {path.relative_to(ROOT)}")
+      continue
+    sources.append(path)
   if args.check:
     missing = []
     stale = []
     for source in sources:
-      path = source if source.is_absolute() else ROOT / source
-      target = target_for(path)
+      target = target_for(source)
       if not target.exists():
-        missing.append(path.relative_to(ROOT))
+        missing.append(source.relative_to(ROOT))
         continue
-      digest = hashlib.sha256(path.read_bytes()).hexdigest()
+      digest = hashlib.sha256(source.read_bytes()).hexdigest()
       if existing_source_hash(target) != digest:
-        stale.append(path.relative_to(ROOT))
+        stale.append(source.relative_to(ROOT))
     if missing or stale:
       if missing:
         print("Missing English translations:", file=sys.stderr)
@@ -219,7 +256,7 @@ def main() -> int:
       for path in stale:
         print(f"  {path}", file=sys.stderr)
       return 1
-    print(f"all {len(sources)} Chinese content files have English counterparts")
+    print(f"all {len(sources)} public Chinese content files have English counterparts")
     return 0
 
   api_key = os.environ.get("DEEPSEEK_KEY", "").strip()
@@ -232,8 +269,7 @@ def main() -> int:
 
   changed = 0
   for source in sources:
-    path = source if source.is_absolute() else ROOT / source
-    changed += int(translate_file(path, api_key, args.model, args.force))
+    changed += int(translate_file(source, api_key, args.model, args.force))
   print(f"generated {changed} English translation(s)")
   return 0
 

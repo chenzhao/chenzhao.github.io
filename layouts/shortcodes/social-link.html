@@ -1,0 +1,24 @@
+{{- $name := .Get "name" -}}
+{{- $label := .Get "label" -}}
+{{- $href := .Get "href" -}}
+{{- $icons := dict
+  "linkedin" "/linkedin.svg"
+  "scholar" "/google-scholar.svg"
+  "github" "/github.svg"
+  "zhihu" "/zhihu.svg"
+-}}
+{{- $icon := index $icons $name -}}
+<div style="margin: .65rem 0;">
+  <a
+    href="{{ $href }}"
+    target="_blank"
+    rel="me noopener"
+    style="display: inline-flex; align-items: center; gap: .7rem; text-decoration: none;"
+  >
+    <span
+      aria-hidden="true"
+      style="display: inline-block; width: 1.35rem; height: 1.35rem; flex: 0 0 auto; background: url('{{ $icon }}') center / contain no-repeat;"
+    ></span>
+    <span>{{ $label }}</span>
+  </a>
+</div>
