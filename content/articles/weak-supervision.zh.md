@@ -19,14 +19,14 @@ $$ R(h) \leq \hat{R}(h) + \sqrt{\frac{\ln(2/\delta)}{2n}} , \delta= 2e^{-2n\epsi
 
 (插一句: hoeffding的证明也用到指数+概率相乘这个trick, 参见指数那篇). 
 
-另外, 一般假设理论上最优的分类器也是会犯错的, 因为真实世界往往不同类型的特征分布有重叠, 即 P(y=1|x)>0 and P(y=0|x)>0, 这时即使知道所有特征的后验 (e.g. P(y=1|x)=0.9, P(y=0|x)=0.1), 也只能做到每次都选大的那个, 把选错的比例降到最低, 这也就是所谓的 bayes 分类器, 记作$h^*$. 显然 $0 \leq R(h^*)\leq R(h) \approx \hat{R}(h)$ .
- 训练的目的是缩小与最优的分类器的差距 $R(h)-R(h^*)$ 叫做 excess risk (机器学习理论还会在这里说还存在一个符合 hypothesis 的最优 h, hypothesis本身存在 approximation error, 公式很漂亮, 实际没什么用).  实际上, 训练得到的模型经常在train split 上表现好过 R(h) (用 test split 估计), 这个差距也被叫做 generalization gap(粗暴的 PAC 理论应用: 相比于 hypothesis 空间 training split 足够大的话, overfitting 就不是问题了). 
+另外, 一般假设理论上最优的分类器也是会犯错的, 因为真实世界往往不同类型的特征分布有重叠, 即 P(y=1|x)>0 and P(y=0|x)>0, 这时即使知道所有特征的后验 (e.g. P(y=1|x)=0.9, P(y=0|x)=0.1), 也只能做到每次都选大的那个, 把选错的比例降到最低, 这也就是所谓的 bayes 分类器, 记作$h^{\ast}$. 显然 $0 \leq R(h^{\ast})\leq R(h) \approx \hat{R}(h)$ .
+ 训练的目的是缩小与最优的分类器的差距 $R(h)-R(h^{\ast})$ 叫做 excess risk (机器学习理论还会在这里说还存在一个符合 hypothesis 的最优 h, hypothesis本身存在 approximation error, 公式很漂亮, 实际没什么用).  实际上, 训练得到的模型经常在train split 上表现好过 R(h) (用 test split 估计), 这个差距也被叫做 generalization gap(粗暴的 PAC 理论应用: 相比于 hypothesis 空间 training split 足够大的话, overfitting 就不是问题了). 
 
 下面来看数据质量对模型的影响: 若 Y 有 p 的概率翻转 (这里简化为标签无关的翻转, 复杂情况见: https://proceedings.neurips.cc/paper/2013/file/3871bd64012152bfb53fdf04b401193f-Paper.pdf ), 设在原始 Y 的错误率是 R(h), 翻转 Y 上的错误率是$R'(h)$, $R'(h)$ 
 有两部分,在原始Y上分错且没有翻转的部分是 (1-p)R(h) , 在原始 Y 分对但翻转了的部分是 p(1-R(h)), so 
 $$R'(h)=(1-p)R(h)+p(1-R(h))= p + (1-2p)R(h) $$
 上边的关系里的h是任意分类器, 那显然它对于最优的 h* 也成立, 两个关系相减一下就得到
-$$ R'(h)-R'(h^*)=(1-2p)(R(h)-R(h^*)) $$
+$$ R'(h)-R'(h^{\ast})=(1-2p)(R(h)-R(h^{\ast})) $$
 也就是说 p 的翻转会让 excess risk 增加1/(1-2p)倍, 看起来有点惊悚, 但其实影响不大, 因为 excess risk 通常不大. E.g. bayes acc 95% acc 90% 的话, 即使 p 20% , gap 从 5% 变为 8.3% , acc 最多损失 3.3% 而已. 如果用上边 pac 的 bound $O(1/\sqrt{n})$ 此时数据的效率其实是降低了 $(1-2p)^2$ , 即要消除这 3.3%的损失, 需要吓人的 $n/(1-2p)^2=2.78 n$ 条数据. again, pac bound 是个非常宽的 bound, 所以这 2.78n 是个保守的理论保证, 实际意义不大. 但这带来一个新问题, 在预算有限的情况下, 应该降低 p 还是增加 n ? 
 
 这是一个很重要而且研究了很久的问题, 最近还有新进展( https://arxiv.org/abs/2402.02249 ). active learning 需要判断下一步干什么, crowdsourcing 需要制定标注方案, etc. . 大家建模都不太一样, 这个问题目前并没有统一的解决框架. 
