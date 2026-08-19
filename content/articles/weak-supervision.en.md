@@ -2,7 +2,7 @@
 title = "Label Error in Machine Learning"
 date = "2026-08-19T23:57:10+08:00"
 draft = false
-translation_source_hash = "7565f60921f3634ed994806462196c5b96fe23245de10c38f99633c0faa0e12a"
+translation_source_hash = "f4b43aa24e72607751bcc2bebe2a4bc25da29d82b50459742cb90fc4f88112a4"
 +++
 
 An attempt to explain clearly where errors in machine learning data come from and how to eliminate them.
@@ -17,14 +17,14 @@ At least it proves: the more data, the more accurate the estimate (well, duh...)
 
 (A side note: the proof of Hoeffding's inequality also uses the trick of exponentiating and multiplying probabilities; see the exponential post.)
 
-Also, it is generally assumed that even the theoretically optimal classifier makes mistakes, because in the real world feature distributions of different classes often overlap, i.e. $P(y=1|x)>0$ and $P(y=0|x)>0$. In this case, even if we know the posterior for all features (e.g. $P(y=1|x)=0.9$, $P(y=0|x)=0.1$), the best we can do is always choose the larger one, minimizing the proportion of mistakes; this is the so-called Bayes classifier, denoted $h^*$. Obviously $0 \leq R(h^*)\leq R(h) \approx \hat{R}(h)$.
-The goal of training is to narrow the gap to the optimal classifier; $R(h)-R(h^*)$ is called the excess risk (ML theory would also say here that there exists an optimal $h$ within the hypothesis class, and the hypothesis class itself has approximation error; the formulas are pretty but practically useless). In practice, trained models often perform better on the train split than the $R(h)$ estimated on the test split; this gap is also called the generalization gap (a crude application of PAC theory: if the training split is large enough relative to the hypothesis space, overfitting is not a problem).
+Also, it is generally assumed that even the theoretically optimal classifier makes mistakes, because in the real world feature distributions of different classes often overlap, i.e. $P(y=1|x)>0$ and $P(y=0|x)>0$. In this case, even if we know the posterior for all features (e.g. $P(y=1|x)=0.9$, $P(y=0|x)=0.1$), the best we can do is always choose the larger one, minimizing the proportion of mistakes; this is the so-called Bayes classifier, denoted $h^{\ast}$. Obviously $0 \leq R(h^{\ast})\leq R(h) \approx \hat{R}(h)$.
+The goal of training is to narrow the gap to the optimal classifier; $R(h)-R(h^{\ast})$ is called the excess risk (ML theory would also say here that there exists an optimal $h$ within the hypothesis class, and the hypothesis class itself has approximation error; the formulas are pretty but practically useless). In practice, trained models often perform better on the train split than the $R(h)$ estimated on the test split; this gap is also called the generalization gap (a crude application of PAC theory: if the training split is large enough relative to the hypothesis space, overfitting is not a problem).
 
 Next, look at the effect of data quality on the model. Suppose $Y$ has probability $p$ of being flipped (here simplified to label-independent flipping; for more complex cases see: https://proceedings.neurips.cc/paper/2013/file/3871bd64012152bfb53fdf04b401193f-Paper.pdf ). Let the error rate on the original $Y$ be $R(h)$, and the error rate on the flipped $Y$ be $R'(h)$. $R'(h)$
 has two parts: the part misclassified on the original $Y$ and not flipped is $(1-p)R(h)$, and the part correct on the original $Y$ but flipped is $p(1-R(h))$, so
 $$R'(h)=(1-p)R(h)+p(1-R(h))= p + (1-2p)R(h).$$
-The $h$ in the relation above is an arbitrary classifier, so it obviously also holds for the optimal $h^*$; subtracting the two gives
-$$ R'(h)-R'(h^*)=(1-2p)(R(h)-R(h^*)). $$
+The $h$ in the relation above is an arbitrary classifier, so it obviously also holds for the optimal $h^{\ast}$; subtracting the two gives
+$$ R'(h)-R'(h^{\ast})=(1-2p)(R(h)-R(h^{\ast})). $$
 That is to say, a flip probability of $p$ increases the excess risk by a factor of $1/(1-2p)$. This looks a bit frightening, but its actual impact is small because excess risk is usually small. For example, if Bayes accuracy is 95% and model accuracy is 90%, even with $p=20\%$, the gap goes from 5% to 8.3%, and accuracy at most loses 3.3%. If we use the PAC bound $O(1/\sqrt{n})$ above, the data efficiency is actually reduced by a factor of $(1-2p)^2$; that is, to eliminate this 3.3% loss one needs a frightening $n/(1-2p)^2=2.78n$ samples. Again, the PAC bound is a very loose bound, so this 2.78n is a conservative theoretical guarantee and of little practical significance. But this raises a new question: under a limited budget, should one reduce $p$ or increase $n$?
 
 This is an important problem that has been studied for a long time, and there has even been recent progress ( https://arxiv.org/abs/2402.02249 ). Active learning needs to decide what to do next, crowdsourcing needs to design labeling schemes, etc. People's models differ quite a bit, and there is currently no unified solution framework for this problem.
