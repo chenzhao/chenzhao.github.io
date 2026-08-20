@@ -2,6 +2,7 @@
 title = "非典型题目: 恢复被打乱的神经网络层序"
 date = "2026-05-17T00:00:00+08:00"
 draft = false
+translate = false
 categories = ["problems", "machine learning"]
 +++
 
@@ -31,6 +32,5 @@ categories = ["problems", "machine learning"]
 结论: 人类 > AI . 
 
 AI 做辅助工作是足够的, 这是 Codex 整理的代码: https://github.com/chenzhao/janestreet-drop-a-net .
-
 
 

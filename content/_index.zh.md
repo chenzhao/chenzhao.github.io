@@ -1,6 +1,7 @@
 +++
 date = '2026-03-11T15:57:19+08:00'
 draft = false
+translate = false
 title = '关于'
 layout = 'single'
 comments = false

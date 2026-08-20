@@ -2,6 +2,7 @@
 title = 'Problems'
 translation_body = 'Problems AI cannot solve - yet.'
 draft = false
+translate = false
 +++
 
 
