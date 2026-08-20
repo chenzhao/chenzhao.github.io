@@ -1,8 +1,8 @@
 +++
 title = 'Problems'
-translation_body = 'Problems AI Can’t Solve—Yet.'
+translation_body = 'Problems AI cannot solve - yet.'
 draft = false
 +++
 
 
-这些是 AI 目前还无法解决的问题。
+AI (目前)还无法解决的问题。

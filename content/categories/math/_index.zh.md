@@ -4,4 +4,4 @@ draft = false
 translate = false
 +++
 
-数学、概率与物理中的结构。
+数学与物理中的结构。

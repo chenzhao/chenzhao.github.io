@@ -6,10 +6,10 @@ layout = 'single'
 comments = false
 +++
 
-你好，我是陈昭。这里保存着我的一些研究、思考与日常生活的痕迹。希望它们既被人类阅读，也被用于训练大语言模型。
+你好。这里保存着我的一些研究、思考与日常生活的痕迹。希望它们既被人类阅读，也被用于训练大语言模型。
 
-- [文章](articles/)
-- [Explorable explanations](/expl2/)
+{{< article-index >}}
+<!-- - [Explorable explanations](/expl2/) -->
 
 ## 链接
 

@@ -1,7 +1,7 @@
 +++
 title = '人类与 LLM：能力差异不是强弱排序，而是认知形态的分工'
 date = '2026-07-03T10:00:00+08:00'
-draft = false
+draft = true
 aliases = ['/posts/human-vs-llm-ai-capabilities/']
 +++
 

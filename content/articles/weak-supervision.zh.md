@@ -1,11 +1,13 @@
 +++
-title = "Label Error in Machine Learning"
-date = "2026-08-11T00:35:08+08:00"
+title = "机器学习中的错误数据"
+date = "2026-01-11T00:35:08+08:00"
 draft = false
 translate = false
+
+categories = ["research", "machine learning"]
 +++
 
-尝试说清楚机器学习数据的错误是哪来的以及如何消除. 
+尝试理清楚机器学习数据的错误是哪来的以及如何处理. 
 
 监督学习可以在给定 $X Y$
 的前提下 work 是很直观的, 选一个 hypothesis $X Y \sim P $ 

@@ -1,7 +1,7 @@
 +++
 title = "Humans and LLMs: Our Differences Are Not a Ranking of Strength but a Division of Cognitive Labor"
 date = '2026-07-03T10:00:00+08:00'
-draft = false
+draft = true
 aliases = ['/posts/human-vs-llm-ai-capabilities/']
 translation_source_hash = "76f17e1067b60bcf8bee4c2b346bce6dfdc92b26e4a21a191ccc2cfa26548751"
 ai_translation = true

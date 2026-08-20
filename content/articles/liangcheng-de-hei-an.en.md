@@ -1,7 +1,7 @@
 +++
 title = "Eve of Winter in Liangcheng"
 date = '2023-08-14T09:17:00+08:00'
-draft = false
+draft = true
 aliases = ['/posts/liangcheng-de-hei-an/']
 translation_source_hash = "7bd8129136760c1c8441d0c5b507a7fce1549483e3636b6c747765f2a76cd830"
 ai_translation = true

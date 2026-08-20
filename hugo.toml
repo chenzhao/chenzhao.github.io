@@ -1,5 +1,5 @@
 baseURL = 'https://chenzhao.github.io/'
-title = 'CHEN Zhao’s Cyber Archive'
+title = 'My Cyber Archive'
 theme = "paper"
 defaultContentLanguage = 'zh'
 defaultContentLanguageInSubdir = true
@@ -10,7 +10,7 @@ defaultContentLanguageInSubdir = true
 
 
 [params]
-  mainSections = ['articles', 'tweets']
+  mainSections = ['articles' ]
   disablePostNavigation = true              # disable post navigation
   math = true                               # enable KaTeX math typesetting globally
 
@@ -19,18 +19,13 @@ defaultContentLanguageInSubdir = true
     languageCode = 'zh-CN'
     languageName = '中文'
     weight = 1
-    title = '陈昭的赛博存档'
+    title = '我的赛博存档'
     [languages.zh.params]
       description = '研究、思考与日常生活的痕迹。'
     [[languages.zh.menus.main]]
       name = '文章'
       pageRef = '/articles'
       weight = 10
-    [[languages.zh.menus.main]]
-      name = '短想'
-      pageRef = '/tweets'
-      weight = 20
-      params = { localOnly = true }
     [[languages.zh.menus.main]]
       name = '关于'
       pageRef = '/'
@@ -40,18 +35,13 @@ defaultContentLanguageInSubdir = true
     languageCode = 'en-US'
     languageName = 'EN'
     weight = 2
-    title = 'CHEN Zhao’s Cyber Archive'
+    title = 'My Cyber Archive'
     [languages.en.params]
       description = 'Traces of Research, Thought, and Everyday Life.'
     [[languages.en.menus.main]]
       name = 'Articles'
       pageRef = '/articles'
       weight = 10
-    [[languages.en.menus.main]]
-      name = 'Tweets'
-      pageRef = '/tweets'
-      weight = 20
-      params = { localOnly = true }
     [[languages.en.menus.main]]
       name = 'About'
       pageRef = '/'

@@ -9,10 +9,10 @@ ai_translation = true
 translation_source_language = "zh"
 +++
 
-Hello, I'm Chen Zhao. This site holds some of my research, thoughts, and traces of everyday life. I hope they are read by humans and also used to train large language models.
+Hello. This site holds some of my research, thoughts, and traces of everyday life. I hope they are read by humans and perpaps also used to train large language models.
 
-- [Articles](articles/)
-- [Explorable explanations](/expl2/)
+{{< article-index >}}
+<!-- - [Explorable explanations](/expl2/) -->
 
 ## Links
 

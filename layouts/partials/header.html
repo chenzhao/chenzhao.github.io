@@ -4,6 +4,33 @@
   <style>
     .site-brand { font-size: 1.125rem; line-height: 1.5rem; }
     .site-language { align-self: center; margin-top: 2rem; }
+    .site-language-link {
+      display: inline-flex;
+      width: 82px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 .75rem !important;
+      border: 1px solid rgba(0, 0, 0, .22) !important;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, .045);
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      line-height: 1.25rem;
+      text-decoration: none;
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+    .site-language-link:hover {
+      border-color: rgba(0, 0, 0, .42);
+      background: rgba(0, 0, 0, .07);
+    }
+    .site-language-link:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
     @media (min-width: 1024px) {
       .nav-wrapper { gap: 1.25rem; }
       .site-brand { font-size: 1.25rem; line-height: 1.75rem; }
@@ -57,7 +84,7 @@
         {{- end -}}
       {{- end -}}
       <a
-        class="no-underline opacity-70 hover:opacity-100"
+        class="site-language-link"
         href="{{- $switchURL -}}"
         hreflang="{{- $switchLang -}}"
         >{{- $switchName -}}</a
