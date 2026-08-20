@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Group Theory From Actions Concept Tree / 概念树</title>
+    <link rel="stylesheet" href="../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main expl2-secondary-page">
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Back / 返回</a>
+          <a class="expl2-back" href="../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Concept dependency tree / 概念依赖图</p>
+        <h1 class="expl2-title">Group Theory From Actions Concept Tree / 概念树</h1>
+      </header>
+      <section class="expl2-section is-single"><p class="expl2-lead">The group project explains groups through modular addition, cyclic generation, square symmetries, and cosets. 群论项目通过模加法、循环生成、正方形对称和陪集解释群。</p></section>
+      <section class="expl2-secondary-grid">
+<article class="expl2-card"><p class="expl2-eyebrow">1</p><h2><a href="../concepts/group/">Group / 群</a></h2><p><strong>Definition:</strong> A set with an operation \((G,*)\) satisfying closure, associativity, identity, and inverses.</p><p><strong>定义：</strong>一个集合加上一种运算 \((G,*)\)，并满足封闭性、结合律、单位元和逆元四条规则。</p><div class="expl2-formula expl2-math">\[(a*b)*c=a*(b*c),\qquad e*a=a*e=a\]</div><p><strong>Upstream:</strong> Chapter 0 intuition. <strong>Downstream:</strong> Generator.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">2</p><h2><a href="../concepts/generator/">Generator / 生成元</a></h2><p><strong>Definition:</strong> An element whose repeated action visits the whole cyclic group; in \(\mathbb Z_n\) it is a step \(g\) with \(\gcd(n,g)=1\).</p><p><strong>定义：</strong>反复作用后能走遍整个循环群的元素；在 \(\mathbb Z_n\) 中它对应满足 \(\gcd(n,g)=1\) 的步长 \(g\)。</p><div class="expl2-formula expl2-math">\[\langle g\rangle=\mathbb Z_n\quad\Longleftrightarrow\quad \gcd(n,g)=1\]</div><p><strong>Upstream:</strong> Group. <strong>Downstream:</strong> Symmetry.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">3</p><h2><a href="../concepts/symmetry/">Symmetry / 对称</a></h2><p><strong>Definition:</strong> An action that preserves an object's structure; the square symmetries form \(D_4\).</p><p><strong>定义：</strong>保持对象结构不变的动作；正方形的对称动作组成 \(D_4\)。</p><div class="expl2-formula expl2-math">\[r^4=e,\qquad s^2=e,\qquad srs=r^{-1}\]</div><p><strong>Upstream:</strong> Generator. <strong>Downstream:</strong> Coset.</p></article>
+<article class="expl2-card"><p class="expl2-eyebrow">4</p><h2><a href="../concepts/coset/">Coset / 陪集</a></h2><p><strong>Definition:</strong> A shifted copy of a subgroup, written \(aH=\{ah:h\in H\}\); finite groups are partitioned into equal-size cosets.</p><p><strong>定义：</strong>把一个子群整体平移得到的集合，写作 \(aH=\{ah:h\in H\}\)；有限群会被同样大小的陪集整齐分割。</p><div class="expl2-formula expl2-math">\[aH=\{ah:h\in H\},\qquad |G|=[G:H]|H|\]</div><p><strong>Upstream:</strong> Symmetry. <strong>Downstream:</strong> takeaway and review.</p></article>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../concept-tree/">Concept tree / 概念树</a>
+        <a href="../directory/">Directory / 目录</a>
+        <a href="../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

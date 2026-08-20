@@ -1,0 +1,42 @@
+{{- define "main" -}}
+
+<article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">{{- .Title -}}</h1>
+    {{- if .Date -}}
+    <div class="text-xs antialiased opacity-60">
+      <time>{{- .Date | time.Format ":date_medium" -}}</time>
+    </div>
+    {{- end -}}
+  </header>
+
+  {{- if .Params.ai_translation -}}
+  <aside style="margin: -2rem 0 2.5rem; padding: .75rem 1rem; border-radius: .5rem; background: rgba(0, 0, 0, .04); font-size: .875rem; line-height: 1.5; color: rgba(0, 0, 0, .65);">
+    {{- if eq .Language.Lang "zh" -}}
+      本文由 AI 从其他语言翻译而来。
+    {{- else if eq .Params.translation_source_language "zh" -}}
+      This article was translated from Chinese by AI.
+    {{- else -}}
+      This article was translated from another language by AI.
+    {{- end -}}
+  </aside>
+  {{- end -}}
+
+  <section>{{- .Content -}}</section>
+
+  {{- with .GetTerms "categories" -}}
+  <footer class="mt-12 flex flex-wrap">
+    {{- range . -}}
+    <a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5"
+      href="{{- .RelPermalink -}}"
+      >{{- .LinkTitle -}}</a
+    >
+    {{- end -}}
+  </footer>
+  {{- end -}}
+
+  {{- partial "mermaid.html" . -}}
+</article>
+
+{{- end -}}

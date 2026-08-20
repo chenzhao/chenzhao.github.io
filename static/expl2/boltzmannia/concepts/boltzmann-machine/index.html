@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boltzmann Machine - Boltzmannia</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../../concept-tree/">Concept tree / 概念树</a>
+          <a class="expl2-back" href="../../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Key concept / 核心概念</p>
+        <h1 class="expl2-title">Boltzmann machine / 玻尔兹曼机</h1>
+        <p class="expl2-lead">
+          A Boltzmann machine is a probabilistic neural network that learns which states should become low-energy valleys.
+          玻尔兹曼机是一种概率神经网络，它学习哪些状态应该成为低能谷。
+        </p>
+      </header>
+
+      <section class="concept-detail">
+        <article class="expl2-card">
+          <h2>Definition / 定义</h2>
+          <p>
+            A Boltzmann machine assigns energy to visible and hidden unit configurations. Lower-energy configurations
+            receive higher probability after normalization.
+          </p>
+          <p>
+            玻尔兹曼机给可见单元和隐藏单元的组合状态分配能量；归一化之后，低能组合得到更高概率。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              E(v,h)=-b^\top v-c^\top h-v^\top Wh,\qquad
+              p(v,h)\propto e^{-E(v,h)/T}
+            \]
+          </div>
+        </article>
+        <article class="expl2-card">
+          <h2>Example / 例子</h2>
+          <p>
+            With two visible units, the model can favor <code>00</code> and <code>11</code> if the training data often
+            contains matching pairs. A hidden unit can help represent that association.
+          </p>
+          <p>
+            若训练数据常出现成对一致的模式，两可见单元模型可以偏向 <code>00</code> 与 <code>11</code>；隐藏单元可以帮助表示这种关联。
+          </p>
+        </article>
+        <article class="expl2-card">
+          <h2>Why it matters / 为什么重要</h2>
+          <p>
+            This model connects thermodynamic language to machine learning: data becomes probability, probability comes
+            from energy, and learning reshapes the energy function.
+          </p>
+          <p>
+            它把热力学语言接到机器学习：数据变成概率，概率来自能量，学习则改造能量函数。
+          </p>
+        </article>
+      </section>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../energy-landscape/">Previous: Energy landscape / 上一页：能量景观</a>
+        <a href="../../single/">Single page / 单页版</a>
+      </footer>
+    </main>
+    <script src="../../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

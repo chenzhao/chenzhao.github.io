@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Image Formats and Compression / 图像格式和压缩</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="./module.js"></script>
+  </head>
+  <body class="expl2-page color-page compression-page">
+    <main class="expl2-main expl2-secondary-page compression-main">
+      <header class="expl2-header compression-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Modules / 模块</a>
+          <a class="expl2-back" href="../../">Color / 主入口</a>
+        </div>
+        <p class="expl2-kicker">Module 04 / 内容草稿</p>
+        <h1 class="expl2-title">Image Formats and Compression / 图像格式和压缩</h1>
+        <p class="expl2-lead">
+          这一版以 JPEG 和 DCT 为主线。先讲图像为什么能压缩，再讲 DCT 如何把像素块换成频率系数。
+          然后完整走一遍 JPEG 的 8×8 块编码过程。最后再比较 PNG、WebP 和 HEIC/HEIF。
+        </p>
+        <nav class="compression-quick-nav" aria-label="Module navigation">
+          <a href="./chapters/">完整章节</a>
+          <a href="./concepts/">核心概念</a>
+          <a href="./labs/">交互练习</a>
+          <a href="./module.json">module.json</a>
+        </nav>
+      </header>
+
+      <section class="expl2-section is-single compression-overview">
+        <div class="compression-stat-grid">
+          <article class="expl2-card">
+            <strong>12 章</strong>
+            <p>从原始体积、DCT 数学、JPEG 单块编码到格式选型。</p>
+          </article>
+          <article class="expl2-card">
+            <strong>18 个概念</strong>
+            <p>重点补充正交基、投影、DC/AC、Parseval、Zigzag、RLE 和 Huffman。</p>
+          </article>
+          <article class="expl2-card">
+            <strong>4 个练习</strong>
+            <p>用小计算器观察原始体积、DCT 低频近似、量化和格式选择。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Learning path</p>
+          <h2>先看 JPEG。再把它推广到其他格式。</h2>
+          <p>
+            JPEG 是最好的入门样本。它的结构短。数学清楚。工程取舍也清楚。
+            主线如下：像素块先变成 DCT 系数，再量化，再重新排列，再熵编码。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              P \xrightarrow{-128} f \xrightarrow{DCT} F
+              \xrightarrow{/Q,\ round} \widehat F
+              \xrightarrow{Zigzag} z
+              \xrightarrow{RLE+Huffman} bits
+            \]
+          </div>
+          <p>
+            DCT 本身不是有损算法。它只是换坐标。真正丢信息的是量化、色度下采样、舍入和丢弃系数。
+          </p>
+        </div>
+        <div class="expl2-tool">
+          <div class="compression-flow" aria-label="Compression pipeline">
+            <span>像素</span>
+            <span>8×8 块</span>
+            <span>DCT</span>
+            <span>量化</span>
+            <span>Zigzag / RLE</span>
+            <span>熵编码</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">DCT core</p>
+          <h2>DCT 把像素块换成一组余弦基的权重</h2>
+        </div>
+        <div class="compression-concept-list">
+          <article>
+            <h3>位置语言</h3>
+            <p>像素矩阵直接记录每个位置的亮度。它直观，但相邻像素常常重复。</p>
+          </article>
+          <article>
+            <h3>频率语言</h3>
+            <p>DCT 记录每种余弦纹理占多少。低频描述大形状。高频描述边缘、纹理和噪声。</p>
+          </article>
+          <article>
+            <h3>正交投影</h3>
+            <p class="expl2-math">每个系数来自内积。基函数正交，所以各个系数可以独立解释。</p>
+          </article>
+          <article>
+            <h3>能量集中</h3>
+            <p>自然图像的小块通常平滑。DCT 后，能量常集中在左上角低频系数。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Codec map</p>
+          <h2>格式比较放在 DCT 主线之后</h2>
+        </div>
+        <div class="compression-codec-grid">
+          <article class="expl2-card">
+            <p class="expl2-eyebrow">JPEG</p>
+            <h3>DCT 教科书样本</h3>
+            <p>8×8 DCT、量化表、Zigzag、DC 差分、AC 游程、Huffman。结构简单，适合细讲。</p>
+          </article>
+          <article class="expl2-card">
+            <p class="expl2-eyebrow">PNG</p>
+            <h3>图形与透明的无损答案</h3>
+            <p>行过滤、DEFLATE、调色板、alpha 和 chunk 扩展。适合 UI、截图、二维码，不适合大多数照片分发。</p>
+          </article>
+          <article class="expl2-card">
+            <p class="expl2-eyebrow">WebP</p>
+            <h3>把视频编码思想带到 Web</h3>
+            <p>lossy 侧来自 VP8 帧内预测，lossless 侧用可逆变换、LZ77、prefix coding 与颜色缓存。</p>
+          </article>
+          <article class="expl2-card">
+            <p class="expl2-eyebrow">HEIC / HEIF</p>
+            <h3>现代手机照片容器</h3>
+            <p>HEVC intra coding 加 HEIF 容器，可承载主图、缩略图、深度图、HDR 元数据和图像序列。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Where to go</p>
+          <h2>本模块入口</h2>
+        </div>
+        <div class="compression-link-grid">
+          <a class="expl2-card" href="./chapters/">
+            <strong>完整章节读本</strong>
+            <span>以 DCT 和 JPEG 单块编码为主线阅读。</span>
+          </a>
+          <a class="expl2-card" href="./concepts/">
+            <strong>核心概念表</strong>
+            <span>集中回查 DCT、量化、Zigzag、RLE、Huffman 和格式术语。</span>
+          </a>
+          <a class="expl2-card" href="./labs/">
+            <strong>交互练习</strong>
+            <span>计算原始体积，观察 DCT 低频近似和量化效果。</span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../">Modules / 模块</a>
+        <a href="../../directory/">Directory / 目录</a>
+        <a href="../../">Color / 主入口</a>
+      </footer>
+    </main>
+  </body>
+</html>

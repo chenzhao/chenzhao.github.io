@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>图像压缩核心概念</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../module.js"></script>
+  </head>
+  <body class="expl2-page color-page compression-page">
+    <main class="expl2-main expl2-secondary-page compression-main">
+      <header class="expl2-header compression-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Module / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Concept index / 概念索引</p>
+        <h1 class="expl2-title">图像压缩核心概念</h1>
+        <p class="expl2-lead">本页按 JPEG/DCT 主线组织。每个概念只给定义、公式和用途。</p>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="compression-concept-grid">
+          <article class="expl2-card"><p class="expl2-eyebrow">Raw size</p><h2>原始体积</h2><p class="expl2-math">\(W\times H\times C\times b/8\)。这是压缩前的数据压力。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Redundancy</p><h2>冗余</h2><p>图像中可利用的重复和可预测性。包括空间、色彩、感知和统计冗余。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Lossless</p><h2>无损</h2><p class="expl2-math">解码后 \(x'=x\)。适合文字、截图、二维码和中间资产。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Lossy</p><h2>有损</h2><p class="expl2-math">允许 \(x'\ne x\)。目标是让失真 \(D(x,x')\) 对用途足够小。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Projection</p><h2>投影</h2><p>系数表示数据和某个基函数的重合程度。DCT 系数就是投影结果。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Orthogonal basis</p><h2>正交基</h2><p class="expl2-math">不同基函数内积为 0。它们互不干扰，系数可以独立解释。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">DCT-II</p><h2>DCT-II</h2><p class="expl2-math">\(X_k=\alpha(k)\sum_n x_n\cos[\pi(n+1/2)k/N]\)。JPEG 使用它的二维版本。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">DC</p><h2>DC 系数</h2><p>平均项。二维 \(N\times N\) 正交 DCT 中，\(F(0,0)=N\cdot\) 块平均值。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">AC</p><h2>AC 系数</h2><p>除 DC 外的频率系数。低频 AC 描述缓慢变化。高频 AC 描述快速变化。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Parseval</p><h2>能量守恒</h2><p class="expl2-math">正交 DCT 满足 \(\sum x_n^2=\sum X_k^2\)。误差也可在系数域计算。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">2D DCT</p><h2>二维 DCT</h2><p class="expl2-math">矩阵形式 \(F=CfC^T\)。先行后列，或先列后行。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Energy compaction</p><h2>能量集中</h2><p>平滑图像块的能量常集中在低频。JPEG 利用这个事实。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Level shift</p><h2>减 128</h2><p>JPEG 对 8-bit 块先减 128，使数据围绕 0 分布。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Quantization</p><h2>量化</h2><p class="expl2-math">\(\widehat F=\operatorname{round}(F/Q)\)。这是 JPEG 的主要有损步骤。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Quant table</p><h2>量化表</h2><p>每个频率一个步长。低频步长小。高频步长大。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Zigzag</p><h2>Zigzag 扫描</h2><p>从低频走向高频。目的是让后半段更容易出现长串 0。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">DC diff</p><h2>DC 差分</h2><p class="expl2-math">JPEG 编码 \(D_i=DC_i-DC_{i-1}\)，因为相邻块平均亮度常相近。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">AC RLE</p><h2>AC 游程编码</h2><p class="expl2-math">非零 AC 用 \((RUN,SIZE)\) 表示。\(RS=16RUN+SIZE\)。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Huffman</p><h2>Huffman 编码</h2><p>常见符号用短码。JPEG 默认表常给 EOB、小幅值符号较短码。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">EOB</p><h2>End of Block</h2><p>若剩余 AC 全为 0，用 EOB 结束，不必继续写 0。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Artifacts</p><h2>压缩伪影</h2><p>块效应来自独立分块和强量化。振铃常来自高频被粗略保留或丢弃。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">PNG</p><h2>PNG</h2><p>行过滤 + DEFLATE。适合无损图形和透明图。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">WebP</p><h2>WebP</h2><p>lossy 侧强调帧内预测。lossless 侧使用可逆变换和熵编码。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">HEIC / HEIF</p><h2>HEIC / HEIF</h2><p>HEVC intra coding 加 HEIF 容器。适合现代手机照片和 HDR 元数据。</p></article>
+        </div>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="../">Module / 模块</a>
+        <a href="../chapters/">Chapters / 章节</a>
+        <a href="../labs/">Labs / 练习</a>
+      </footer>
+    </main>
+  </body>
+</html>

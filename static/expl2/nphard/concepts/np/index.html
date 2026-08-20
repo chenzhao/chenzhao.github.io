@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NP</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../../static-math.js"></script>
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main single-article">
+      <a class="expl2-back" href="../../">返回主页面 / Back to main</a>
+      <h1 class="expl2-title">NP</h1>
+      <p class="expl2-lead">NP 中每个“是”的答案都有短证据，可在多项式时间内验证。In NP, every yes answer has a short certificate verifiable in polynomial time.</p>
+      <div class="expl2-formula expl2-math">\[x\in L\iff \exists y,\ |y|\le |x|^c\land V(x,y)=1\]</div>
+      <h2>例子 / Example</h2>
+      <p>子集和中，如果有人给出被选数字，验证器只需求和并比较目标。</p>
+      <p>In subset sum, if someone gives the chosen numbers, a verifier only adds them and compares the target.</p>
+      <h2>关系 / Relations</h2>
+      <p>前置：可判定。后继：证据、NP-hard、P vs NP。Upstream: decidable. Downstream: certificate, NP-hard, P vs NP.</p>
+      <nav class="static-nav"><a href="../../concept-tree/">概念树 / Concept tree</a><a href="../../directory/">目录 / Directory</a></nav>
+    </main>
+  </body>
+</html>

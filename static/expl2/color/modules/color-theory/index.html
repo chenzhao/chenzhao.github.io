@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Color Theory / 颜色理论</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Modules / 模块</a>
+          <a class="expl2-back" href="../../">Color / 主入口</a>
+        </div>
+        <p class="expl2-kicker">Module 02 / 内容草稿</p>
+        <h1 class="expl2-title">Color Theory / 颜色理论</h1>
+        <p class="expl2-lead">
+          颜色理论解释光谱如何被人眼和设备压缩成三刺激、RGB、Lab、色差和色彩管理工作流。
+          它是相机颜色、显示校准、HDR 色貌和压缩色彩标签的共同语法。
+        </p>
+        <nav class="course-quick-nav" aria-label="Color theory navigation">
+          <a href="./chapters/">完整章节</a>
+          <a href="./concepts/">核心概念</a>
+          <a href="./labs/">交互练习</a>
+          <a href="./module.json">module.json</a>
+        </nav>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="course-stat-grid">
+          <article class="expl2-card"><strong>10 章</strong><p>从光谱和 metamerism 到 CAM16、ICC、ACES 与相机/显示 pipeline。</p></article>
+          <article class="expl2-card"><strong>14 个概念</strong><p>XYZ、xyY、primaries、white point、transfer function、Lab、ΔE、CAT 等。</p></article>
+          <article class="expl2-card"><strong>3 个练习</strong><p>sRGB 线性化、RGB 空间辨析、白平衡和 profile 错误排查。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Core question</p>
+          <h2>颜色不是波长，也不是裸 RGB 数字</h2>
+          <p>
+            真实世界给出光谱 \(S(\lambda)\)，人眼和设备把它投影到有限维响应。不同光谱可能产生同一颜色感觉，
+            同一 RGB 数字在不同 primaries、白点和 transfer function 下也不是同一种颜色。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              X=k\int S(\lambda)\bar{x}(\lambda)d\lambda,\quad
+              Y=k\int S(\lambda)\bar{y}(\lambda)d\lambda,\quad
+              Z=k\int S(\lambda)\bar{z}(\lambda)d\lambda
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool">
+          <div class="course-flow" aria-label="Color pipeline">
+            <span>光谱</span><span>LMS/XYZ</span><span>RGB 空间</span><span>线性/非线性编码</span><span>Lab/ΔE</span><span>色彩管理</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-card-grid">
+          <article class="expl2-card"><h3>三刺激与同色异谱</h3><p>无限维光谱投影到三维视觉响应，解释“看起来一样但光谱不同”。</p></article>
+          <article class="expl2-card"><h3>RGB 不是一个空间</h3><p>sRGB、Display P3、BT.2020、ACEScg 的 primaries、白点和编码都不同。</p></article>
+          <article class="expl2-card"><h3>线性光是底线</h3><p>混合、模糊、缩放、alpha 和能量计算应在线性光中做。</p></article>
+          <article class="expl2-card"><h3>管理而不是猜</h3><p>ICC、ACES/OCIO、3D LUT 和校准让颜色在设备间可审计地流动。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-link-grid">
+          <a class="expl2-card" href="./chapters/"><strong>完整章节读本</strong><span>按 10 课时路线读颜色理论。</span></a>
+          <a class="expl2-card" href="./concepts/"><strong>核心概念表</strong><span>把颜色科学常用公式和误区集中起来。</span></a>
+          <a class="expl2-card" href="./labs/"><strong>交互练习</strong><span>观察 sRGB 非线性平均为何偏暗。</span></a>
+          <a class="expl2-card" href="../../modules/"><strong>回到七大模块</strong><span>连接 optics、sensors、HDR 与 compression。</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

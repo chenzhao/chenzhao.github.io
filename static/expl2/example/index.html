@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Example Explorable Explanation</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <noscript>
+      <section class="expl2-main example-noscript" aria-labelledby="example-noscript-title">
+        <p class="expl2-kicker">Explorable Explanation</p>
+        <h1 id="example-noscript-title">示例解释 / Example Explorable Explanation</h1>
+        <p>
+          这个样例展示 expl2 页面如何使用共享框架、双语文本、关键概念定义和本地交互状态。
+          启用 JavaScript 后可以切换语言、点击概念定义并移动滑块。
+        </p>
+        <p>
+          This sample shows how an expl2 page uses the shared framework,
+          bilingual text, clickable concept definitions, and local interactive
+          state. Enable JavaScript to switch languages, open the concept
+          definition, and move the slider.
+        </p>
+      </section>
+    </noscript>
+    <main
+      id="expl2-app"
+      class="expl2-main example-main"
+      v-scope="ExampleApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            aria-label="Language"
+            data-i18n-attr="aria-label:languageSwitchLabel"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+      </header>
+      <nav class="expl2-card expl2-secondary-nav" aria-label="Secondary expl2 pages">
+        <a href="./concept-tree/">Concept tree / 概念树</a>
+        <a href="./directory/">Directory / 目录</a>
+        <a href="./single/">Single page / 单页版</a>
+      </nav>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="overviewEyebrow"></p>
+          <h2 data-i18n="overviewTitle"></h2>
+          <p class="expl2-short-text" data-i18n="overviewText"></p>
+          <p>
+            <span data-i18n="overviewConceptPrefix"></span>
+            <button type="button" data-expl2-concept="sharedLayer" data-expl2-concept-label="auto"></button>
+            <span data-i18n="overviewConceptSuffix"></span>
+          </p>
+        </div>
+
+        <div class="expl2-card">
+          <strong data-i18n="simpleExampleTitle"></strong>
+          <p class="expl2-short-text" data-i18n="simpleExampleText"></p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="sectionEyebrow"></p>
+          <h2 data-i18n="sectionTitle"></h2>
+          <p class="expl2-short-text" data-i18n="sectionText"></p>
+        </div>
+
+        <div class="expl2-tool example-tool">
+          <label class="expl2-control">
+            <span data-i18n="valueLabel"></span>
+            <input type="range" min="0" max="100" v-model="value" />
+          </label>
+          <output>{{ value }}</output>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">2. 章节标记 / Chapter markers</p>
+          <h2>每章都要能进入全局目录 / Every chapter belongs in the global directory</h2>
+          <p class="expl2-short-text">给章节加 `data-expl2-chapter` 后，共享框架才能生成左侧目录并处理整页跳转。The shared framework needs chapter markers to build navigation and snapping.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>样例页展示最小规则：项目只标记章节，不自己实现目录。这样所有 expl2 页面会有一致的滚动、跳转和可访问标签。</p><p>The sample shows the rule: mark chapters, but do not implement a local table of contents. Shared behavior keeps pages consistent.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Marker</strong><p>&lt;section data-expl2-chapter&gt;</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">3. 短文 / Short text</p>
+          <h2>多页体验先给短句 / Multi-page reading starts with short prose</h2>
+          <p class="expl2-short-text">短文本推动阅读，不把整篇说明一次塞给读者。Short text keeps the chapter path light.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>超过三句话的解释应该放进 details，或者在单页版完整展开。这样主页面适合逐章阅读，单页版适合线性长读。</p><p>Long explanations belong behind details or in the single-page version. The main page stays navigable while the single page remains complete.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Text depth</strong><p>short first, details on demand</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">4. 视觉支架 / Visual support</p>
+          <h2>每章都需要一个可看的区域 / Every chapter needs something visible</h2>
+          <p class="expl2-short-text">即使是样例，也要给每章一个图、卡片或可操作区域。Even a sample chapter needs a visual or operable support.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>视觉支架不必复杂；它只要帮助读者抓住这一章的概念。真实项目可以换成图表、模拟、画布或控件。</p><p>The visual does not need to be complex; it only needs to support the chapter's concept. Real projects can use charts, simulations, canvases, or controls.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Visual</strong><p>concept → support → observation</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">5. 关键概念 / Key concepts</p>
+          <h2>定义交给共享弹窗 / Definitions use the shared popover</h2>
+          <p class="expl2-short-text">项目只提供概念数据，弹窗行为由 `_shared` 统一处理。Projects provide concept data; shared code owns the popover behavior.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>这让每个项目的关键概念有一致的键盘、鼠标和语言行为。项目不需要复制弹窗实现，也不需要重新解决可访问性细节。</p><p>This keeps keyboard, pointer, and language behavior consistent. Projects avoid duplicating popover code and accessibility details.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Concept API</strong><p>data-expl2-concept + Expl2.applyConcepts()</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">6. 二级页面 / Secondary pages</p>
+          <h2>概念树、目录和单页版补足主页面 / Secondary pages complete the main page</h2>
+          <p class="expl2-short-text">主页面负责交互路线，二级页面负责依赖关系、目录和完整线性阅读。The main page is the interactive path; secondary pages carry structure and full reading.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>概念树说明依赖，目录说明阅读顺序，单页版把所有文字摊开。样例页把这些入口放在顶部，提醒新项目不要只做一个孤立页面。</p><p>The concept tree explains dependencies, the directory explains reading order, and the single page unfolds all text. The sample keeps these entries visible.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Page set</strong><p>main · tree · directory · single</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">7. 本地状态 / Local state</p>
+          <h2>页面状态只保存本项目关心的东西 / Local state stays topic-specific</h2>
+          <p class="expl2-short-text">滑块值属于样例项目；语言、目录和概念弹窗属于共享框架。The slider is local; language, navigation, and concepts are shared.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>这个边界能让项目简单：主题逻辑留在项目目录，跨项目基础设施留在 `_shared`。新项目越早保持这个边界，后续维护越轻。</p><p>This boundary keeps projects small: topic logic lives in the project, cross-project infrastructure lives in `_shared`.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Ownership</strong><p>project state vs shared behavior</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">8. 验证 / Validation</p>
+          <h2>样例也要能被检查 / Samples should be checkable too</h2>
+          <p class="expl2-short-text">最小项目仍应通过脚本语法检查和 Hugo 构建。Even the smallest project should pass script checks and a Hugo build.</p>
+          <details class="expl2-long-text"><summary>Details / 详细</summary><p>样例页是后来项目复制的起点。如果样例不可靠，错误会被复制到更多页面。把验证写进习惯，比事后修每个项目更轻松。</p><p>The sample is copied by future projects. If it is unreliable, the mistakes spread. Verification habits are cheaper than repeated repairs.</p></details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Checks</strong><p>node --check · hugo build · review doc</p></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="takeawayEyebrow"></p>
+          <h2 data-i18n="takeawayTitle"></h2>
+          <p class="expl2-short-text" data-i18n="takeawayText"></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

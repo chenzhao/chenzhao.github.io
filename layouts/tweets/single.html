@@ -1,0 +1,15 @@
+{{- define "main" -}}
+
+<article>
+  <header class="mb-8">
+    {{- with site.GetPage "/tweets" -}}
+    <a class="text-sm no-underline opacity-60 hover:opacity-100" href="{{- .RelPermalink -}}">← {{- i18n "tweets_label" -}}</a>
+    {{- end -}}
+  </header>
+  <section>{{- .Content -}}</section>
+  <footer class="mt-10 text-xs opacity-60">
+    <time>{{- .Date | time.Format ":date_medium" -}}</time>
+  </footer>
+</article>
+
+{{- end -}}

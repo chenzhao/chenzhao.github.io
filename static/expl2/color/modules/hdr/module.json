@@ -1,0 +1,31 @@
+{
+  "slug": "hdr",
+  "order": 5,
+  "status": "content-draft",
+  "title": {
+    "zh": "HDR 专题",
+    "en": "HDR"
+  },
+  "requiredTopics": ["scene luminance", "PQ", "HLG", "tone mapping"],
+  "sourceBase": "/Users/chenzhao/Desktop/imaging_course_topics_optics_color_sensors_hdr/04_hdr_survey_10h.md",
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"],
+  "entryPoints": {
+    "chapters": "chapters/index.html",
+    "concepts": "concepts/index.html",
+    "labs": "labs/index.html"
+  },
+  "chapters": [
+    "physical and visual foundations",
+    "PQ, HLG, OETF, EOTF, OOTF",
+    "HDR formats and standard ecosystem",
+    "tone mapping and color volume mapping",
+    "HDR capture and merge",
+    "grading, mastering, metadata, SDR downmap",
+    "HDR display and calibration",
+    "HDR delivery and compression interface",
+    "HDR in CG, games, and CV",
+    "quality metrics and research frontiers"
+  ],
+  "concepts": ["dynamic range", "stops", "scene-referred", "display-referred", "diffuse white", "PQ", "HLG", "HDR10", "Dolby Vision", "HDR10+", "tone mapping", "color volume", "MaxCLL", "MaxFALL", "ICtCp"],
+  "labs": ["dynamic-range-and-pq-code", "tone-mapping-checklist", "hdr-delivery-qc"]
+}

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>颜色理论：完整章节读本</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Color Theory / 模块</a>
+          <a class="expl2-back" href="../../">Modules / 七大模块</a>
+        </div>
+        <p class="expl2-kicker">Chapter reader / 章节读本</p>
+        <h1 class="expl2-title">颜色理论</h1>
+        <p class="expl2-lead">这套章节从光谱和人眼开始，建立 CIE、RGB、Lab、白平衡、色貌和色彩管理的完整路径。</p>
+        <nav class="course-quick-nav" aria-label="Color theory chapters">
+          <a href="#spectra">01 光谱</a>
+          <a href="#xyz">02 XYZ</a>
+          <a href="#rgb">03 RGB</a>
+          <a href="#linear">04 线性光</a>
+          <a href="#management">08 色彩管理</a>
+        </nav>
+      </header>
+
+      <article class="course-reader">
+        <section id="spectra" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">01 / 光谱、视锥与 metamerism</p>
+            <h2>颜色是视觉响应，不是电磁波固有属性</h2>
+            <p>物理世界给出光谱功率分布 \(S(\lambda)\)。人眼主要用 L、M、S 三类视锥响应把无限维光谱投影到近似三维空间，因此不同光谱可能在某观察者和照明条件下产生相同颜色感觉。</p>
+            <div class="course-note">屏幕黄色可能是红绿子像素相加，钠灯黄色可能是窄谱发光。二者看起来都“黄”，但照到物体后可能完全不同。</div>
+            <p>加色系统直接叠加光谱，减色系统通过染料、油墨或滤光片吸收部分波长。CMYK 不能简单理解成 RGB 的互补数值。</p>
+          </div>
+        </section>
+
+        <section id="xyz" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">02 / CIE XYZ、标准观察者、illuminants</p>
+            <h2>CIE XYZ 是设备无关颜色计算的中间语法</h2>
+            <p>CIE 1931 标准观察者定义三条颜色匹配函数。对光谱积分得到 XYZ，其中 Y 被设计为与明视觉亮度效率相关。</p>
+            <div class="expl2-formula expl2-math">\[X=k\int S(\lambda)\bar{x}(\lambda)d\lambda,\quad Y=k\int S(\lambda)\bar{y}(\lambda)d\lambda,\quad Z=k\int S(\lambda)\bar{z}(\lambda)d\lambda\]</div>
+            <p>xyY 把色度和亮度拆开：\(x=X/(X+Y+Z)\)，\(y=Y/(X+Y+Z)\)。xy 图方便画色域三角形，但不是感知均匀空间。</p>
+            <p>白点不是只看色温。D65、D50、A 等标准光源有各自 chromaticity；相关色温相同也可能偏绿或偏品红。</p>
+          </div>
+        </section>
+
+        <section id="rgb" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">03 / RGB 色彩空间</p>
+            <h2>一个 RGB 空间至少由 primaries、白点和 transfer function 定义</h2>
+            <p>只说“这是 RGB”没有意义。sRGB、Display P3、BT.2020、ACEScg 都是 RGB，但红绿蓝基色、白点和编码规则不同。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              M'=\begin{bmatrix}x_r/y_r&x_g/y_g&x_b/y_b\\1&1&1\\(1-x_r-y_r)/y_r&(1-x_g-y_g)/y_g&(1-x_b-y_b)/y_b\end{bmatrix},
+              \quad M=M'\operatorname{diag}((M')^{-1}W)
+              \]
+            </div>
+            <p>宽色域不等于“更鲜艳”。把 sRGB 数值误当 P3 解释，会导致过饱和；正确的是 profile conversion，不是 profile assignment。</p>
+          </div>
+        </section>
+
+        <section id="linear" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">04 / 线性光、gamma、OETF/EOTF</p>
+            <h2>非线性编码值不能直接拿来做物理运算</h2>
+            <p>scene-linear 与场景光成正比，display-linear 与显示输出成正比，non-linear encoded 只是为了存储、传输或视觉分配码值。</p>
+            <div class="expl2-formula expl2-math">
+              \[
+              C_{lin}=\begin{cases}
+              C'/12.92,&C'\le0.04045\\
+              ((C'+0.055)/1.055)^{2.4},&C'>0.04045
+              \end{cases}
+              \]
+            </div>
+            <p>在 sRGB code 上直接 resize、blur、alpha blend 和求平均，会让结果偏暗或边缘错误。OETF、EOTF、OOTF 要区分编码函数、显示函数和整体呈现意图。</p>
+          </div>
+        </section>
+
+        <section id="lab" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">05 / CIELAB、LCH 与色差</p>
+            <h2>Lab 用近似感知均匀空间描述色块差异</h2>
+            <p>给定参考白点，Lab 把 XYZ 转成 \(L^*,a^*,b^*\)。LCH 是 Lab 的柱坐标表示。</p>
+            <div class="expl2-formula expl2-math">\[L^*=116f(Y/Y_n)-16,\quad C^*=\sqrt{a^{*2}+b^{*2}},\quad h=\operatorname{atan2}(b^*,a^*)\]</div>
+            <p>CIE76 色差是欧氏距离，CIEDE2000 加入 lightness、chroma、hue 权重，更适合工业色差评价。</p>
+            <div class="expl2-formula expl2-math">\[\Delta E^*_{ab}=\sqrt{(\Delta L^*)^2+(\Delta a^*)^2+(\Delta b^*)^2}\]</div>
+            <p>ΔE 适合色块质量控制，不等于自然图像质量；后者还涉及空间结构、纹理、局部适应和记忆色。</p>
+          </div>
+        </section>
+
+        <section id="adaptation" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">06 / 色适应、白平衡、色恒常</p>
+            <h2>白平衡只是让中性物体中性，不会消灭 metamerism</h2>
+            <p>Von Kries 思想用 cone-like 通道独立缩放近似色适应。工程上常把 XYZ 转到 LMS 类空间，按源白点和目标白点缩放，再转回。</p>
+            <div class="expl2-formula expl2-math">\[LMS'=D\,LMS,\qquad R'=g_RR,\quad G'=g_GG,\quad B'=g_BB\]</div>
+            <p>相机 raw 白平衡通常在 demosaic 前乘各通道 gain。多光源场景里，一张灰卡只校准灰卡附近的照明，不能让整张图都物理正确。</p>
+          </div>
+        </section>
+
+        <section id="appearance" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">07 / 色貌模型</p>
+            <h2>同一个 XYZ 在不同观看环境下看起来不同</h2>
+            <p>CIECAM02/CAM16 试图描述 lightness、brightness、chroma、colorfulness、hue、saturation 等属性。它们需要观看环境：surround、适应、显示亮度和背景。</p>
+            <p>HDR 中色貌尤其重要。同一个 P3 红色在 100 nits 和 1000 nits 下的 colorfulness 感知不同；tone mapping 只压亮度，可能导致高亮颜色漂移。</p>
+          </div>
+        </section>
+
+        <section id="management" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">08 / 色域映射与色彩管理</p>
+            <h2>颜色系统靠 profile 和工作流，而不是靠猜测</h2>
+            <p>源色域大于目标色域时，需要选择 perceptual、relative colorimetric、absolute colorimetric 或 saturation 等 rendering intent。没有一个 intent 对所有图像最优。</p>
+            <div class="expl2-formula expl2-math">\[DeviceRGB \rightarrow PCS(XYZ/Lab,\ D50) \rightarrow DeviceCMYK/DisplayRGB\]</div>
+            <p>ICC profile conversion 改变数值以保持颜色；profile assignment 只改变解释方式。影视/VFX 常用 ACES/OCIO，把 Camera Raw/Log 通过 IDT 放进 scene-linear 工作空间，再输出到目标显示。</p>
+          </div>
+        </section>
+
+        <section id="pipeline" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">09 / 相机与显示颜色 pipeline</p>
+            <h2>颜色 bug 往往发生在“空间不明”的中间步骤</h2>
+            <div class="course-pipeline"><span>Scene SPD</span><span>Lens/CFA</span><span>raw RGB</span><span>白平衡</span><span>demosaic</span><span>CCM/3D LUT</span><span>tone curve</span><span>output space</span></div>
+            <p>相机 RGB 到 XYZ 常用 3×3 CCM 近似，但真实相机响应不一定是 CIE CMF 的线性组合。显示校准要看白点、灰阶 EOTF、primaries、ΔE、黑位、均匀性和 HDR tone mapping 行为。</p>
+          </div>
+        </section>
+
+        <section id="evaluation" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">10 / 评测、校准与项目</p>
+            <h2>颜色评测必须记录观察条件和数据阶段</h2>
+            <p>评测流程包括：确定光源、白点、亮度和 surround；选择色卡或光谱仪测量目标；记录 raw/linear/nonlinear 阶段；计算 XYZ/Lab/ΔE；分析曝光、白平衡、CFA metamerism、CCM、tone curve、display profile 和环境光。</p>
+            <div class="course-concept-list">
+              <article><h3>相机颜色校准</h3><p>从 raw 和色卡参考 Lab 估计 black level、白平衡、CCM 或 3D LUT，并报告验证集 ΔE00。</p></article>
+              <article><h3>显示校准</h3><p>测白点、亮度、EOTF/gamma、色域覆盖、灰阶 ΔE 和色块 ΔE，输出 ICC 或 LUT 建议。</p></article>
+            </div>
+          </div>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

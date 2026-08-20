@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Energy Landscape - Boltzmannia</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../../concept-tree/">Concept tree / 概念树</a>
+          <a class="expl2-back" href="../../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Key concept / 核心概念</p>
+        <h1 class="expl2-title">Energy landscape / 能量景观</h1>
+        <p class="expl2-lead">
+          An energy landscape turns possible states into terrain: lower places are easier to occupy.
+          能量景观把可能状态画成地形：越低的位置越容易被占据。
+        </p>
+      </header>
+
+      <section class="concept-detail">
+        <article class="expl2-card">
+          <h2>Definition / 定义</h2>
+          <p>
+            Give every state a number called energy, then draw those numbers as heights. The Boltzmann rule converts
+            those heights into probabilities.
+          </p>
+          <p>
+            给每个状态一个叫能量的数字，再把这些数字画成高度。玻尔兹曼规则会把高度转换成概率。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              p(x)=Z^{-1}e^{-E(x)/T}
+            \]
+          </div>
+        </article>
+        <article class="expl2-card">
+          <h2>Example / 例子</h2>
+          <p>
+            In a four-state model, states <code>00</code>, <code>01</code>, <code>10</code>, and <code>11</code>
+            can each have different energy. The lower two states become the patterns the model visits more often.
+          </p>
+          <p>
+            在四状态模型里，<code>00</code>、<code>01</code>、<code>10</code>、<code>11</code> 可以有不同能量；较低的状态会被模型更频繁地访问。
+          </p>
+        </article>
+        <article class="expl2-card">
+          <h2>Why it matters / 为什么重要</h2>
+          <p>
+            Learning in a Boltzmann machine is easiest to see as terrain editing: lower the data valleys and raise
+            unsupported regions.
+          </p>
+          <p>
+            玻尔兹曼机的学习最容易被看成地形编辑：压低数据所在的谷地，抬高缺乏数据支持的区域。
+          </p>
+        </article>
+      </section>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../entropy/">Previous: Entropy / 上一页：熵</a>
+        <a href="../boltzmann-machine/">Next: Boltzmann machine / 下一页：玻尔兹曼机</a>
+      </footer>
+    </main>
+    <script src="../../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

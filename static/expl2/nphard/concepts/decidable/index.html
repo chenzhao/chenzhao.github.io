@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>可判定 / Decidable</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../../static-math.js"></script>
+  </head>
+  <body class="expl2-page nphard-page">
+    <main class="expl2-main single-article">
+      <a class="expl2-back" href="../../">返回主页面 / Back to main</a>
+      <h1 class="expl2-title">可判定 / Decidable</h1>
+      <p class="expl2-lead">存在一套算法，能对所有合法输入停下来并给出正确的是/否答案。A problem is decidable when an algorithm halts and answers correctly for every valid input.</p>
+      <div class="expl2-formula expl2-math">\[\forall x,\ A(x)\downarrow\ \text{and decides whether}\ x\in L\]</div>
+      <h2>例子 / Example</h2>
+      <p>最短路径判定版可以问“是否存在长度不超过 K 的路径”，这类问题有明确算法。停机问题则不可判定。</p>
+      <p>The decision version of shortest path asks whether a path of length at most K exists. It has algorithms. The halting problem is undecidable.</p>
+      <h2>关系 / Relations</h2>
+      <p>前置：计算问题。后继：P 与 NP。Upstream: computational problem. Downstream: P and NP.</p>
+      <nav class="static-nav"><a href="../../concept-tree/">概念树 / Concept tree</a><a href="../../directory/">目录 / Directory</a></nav>
+    </main>
+  </body>
+</html>

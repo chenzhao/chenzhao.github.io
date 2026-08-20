@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sensors / 传感器原理</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script defer src="../../../_shared/expl2.js"></script>
+    <script defer src="../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Modules / 模块</a>
+          <a class="expl2-back" href="../../">Color / 主入口</a>
+        </div>
+        <p class="expl2-kicker">Module 03 / 内容草稿</p>
+        <h1 class="expl2-title">Sensors / 传感器原理</h1>
+        <p class="expl2-lead">
+          本模块覆盖像面光子如何变成数字 raw：光电二极管、QE、FWC、shot/read noise、
+          CMOS 读出、rolling/global shutter、sensor-side HDR、CFA、多光谱、SPAD、ToF、QIS 和 event camera。
+        </p>
+        <nav class="course-quick-nav" aria-label="Sensors navigation">
+          <a href="./chapters/">完整章节</a>
+          <a href="./concepts/">核心概念</a>
+          <a href="./labs/">交互练习</a>
+          <a href="./module.json">module.json</a>
+        </nav>
+      </header>
+
+      <section class="expl2-section is-single">
+        <div class="course-stat-grid">
+          <article class="expl2-card"><strong>10 章</strong><p>从 CMOS 像素到 HDR、SPAD、ToF、QIS 和事件相机。</p></article>
+          <article class="expl2-card"><strong>14 个概念</strong><p>QE、PPD、FWC、SNR、PTC、CDS、ADC、CFA、DCR、pile-up 等。</p></article>
+          <article class="expl2-card"><strong>3 个练习</strong><p>动态范围/SNR 计算、rolling shutter 量感、HDR 方案选型。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Core question</p>
+          <h2>传感器是从光子统计到数字码值的转换系统</h2>
+          <p>评价传感器不能只看像素数量。低光、动态范围、运动、色彩、读出速度、热噪声、接口带宽和目标任务共同决定成像质量。</p>
+          <div class="expl2-formula expl2-math">
+            \[
+              SNR=\frac{N_e}{\sqrt{N_e+N_d+\sigma_{read}^2+\sigma_q^2}},
+              \qquad
+              DR_{stops}=\log_2\frac{FWC}{\sigma_{read}}
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool">
+          <div class="course-flow" aria-label="Sensor pipeline">
+            <span>photon</span><span>electron</span><span>charge</span><span>voltage</span><span>ADC code</span><span>raw</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-card-grid">
+          <article class="expl2-card"><h3>像素物理</h3><p>QE、BSI、PPD、满井容量和微透镜决定光子能否有效变成电子。</p></article>
+          <article class="expl2-card"><h3>噪声与读出</h3><p>shot noise、read noise、dark current、CDS、column ADC 决定 raw 的下限。</p></article>
+          <article class="expl2-card"><h3>时序与 HDR</h3><p>rolling/global shutter、staggered HDR、DCG、LOFIC 和 split pixel 处理运动和高动态。</p></article>
+          <article class="expl2-card"><h3>新型传感器</h3><p>SPAD、ToF、QIS、event camera 把成像从普通帧扩展到深度、事件和单光子统计。</p></article>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single">
+        <div class="course-link-grid">
+          <a class="expl2-card" href="./chapters/"><strong>完整章节读本</strong><span>按 10 课时路线读传感器原理。</span></a>
+          <a class="expl2-card" href="./concepts/"><strong>核心概念表</strong><span>集中查看传感器指标、公式和常见误区。</span></a>
+          <a class="expl2-card" href="./labs/"><strong>交互练习</strong><span>计算 SNR 与动态范围，建立 electrons 量感。</span></a>
+          <a class="expl2-card" href="../../modules/"><strong>回到七大模块</strong><span>连接 optics、color theory、HDR 与 compression。</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

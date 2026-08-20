@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>颜色、光与视觉计算</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page color-page">
+    <noscript>
+      <section class="expl2-main color-noscript">
+        <p class="expl2-kicker">Explorable Explanation</p>
+        <h1>颜色、光与视觉计算 / Color, Light, and Visual Computing</h1>
+        <p>
+          This page is the module hub for a large expl2 project. Optics, color
+          theory, sensors, image formats and compression, and HDR now have first
+          content drafts. Computer graphics and computer vision remain scaffolded.
+        </p>
+        <p>
+          本页是大型 expl2 项目的模块入口。基础光学、颜色理论、传感器原理、
+          图像格式与压缩、HDR 已有第一版内容草稿；计算机图形学和计算机视觉仍保留骨架。
+        </p>
+      </section>
+    </noscript>
+
+    <main
+      id="expl2-app"
+      class="expl2-main color-main color-architecture-main"
+      v-scope="ColorArchitectureApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header color-header architecture-header">
+        <div class="expl2-topbar color-topbar">
+          <div class="expl2-lang-switch" role="group" :aria-label="t('languageSwitch')">
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+      </header>
+
+      <nav class="expl2-card expl2-secondary-nav architecture-nav" aria-label="Color project architecture pages">
+        <a href="./modules/" data-i18n="modulesIndex"></a>
+        <a href="./directory/" data-i18n="directory"></a>
+        <a href="./concept-tree/" data-i18n="conceptTree"></a>
+        <a href="./single/" data-i18n="singlePage"></a>
+      </nav>
+
+      <section class="expl2-section is-single architecture-overview" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow" data-i18n="phaseEyebrow"></p>
+          <h2 data-i18n="phaseTitle"></h2>
+          <p class="expl2-short-text" data-i18n="phaseText"></p>
+        </div>
+      </section>
+
+      <section
+        v-for="module in modules"
+        :key="module.slug"
+        class="expl2-section color-module-section"
+        data-expl2-chapter
+      >
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ module.orderLabel }} / {{ module.slug }}</p>
+          <h2>{{ module.title[language] }}</h2>
+          <p class="expl2-short-text">{{ module.purpose[language] }}</p>
+        </div>
+        <div class="expl2-tool module-architecture-card">
+          <a class="module-link" :href="`./modules/${module.slug}/`">
+            {{ t("openModule") }}
+          </a>
+          <dl class="module-file-map">
+            <div v-for="folder in moduleFolders" :key="folder.path">
+              <dt>{{ folder.path }}</dt>
+              <dd>{{ folder.label[language] }}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <footer class="expl2-footer expl2-secondary-links">
+        <a href="./modules/" data-i18n="modulesIndex"></a>
+        <a href="./data/project-map.json" data-i18n="projectMap"></a>
+      </footer>
+    </main>
+  </body>
+</html>

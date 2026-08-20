@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HDR 核心概念</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">HDR / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Concept index / 概念索引</p>
+        <h1 class="expl2-title">HDR 核心概念</h1>
+        <p class="expl2-lead">HDR 的概念必须带亮度语义、观看环境和交付信号，否则很容易各说各话。</p>
+      </header>
+      <section class="expl2-section is-single">
+        <div class="course-concept-grid">
+          <article class="expl2-card"><p class="expl2-eyebrow">DR</p><h2>动态范围</h2><p class="expl2-math">\(DR=L_{max}/L_{min}\)，可用比值、dB 或 stops 表示。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Stops</p><h2>档位</h2><p class="expl2-math">\(DR_{stops}=\log_2(DR)\)，每 1 stop 是 2 倍亮度比。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Scene</p><h2>Scene-referred</h2><p>数值与场景光成比例，如 raw、ACES scene-linear、OpenEXR。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Display</p><h2>Display-referred</h2><p>数值描述目标显示输出，如 PQ master，不能当线性光合成。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">White</p><h2>Diffuse white</h2><p>白纸、墙面等漫反射白，不应等同于 HDR 峰值高光。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">PQ</p><h2>Perceptual Quantizer</h2><p>绝对 luminance EOTF，面向最高 10000 cd/m² 的 HDR 编码。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">HLG</p><h2>Hybrid Log-Gamma</h2><p>相对系统，低段平方根、高段对数，适合广播和直播。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">HDR10</p><h2>HDR10</h2><p>PQ、10-bit、BT.2020 container 和静态 metadata 的通用消费 HDR。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">DV</p><h2>Dolby Vision</h2><p>动态 metadata 和 trims 帮助不同显示能力下保持创作意图。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">HDR10+</p><h2>HDR10+</h2><p>开放动态 metadata 生态，按场景或帧指导 tone mapping。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Mapping</p><h2>Tone mapping</h2><p>把高动态内容映射到目标显示能力内，同时处理高光、暗部和中间调。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Volume</p><h2>Color volume</h2><p>亮度 × 色度的三维范围。HDR/WCG 映射必须同时考虑亮度和色彩。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">MaxCLL</p><h2>MaxCLL</h2><p>内容中最高像素亮度信息，用于显示 tone mapping 参考。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">MaxFALL</p><h2>MaxFALL</h2><p>最大帧平均亮度，反映内容全局亮度压力。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">ICtCp</p><h2>ICtCp</h2><p>BT.2100 中的 HDR/WCG 颜色差分表示，改善亮度-色度分离。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

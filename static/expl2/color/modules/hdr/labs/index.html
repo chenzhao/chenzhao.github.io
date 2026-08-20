@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HDR 交互练习</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">HDR / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Labs / 交互练习</p>
+        <h1 class="expl2-title">HDR 量感与 QC</h1>
+        <p class="expl2-lead">先把动态范围、stops 和 PQ code 的数量级弄清楚，再看 tone mapping 和交付信号。</p>
+      </header>
+      <section id="hdr-lab" class="expl2-section color-section">
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">Lab 01</p>
+          <h2>动态范围与 PQ code</h2>
+          <p class="expl2-math">输入最小和最大亮度，计算 \(DR\)、stops，并估算最大亮度在 10-bit PQ 中的 code。</p>
+        </div>
+        <div class="expl2-tool course-lab-tool">
+          <label class="expl2-control"><span>最低亮度 / nits</span><input id="hdr-min" type="number" min="0.0001" step="0.001" value="0.005" /></label>
+          <label class="expl2-control"><span>最高亮度 / nits</span><input id="hdr-max" type="number" min="0.001" step="1" value="1000" /></label>
+          <output id="hdr-output" class="course-output" aria-live="polite"></output>
+        </div>
+      </section>
+      <section class="expl2-section is-single">
+        <div class="course-concept-list">
+          <article><h3>扩展练习：tone mapping checklist</h3><p>给 4000 nits master 和 1000 nits TV 设计 roll-off：哪些亮度保持，哪些压缩，如何处理饱和黄色。</p></article>
+          <article><h3>扩展练习：HDR 交付 QC</h3><p>检查 transfer、primaries、matrix、bit depth、MaxCLL/MaxFALL、字幕亮度、dynamic metadata 和 4:2:0 UI 风险。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

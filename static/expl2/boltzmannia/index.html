@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boltzmannia</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <noscript>
+      <section class="expl2-main noscript-note" aria-labelledby="boltzmannia-noscript-title">
+        <p class="expl2-kicker">Thermodynamics to Learning Machines / 从热力学到玻尔兹曼机</p>
+        <h1 id="boltzmannia-noscript-title">Boltzmannia</h1>
+        <p>
+          Boltzmannia explains one line of thought from thermal equilibrium to
+          probabilistic learning: temperature controls exploration, entropy
+          counts microscopic possibilities, and an energy landscape assigns
+          higher probability to lower-energy states.
+        </p>
+        <p>
+          这页解释一条从热平衡到概率学习的思想线索：温度控制探索，熵计数微观可能性，
+          能量景观让低能状态拥有更高概率。交互脚本用于展示能级分布、微观态计数、
+          小型玻尔兹曼机和训练如何雕刻能量低谷。
+        </p>
+      </section>
+    </noscript>
+    <main
+      id="expl2-app"
+      class="expl2-main boltzmannia-main"
+      v-scope="BoltzmanniaApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            data-i18n-attr="aria-label:languageSwitch"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+      </header>
+
+      <section class="expl2-section is-single boltzmannia-overview" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().sections.overview.eyebrow }}</p>
+          <h2>{{ text().sections.overview.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.overview.paragraphs">{{ paragraph }}</p>
+          <p class="section-cue">{{ text().sections.overview.cue }}</p>
+          <div class="boltzmannia-concepts expl2-card">
+            <strong>{{ text().conceptsLabel }}</strong>
+            <p>
+              <button type="button" data-expl2-concept="temperature" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="entropy" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="energyLandscape" data-expl2-concept-label="auto"></button>
+              <button type="button" data-expl2-concept="boltzmannMachine" data-expl2-concept-label="auto"></button>
+            </p>
+            <nav class="boltzmannia-resource-links" aria-label="Boltzmannia secondary pages">
+              <a href="./concept-tree/">Concept tree / 概念树</a>
+              <a href="./directory/">Directory / 目录</a>
+              <a href="./single/">Single page / 单页版</a>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <section class="boltzmannia-map" :aria-label="text().title">
+        <article v-for="item in text().pillars" class="map-card">
+          <span>{{ item.label }}</span>
+          <strong class="expl2-math">{{ item.formula }}</strong>
+          <p>{{ item.text }}</p>
+        </article>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().sections.thermal.eyebrow }}</p>
+          <h2>{{ text().sections.thermal.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.thermal.paragraphs">{{ paragraph }}</p>
+          <p class="section-cue">{{ text().sections.thermal.cue }}</p>
+        </div>
+
+        <div class="expl2-tool distribution-tool">
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ text().controls.temperature }}</span>
+              <strong>{{ format(temperatureValue()) }}</strong>
+            </span>
+            <input type="range" min="25" max="420" v-model="temperature" />
+          </label>
+          <p class="tool-note">{{ text().controls.temperatureNote }}</p>
+
+          <div class="metric-grid">
+            <div>
+              <span>{{ text().metrics.averageEnergy }}</span>
+              <strong>{{ format(thermalStats().meanEnergy) }}</strong>
+            </div>
+            <div>
+              <span>{{ text().metrics.entropy }}</span>
+              <strong>{{ format(thermalStats().entropy) }}</strong>
+            </div>
+            <div>
+              <span>{{ text().metrics.partition }}</span>
+              <strong>{{ format(thermalStats().partition) }}</strong>
+            </div>
+          </div>
+
+          <div class="bar-list" :aria-label="text().controls.energyBars">
+            <div v-for="row in energyRows()" class="bar-row">
+              <span class="bar-label">{{ row.label }}</span>
+              <span class="bar-track">
+                <span class="thermal-fill" :style="'width: ' + row.width + '%'"></span>
+              </span>
+              <span class="bar-value">{{ percent(row.probability) }}</span>
+            </div>
+          </div>
+          <p class="tool-summary">{{ text().controls.temperatureSummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().sections.entropy.eyebrow }}</p>
+          <h2>{{ text().sections.entropy.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.entropy.paragraphs">{{ paragraph }}</p>
+          <p class="section-cue">{{ text().sections.entropy.cue }}</p>
+        </div>
+
+        <div class="expl2-tool entropy-tool">
+          <div class="control-stack">
+            <label class="expl2-control">
+              <span class="expl2-control-row">
+                <span>{{ text().controls.particles }}</span>
+                <strong>{{ particleCount }}</strong>
+              </span>
+              <input type="range" min="6" max="18" v-model="particleCount" @input="syncExcitedCount()" />
+            </label>
+            <label class="expl2-control">
+              <span class="expl2-control-row">
+                <span>{{ text().controls.excited }}</span>
+                <strong>{{ excitedCount }}</strong>
+              </span>
+              <input type="range" min="0" :max="particleCount" v-model="excitedCount" />
+            </label>
+          </div>
+          <p class="tool-note">{{ text().controls.entropyNote }}</p>
+
+          <div class="microstate-layout">
+            <div class="particle-grid" :aria-label="text().controls.microstateGrid">
+              <span
+                v-for="particle in particles()"
+                class="particle"
+                :class="{ excited: particle.excited }"
+                aria-hidden="true"
+              ></span>
+            </div>
+            <div class="entropy-readout">
+              <span>{{ text().metrics.microstates }}</span>
+              <strong>{{ integer(entropyStats().microstates) }}</strong>
+              <p>{{ text().metrics.logEntropy }} {{ format(entropyStats().logW) }}</p>
+            </div>
+          </div>
+
+          <div class="combination-bars" :aria-label="text().controls.combinationBars">
+            <span
+              v-for="column in combinationColumns()"
+              class="combo-column"
+              :class="{ active: column.active }"
+              :style="'height: ' + column.height + '%'"
+            ></span>
+          </div>
+          <p class="tool-summary">{{ text().controls.entropySummary }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().sections.machine.eyebrow }}</p>
+          <h2>{{ text().sections.machine.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.machine.paragraphs">{{ paragraph }}</p>
+          <p class="section-cue">{{ text().sections.machine.cue }}</p>
+        </div>
+
+        <div class="machine-lab">
+          <div class="machine-visual" :aria-label="text().controls.machineDiagram">
+            <div class="visible-row">
+              <button class="node visible" type="button" :aria-pressed="visibleA === 1" @click="visibleA = 1 - visibleA">
+                v1
+              </button>
+              <button class="node visible" type="button" :aria-pressed="visibleB === 1" @click="visibleB = 1 - visibleB">
+                v2
+              </button>
+            </div>
+            <div class="link-field" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <button class="node hidden" type="button" :aria-pressed="hidden === 1" @click="hidden = 1 - hidden">
+              h
+            </button>
+            <div class="state-card">
+              <span>{{ text().metrics.currentEnergy }}</span>
+              <strong>{{ format(currentEnergy()) }}</strong>
+              <p>{{ currentStateSentence() }}</p>
+            </div>
+          </div>
+
+          <div class="expl2-tool machine-tool">
+            <label class="expl2-control">
+              <span class="expl2-control-row">
+                <span>{{ text().controls.coupling }}</span>
+                <strong>{{ format(couplingValue()) }}</strong>
+              </span>
+              <input type="range" min="-80" max="220" v-model="coupling" />
+            </label>
+            <label class="expl2-control">
+              <span class="expl2-control-row">
+                <span>{{ text().controls.bias }}</span>
+                <strong>{{ format(biasValue()) }}</strong>
+              </span>
+              <input type="range" min="-160" max="160" v-model="bias" />
+            </label>
+            <label class="expl2-control">
+              <span class="expl2-control-row">
+                <span>{{ text().controls.machineTemp }}</span>
+                <strong>{{ format(machineTemperatureValue()) }}</strong>
+              </span>
+              <input type="range" min="35" max="260" v-model="machineTemp" />
+            </label>
+            <p class="tool-note">{{ text().controls.machineNote }}</p>
+
+            <div class="state-list" :aria-label="text().controls.stateList">
+              <div v-for="state in visibleStateRows()" class="bar-row">
+                <span class="bar-label">{{ state.label }}</span>
+                <span class="bar-track">
+                  <span class="machine-fill" :style="'width: ' + state.width + '%'"></span>
+                </span>
+                <span class="bar-value">{{ percent(state.probability) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ text().sections.learning.eyebrow }}</p>
+          <h2>{{ text().sections.learning.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.learning.paragraphs">{{ paragraph }}</p>
+          <p class="section-cue">{{ text().sections.learning.cue }}</p>
+        </div>
+
+        <div class="expl2-tool learning-tool">
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ text().controls.training }}</span>
+              <strong>{{ trainingProgress }}%</strong>
+            </span>
+            <input type="range" min="0" max="100" v-model="trainingProgress" />
+          </label>
+          <p class="tool-note">{{ text().controls.trainingNote }}</p>
+
+          <div class="landscape">
+            <article v-for="state in learningRows()" class="landscape-state">
+              <span>{{ state.label }}</span>
+              <strong>{{ format(state.energy) }}</strong>
+              <div class="energy-column">
+                <span :style="'height: ' + state.height + '%'"></span>
+              </div>
+              <p>{{ state.caption }}</p>
+            </article>
+          </div>
+
+          <div class="phase-grid">
+            <div>
+              <strong>{{ text().learningCards.positive.title }}</strong>
+              <p>{{ text().learningCards.positive.text }}</p>
+            </div>
+            <div>
+              <strong>{{ text().learningCards.negative.title }}</strong>
+              <p>{{ text().learningCards.negative.text }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">5. 自由能 / Free energy</p>
+          <h2>把能量和熵放进同一个账本 / Put energy and entropy on one ledger</h2>
+          <p class="expl2-short-text">
+            自由能提醒读者：系统不只偏爱低能量，也偏爱拥有许多微观实现的状态。Free energy ties together the pull of low energy and the pull of many realizations.
+          </p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>
+              低能量像低谷，熵像通往某个区域的道路数量。一个宏观状态即使能量略高，只要背后的微观道路很多，也可能在热平衡中占据显著概率。机器学习里的能量模型也有类似权衡：模型要压低数据附近的能量，同时避免把概率全部挤进少数脆弱状态。
+            </p>
+            <p>
+              Low energy is a valley, while entropy counts how many roads lead into a region. A slightly higher-energy macrostate can still matter if it has many realizations. Energy-based learning faces a related balance: lower the data region, but avoid a brittle probability map.
+            </p>
+          </details>
+          <div class="expl2-formula expl2-math">
+            \[
+              F=E-TS,\qquad P(\text{macro})\propto e^{-F/(kT)}
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool expl2-card">
+          <strong>视觉账本 / Visual ledger</strong>
+          <p class="expl2-math">\(E\downarrow\) and \(S\uparrow\) both push probability weight upward.</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">6. 抽样 / Sampling</p>
+          <h2>知道概率还不等于容易抽到 / Knowing probabilities is not easy sampling</h2>
+          <p class="expl2-short-text">
+            当状态空间很大时，模型往往不能枚举全部状态，只能用随机游走近似探索。Large spaces require approximate wandering instead of complete enumeration.
+          </p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>
+              玻尔兹曼分布给每个状态一个权重，但真实模型可能有天文数量的状态。抽样算法像在能量地形上行走：低温时容易困在局部低谷，高温时能探索更远但也更嘈杂。这就是为什么温度、马尔可夫链和近似训练总是一起出现。
+            </p>
+            <p>
+              The Boltzmann distribution assigns weights, but realistic models have enormous state spaces. Sampling behaves like walking over the terrain: low temperature can trap the walk in a local valley, while high temperature explores farther with more noise.
+            </p>
+          </details>
+          <div class="expl2-formula expl2-math">
+            \[
+              \alpha(x\to y)=\min\left(1,e^{-(E(y)-E(x))/(kT)}\right)
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool expl2-card">
+          <strong>抽样路径 / Sampling path</strong>
+          <p class="expl2-math">\(\text{start}\to y\to \alpha(x\to y)\to \text{next}\)</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">7. 受限模型 / Restricted models</p>
+          <h2>限制连接是为了让学习可计算 / Restrictions make learning computable</h2>
+          <p class="expl2-short-text">
+            受限玻尔兹曼机会删掉同层连接，让可见层和隐藏层之间的条件计算变简单。RBMs remove within-layer links so conditional updates become tractable.
+          </p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>
+              完全连接的玻尔兹曼机表达能力强，但抽样和训练压力很大。受限玻尔兹曼机牺牲一部分连接结构，换来更容易交替更新可见层和隐藏层的算法。这是建模中的常见交易：结构越自由，计算越困难；结构越受限，算法越清楚。
+            </p>
+            <p>
+              A fully connected Boltzmann machine is expressive but hard to train. A restricted Boltzmann machine gives up some connections so visible and hidden layers can be updated more cleanly. Model design often trades freedom for computation.
+            </p>
+          </details>
+          <div class="expl2-formula expl2-math">
+            \[
+              E(v,h)=-a^\top v-b^\top h-v^\top W h
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool expl2-card">
+          <strong>二分结构 / Bipartite structure</strong>
+          <p class="expl2-math">\(v\leftrightarrow h\), with no \(v\text{-}v\) or \(h\text{-}h\) links.</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">8. 现代连接 / Modern connection</p>
+          <h2>能量语言仍然帮助理解生成模型 / Energy language still helps generative models</h2>
+          <p class="expl2-short-text">
+            即使今天常见的是扩散模型和 Transformer，能量景观仍能解释“哪些状态合理、哪些状态应被压低”。Even newer models can be read as shaping what configurations are plausible.
+          </p>
+          <details class="expl2-long-text">
+            <summary>展开原理 / Expand</summary>
+            <p>
+              现代生成模型不一定显式写出玻尔兹曼机的能量函数，但它们仍在学习数据附近的高概率区域。能量语言提供了一张共同地图：训练塑造概率地形，采样沿着地形寻找合理状态，验证则检查生成结果是否落在数据支持的区域。
+            </p>
+            <p>
+              Modern generators may not expose a Boltzmann-machine energy function, yet they still learn high-probability regions near data. The energy metaphor keeps one map: training shapes terrain, sampling searches it, and evaluation checks whether generated states are supported.
+            </p>
+          </details>
+          <div class="expl2-formula expl2-math">
+            \[
+              p_\theta(x)\propto e^{-E_\theta(x)}
+            \]
+          </div>
+        </div>
+        <div class="expl2-tool expl2-card">
+          <strong>共同地图 / Shared map</strong>
+          <p class="expl2-math">\(\text{data}\to E_\theta(x)\to p_\theta(x)\to \text{sample}\)</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single conclusion-section" data-expl2-chapter>
+        <div class="expl2-copy conclusion-copy">
+          <p class="expl2-eyebrow">{{ text().sections.takeaway.eyebrow }}</p>
+          <h2>{{ text().sections.takeaway.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in text().sections.takeaway.paragraphs">{{ paragraph }}</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

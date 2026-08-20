@@ -1,0 +1,31 @@
+{
+  "slug": "color-theory",
+  "order": 2,
+  "status": "content-draft",
+  "title": {
+    "zh": "颜色理论",
+    "en": "Color Theory"
+  },
+  "requiredTopics": ["spectra", "tristimulus", "color spaces", "color management"],
+  "sourceBase": "/Users/chenzhao/Desktop/imaging_course_topics_optics_color_sensors_hdr/02_color_theory_lecture_10h.md",
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"],
+  "entryPoints": {
+    "chapters": "chapters/index.html",
+    "concepts": "concepts/index.html",
+    "labs": "labs/index.html"
+  },
+  "chapters": [
+    "spectra, cones, and metamerism",
+    "CIE XYZ, standard observer, illuminants",
+    "RGB color spaces",
+    "linear light, gamma, OETF, EOTF",
+    "CIELAB, LCH, color difference",
+    "chromatic adaptation and white balance",
+    "CIECAM02 and CAM16",
+    "gamut mapping and color management",
+    "camera and display color pipeline",
+    "evaluation and calibration projects"
+  ],
+  "concepts": ["SPD", "metamerism", "CIE XYZ", "xyY", "white point", "RGB primaries", "transfer function", "scene-linear", "sRGB", "CIELAB", "Delta E", "chromatic adaptation", "ICC profile", "ACES"],
+  "labs": ["srgb-linear-average", "profile-assignment-vs-conversion", "white-balance-diagnosis"]
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "computer-graphics",
+  "order": 6,
+  "status": "architecture-only",
+  "title": {
+    "zh": "计算机图形学",
+    "en": "Computer Graphics"
+  },
+  "requiredTopics": ["rendering equation", "materials", "lighting", "camera models"],
+  "folders": ["chapters/", "concepts/", "labs/", "assets/"]
+}

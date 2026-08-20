@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Large Language Models</title>
+    <link rel="stylesheet" href="../_shared/expl2.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="../_shared/vendor/petite-vue.iife.js"></script>
+    <script defer src="../_shared/expl2.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body class="expl2-page">
+    <noscript>
+      <section class="expl2-main noscript-note">
+        <h2>大语言模型入门 / Large Language Models</h2>
+        <p>
+          这页解释大语言模型如何把文本切成 token，如何预测下一个 token，
+          以及训练、对齐、上下文和工具为什么会影响回答质量。启用 JavaScript 后可以使用交互控件。
+        </p>
+        <p>
+          This page explains tokenization, next-token prediction, and why
+          training, alignment, context, and tools affect answer quality. Enable
+          JavaScript to use the interactive controls.
+        </p>
+      </section>
+    </noscript>
+    <main
+      id="expl2-app"
+      class="expl2-main llm-main"
+      v-scope="LlmApp()"
+      @vue:mounted="mounted()"
+      v-cloak
+    >
+      <header class="expl2-header llm-header">
+        <div class="expl2-topbar">
+          <div
+            class="expl2-lang-switch"
+            role="group"
+            aria-label="Language"
+            data-i18n-attr="aria-label:languageSwitchLabel"
+          >
+            <button type="button" :aria-pressed="language === 'zh'" @click="chooseLanguage('zh')">
+              中文
+            </button>
+            <button type="button" :aria-pressed="language === 'en'" @click="chooseLanguage('en')">
+              EN
+            </button>
+          </div>
+        </div>
+
+        <p class="expl2-kicker" data-i18n="kicker"></p>
+        <h1 class="expl2-title" data-i18n="title"></h1>
+        <p class="expl2-lead" data-i18n="lead"></p>
+        <div class="llm-concepts expl2-card">
+          <strong>{{ t.conceptsLabel }}</strong>
+          <p>
+            <button type="button" data-expl2-concept="token" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="contextWindow" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="temperature" data-expl2-concept-label="auto"></button>
+            <button type="button" data-expl2-concept="grounding" data-expl2-concept-label="auto"></button>
+          </p>
+        </div>
+      </header>
+      <nav class="expl2-card expl2-secondary-nav" aria-label="Secondary expl2 pages">
+        <a href="./concept-tree/">Concept tree / 概念树</a>
+        <a href="./directory/">Directory / 目录</a>
+        <a href="./single/">Single page / 单页版</a>
+      </nav>
+
+      <section class="expl2-section is-single llm-chapter-zero" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ t.chapter0.eyebrow }}</p>
+          <h2>{{ t.chapter0.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in t.chapter0.paragraphs" :key="paragraph">{{ paragraph }}</p>
+          <p class="reading-note">{{ t.chapter0.cue }}</p>
+        </div>
+      </section>
+
+      <section class="overview" aria-label="overview" data-i18n-attr="aria-label:overviewLabel">
+        <article class="overview-card" v-for="item in t.overview" :key="item.title">
+          <span>{{ item.number }}</span>
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.text }}</p>
+        </article>
+      </section>
+
+      <section class="expl2-section chapter-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ t.chapter1.eyebrow }}</p>
+          <h2>{{ t.chapter1.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in t.chapter1.paragraphs" :key="paragraph">{{ paragraph }}</p>
+          <div class="reading-note">
+            <strong>{{ t.noticeTitle }}</strong>
+            <p>{{ t.chapter1.notice }}</p>
+          </div>
+        </div>
+
+        <div class="expl2-tool token-lab">
+          <h3>{{ t.tokenTool.title }}</h3>
+          <p class="tool-help">{{ t.tokenTool.help }}</p>
+
+          <label class="expl2-control">
+            <span>{{ t.tokenTool.inputLabel }}</span>
+            <textarea rows="5" v-model="promptText"></textarea>
+          </label>
+
+          <label class="expl2-control context-control">
+            <span class="expl2-control-row">
+              <span>{{ t.tokenTool.contextLabel }}</span>
+              <strong>{{ contextSize }}</strong>
+            </span>
+            <input type="range" min="6" max="36" v-model="contextSize" />
+          </label>
+
+          <div class="metrics">
+            <span>{{ tokenList.length }} {{ t.tokenTool.tokens }}</span>
+            <span>{{ promptText.length }} {{ t.tokenTool.characters }}</span>
+            <span>{{ visibleTokens.length }} {{ t.tokenTool.visible }}</span>
+          </div>
+
+          <div class="token-stream" aria-live="polite">
+            <span
+              v-for="(token, index) in tokenList"
+              :key="`${token}-${index}`"
+              class="token-chip"
+              :class="{ muted: index < hiddenTokenCount }"
+            >
+              {{ index + 1 }} · {{ token }}
+            </span>
+          </div>
+
+          <p class="tool-caption">{{ tokenCaption }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-reverse chapter-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ t.chapter2.eyebrow }}</p>
+          <h2>{{ t.chapter2.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in t.chapter2.paragraphs" :key="paragraph">{{ paragraph }}</p>
+          <div class="reading-note">
+            <strong>{{ t.noticeTitle }}</strong>
+            <p>{{ t.chapter2.notice }}</p>
+          </div>
+        </div>
+
+        <div class="expl2-tool sampling-lab">
+          <h3>{{ t.samplingTool.title }}</h3>
+          <p class="tool-help">{{ t.samplingTool.help }}</p>
+
+          <div class="completion-line">
+            <span>{{ t.samplingTool.prefix }}</span>
+            <strong>{{ chosenCandidate.word[language] }}</strong>
+          </div>
+
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ t.samplingTool.temperature }}</span>
+              <strong>{{ temperatureLabel }}</strong>
+            </span>
+            <input type="range" min="20" max="180" v-model="temperature" />
+          </label>
+
+          <label class="expl2-control">
+            <span class="expl2-control-row">
+              <span>{{ t.samplingTool.focus }}</span>
+              <strong>{{ focusLabel }}</strong>
+            </span>
+            <input type="range" min="2" max="6" v-model="focusCount" />
+          </label>
+
+          <div
+            class="bars"
+            aria-label="candidate probabilities"
+            data-i18n-attr="aria-label:probabilityLabel"
+          >
+            <div class="bar-row" v-for="candidate in probabilityRows" :key="candidate.id">
+              <span class="bar-name">{{ candidate.word[language] }}</span>
+              <span class="bar-track">
+                <span class="bar-fill" :style="{ width: candidate.percent + '%' }"></span>
+              </span>
+              <span class="bar-value">{{ candidate.percent }}%</span>
+            </div>
+          </div>
+
+          <p class="tool-caption">{{ samplingCaption }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section chapter-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ t.chapter3.eyebrow }}</p>
+          <h2>{{ t.chapter3.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in t.chapter3.paragraphs" :key="paragraph">{{ paragraph }}</p>
+          <div class="reading-note">
+            <strong>{{ t.noticeTitle }}</strong>
+            <p>{{ t.chapter3.notice }}</p>
+          </div>
+        </div>
+
+        <div class="expl2-tool grounding-lab">
+          <h3>{{ t.groundingTool.title }}</h3>
+          <p class="tool-help">{{ t.groundingTool.help }}</p>
+
+          <label class="expl2-control">
+            <span>{{ t.groundingTool.questionLabel }}</span>
+            <select v-model="questionId">
+              <option v-for="question in t.groundingTool.questions" :value="question.id">
+                {{ question.label }}
+              </option>
+            </select>
+          </label>
+
+          <div class="toggle-grid">
+            <label class="toggle">
+              <input type="checkbox" v-model="hasContext" />
+              <span>{{ t.groundingTool.contextToggle }}</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" v-model="hasTool" />
+              <span>{{ t.groundingTool.toolToggle }}</span>
+            </label>
+          </div>
+
+          <div class="pipeline">
+            <article v-for="step in pipelineSteps" :class="{ active: step.active }" :key="step.title">
+              <span>{{ step.label }}</span>
+              <strong>{{ step.title }}</strong>
+              <p>{{ step.text }}</p>
+            </article>
+          </div>
+
+          <div class="score-panel">
+            <div>
+              <span>{{ t.groundingTool.groundedness }}</span>
+              <strong>{{ groundednessScore }}%</strong>
+            </div>
+            <div>
+              <span>{{ t.groundingTool.usefulness }}</span>
+              <strong>{{ usefulnessScore }}%</strong>
+            </div>
+          </div>
+
+          <p class="tool-caption">{{ groundingCaption }}</p>
+        </div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">4. Embeddings / 向量表示</p>
+          <h2>词不是表格编号，而是空间位置 / Tokens become positions in a space</h2>
+          <p class="expl2-short-text">Embedding 把 token 变成向量，让相似用法能在空间里靠近。Embeddings turn tokens into vectors so related uses can sit near each other.</p>
+          <details class="expl2-long-text">
+            <summary>Details / 详细</summary>
+            <p>模型不能直接计算“意义”，但它可以学习许多维度上的数值表示。两个词如果常在相似语境中出现，它们的向量会倾向于更接近；这给后续注意力和预测提供了可计算材料。</p>
+            <p>The model cannot calculate meaning directly, but it can learn numerical representations across many dimensions. Tokens with similar contexts tend to land closer together, giving attention and prediction something computable to use.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Vector sketch</strong><div class="expl2-formula expl2-math">\[e_i=E[x_i]\in\mathbb R^d,\qquad \operatorname{sim}(e_i,e_j)=\frac{e_i\cdot e_j}{\lVert e_i\rVert\lVert e_j\rVert}\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">5. Attention / 注意力</p>
+          <h2>每一步都重新读取上下文 / Each step rereads the context</h2>
+          <p class="expl2-short-text">注意力让当前 token 从上下文里取回相关信息，而不是只看最后一个词。Attention lets a token retrieve relevant context, not just the previous word.</p>
+          <details class="expl2-long-text">
+            <summary>Details / 详细</summary>
+            <p>生成下一个 token 时，模型会计算上下文中哪些位置更相关。代词、变量名、格式约束和引用资料都可能被注意力重新连接，这就是长距离依赖能被处理的原因。</p>
+            <p>When generating the next token, the model scores which earlier positions matter. Pronouns, variable names, formatting constraints, and retrieved documents can all be reconnected through attention.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Attention path</strong><div class="expl2-formula expl2-math">\[\alpha_{ij}=\operatorname{softmax}_j\left(\frac{q_i k_j^\top}{\sqrt d}\right),\qquad y_i=\sum_j \alpha_{ij}v_j\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">6. Pretraining / 预训练</p>
+          <h2>能力来自大量预测练习 / Capability comes from prediction practice</h2>
+          <p class="expl2-short-text">预训练让模型在大量文本上练习预测，从而压缩语言模式、事实片段和推理套路。Pretraining compresses patterns by practicing prediction at scale.</p>
+          <details class="expl2-long-text">
+            <summary>Details / 详细</summary>
+            <p>模型不是逐条保存网页，而是在参数里形成统计结构。它能把模式迁移到新任务，但也会把相似模式误用到不该用的地方；这解释了能力和幻觉为什么同时出现。</p>
+            <p>The model does not store pages line by line; it forms statistical structure in parameters. That structure transfers to new tasks, but it can also apply a plausible pattern where it does not belong.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Training loop</strong><div class="expl2-formula expl2-math">\[\mathcal L(\theta)=-\sum_t \log p_\theta(x_t\mid x_{<t})\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">7. Alignment / 对齐</p>
+          <h2>会续写还不等于会当助手 / Continuation is not yet assistance</h2>
+          <p class="expl2-short-text">对齐训练把会续写的模型塑造成更会遵循指令、承认限制和拒绝危险请求的助手。Alignment shapes a continuation model into an assistant.</p>
+          <details class="expl2-long-text">
+            <summary>Details / 详细</summary>
+            <p>预训练提供语言能力，对齐改变行为偏好。它让模型更愿意按要求组织答案，但不会凭空创造事实；如果证据缺失，仍需要上下文、检索或工具补足。</p>
+            <p>Pretraining supplies language ability; alignment changes behavioral preferences. It improves instruction following, but it does not create missing facts, so context and tools remain necessary.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Behavior layer</strong><div class="expl2-formula expl2-math">\[\theta'=\arg\max_\theta \mathbb E_{y\sim p_\theta(\cdot\mid x)}[r_\phi(x,y)]\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">8. Evaluation / 评估</p>
+          <h2>好回答必须能被检查 / A good answer can be checked</h2>
+          <p class="expl2-short-text">评估不只看流畅度，还要看事实、推理、格式、边界和可复现证据。Evaluation asks whether the answer is correct, bounded, and checkable.</p>
+          <details class="expl2-long-text">
+            <summary>Details / 详细</summary>
+            <p>LLM 的输出很容易显得自信，所以评估要把问题拆开：依据在哪里，计算能否复现，引用是否支持结论，格式是否满足约束。可靠使用模型，本质上是在设计更好的检查流程。</p>
+            <p>LLM output can sound confident, so evaluation separates evidence, reproducible calculation, source support, and format constraints. Reliable use is largely a matter of designing better checks.</p>
+          </details>
+        </div>
+        <div class="expl2-tool expl2-card"><strong>Check stack</strong><div class="expl2-formula expl2-math">\[\mathrm{score}=F(\mathrm{facts},\mathrm{reasoning},\mathrm{format},\mathrm{sources})\]</div></div>
+      </section>
+
+      <section class="expl2-section is-single conclusion-section" data-expl2-chapter>
+        <div class="expl2-copy">
+          <p class="expl2-eyebrow">{{ t.conclusion.eyebrow }}</p>
+          <h2>{{ t.conclusion.title }}</h2>
+          <p class="expl2-short-text" v-for="paragraph in t.conclusion.paragraphs" :key="paragraph">{{ paragraph }}</p>
+        </div>
+        <div class="takeaway-grid">
+          <article class="expl2-card" v-for="item in t.conclusion.cards" :key="item.title">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.text }}</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

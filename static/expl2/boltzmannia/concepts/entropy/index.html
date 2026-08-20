@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Entropy - Boltzmannia</title>
+    <link rel="stylesheet" href="../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="expl2-page">
+    <main class="expl2-main boltzmannia-main secondary-page">
+      <header class="expl2-header boltzmannia-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../../concept-tree/">Concept tree / 概念树</a>
+          <a class="expl2-back" href="../../">Main / 主页面</a>
+        </div>
+        <p class="expl2-kicker">Key concept / 核心概念</p>
+        <h1 class="expl2-title">Entropy / 熵</h1>
+        <p class="expl2-lead">
+          Entropy is a careful way to count how many microscopic arrangements support the same visible description.
+          熵不是一句模糊的“混乱”，而是在计数同一宏观描述背后的微观排列数量。
+        </p>
+      </header>
+
+      <section class="concept-detail">
+        <article class="expl2-card">
+          <h2>Definition / 定义</h2>
+          <p>
+            Boltzmann's formula \(S=k\log W\) says entropy grows with \(W\), the number
+            of microstates compatible with a macrostate.
+          </p>
+          <p>
+            玻尔兹曼公式 \(S=k\log W\) 表示熵随 \(W\) 增长；\(W\) 是与某个宏观状态相容的微观态数量。
+          </p>
+          <div class="expl2-formula expl2-math">
+            \[
+              W=\binom{N}{K},\qquad S=k\log W
+            \]
+          </div>
+        </article>
+        <article class="expl2-card">
+          <h2>Example / 例子</h2>
+          <p>
+            If 10 particles can be on or off, the macrostate "5 are on" has many more realizations than "0 are on."
+            That is why middle counts tend to be typical.
+          </p>
+          <p>
+            如果 10 个粒子各自可以开或关，那么“5 个打开”的宏观态比“0 个打开”有更多实现方式，所以中间值通常更典型。
+          </p>
+        </article>
+        <article class="expl2-card">
+          <h2>Why it matters / 为什么重要</h2>
+          <p>
+            Entropy explains why probability is not only about a single state's energy. A macro-description can dominate
+            because many microstates point to it.
+          </p>
+          <p>
+            熵说明概率不只看某一个状态的能量。一个宏观描述可能因为背后有大量微观态而自然占优势。
+          </p>
+        </article>
+      </section>
+
+      <footer class="expl2-footer secondary-footer">
+        <a href="../temperature/">Previous: Temperature / 上一页：温度</a>
+        <a href="../energy-landscape/">Next: Energy landscape / 下一页：能量景观</a>
+      </footer>
+    </main>
+    <script src="../../../_shared/expl2.js"></script>
+    <script>
+      Expl2.renderMath(document).catch(() => {});
+    </script>
+  </body>
+</html>

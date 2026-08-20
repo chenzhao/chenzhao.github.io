@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>传感器原理：完整章节读本</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Sensors / 模块</a>
+          <a class="expl2-back" href="../../">Modules / 七大模块</a>
+        </div>
+        <p class="expl2-kicker">Chapter reader / 章节读本</p>
+        <h1 class="expl2-title">传感器原理</h1>
+        <p class="expl2-lead">从 photon 到 raw code：理解传感器不是“像素越多越好”，而是一组物理和读出权衡。</p>
+        <nav class="course-quick-nav" aria-label="Sensors chapters">
+          <a href="#map">01 技术地图</a>
+          <a href="#pixel">02 像素物理</a>
+          <a href="#noise">03 噪声</a>
+          <a href="#hdr">06 HDR</a>
+          <a href="#event">09 Event</a>
+        </nav>
+      </header>
+
+      <article class="course-reader">
+        <section id="map" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">01 / 技术地图</p>
+            <h2>普通帧传感器只是图像传感器家族的一支</h2>
+            <p>CCD 曾以低噪声和高均匀性著称；CMOS active pixel sensor 通过片上读出、随机访问、column ADC 和高速集成成为主流。Line scan 适合工业和推扫，area scan 适合普通相机、安防、手机和机器视觉。</p>
+            <div class="course-table-wrap"><table class="course-table"><thead><tr><th>类型</th><th>输出</th><th>核心优势</th><th>限制</th></tr></thead><tbody><tr><td>HDR CMOS</td><td>高动态 raw/frame</td><td>逆光、车载、监控</td><td>运动伪影和合成复杂</td></tr><tr><td>Global shutter</td><td>同步曝光帧</td><td>高速运动无 rolling 形变</td><td>像素复杂，PLS/FWC/噪声权衡</td></tr><tr><td>Event camera</td><td>异步亮度变化事件</td><td>低延迟、高动态、低冗余</td><td>无静态纹理和绝对亮度</td></tr><tr><td>SPAD/ToF/QIS</td><td>单光子计数或时间戳</td><td>深度、极低光、时间测量</td><td>dead time、pile-up、数据率</td></tr></tbody></table></div>
+          </div>
+        </section>
+
+        <section id="pixel" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">02 / 光电二极管与像素物理</p>
+            <h2>像素首先要把光子收集成电子</h2>
+            <p>量子效率 QE 描述入射光子中有多少被收集成电子。它受波长、硅吸收深度、表面反射、微透镜、CFA、隔离结构和耗尽区影响。</p>
+            <div class="expl2-formula expl2-math">\[QE(\lambda)=\frac{\text{collected electrons}}{\text{incident photons}}\]</div>
+            <p>BSI 让光从背面进入，避开金属布线；stacked BSI 把像素层和逻辑层分离。4T PPD 通过 transfer gate、floating diffusion 和 CDS 降低 reset noise 与暗电流。</p>
+            <p>满井容量 FWC 决定高光容量，read noise 决定暗部下限。二者比值给出动态范围估算。</p>
+            <div class="expl2-formula expl2-math">\[DR_{dB}=20\log_{10}\frac{FWC}{\sigma_{read}},\qquad DR_{stops}=\log_2\frac{FWC}{\sigma_{read}}\]</div>
+          </div>
+        </section>
+
+        <section id="noise" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">03 / 噪声、SNR 与 photon transfer</p>
+            <h2>强光下 shot noise 主导，弱光下读出和暗电流显形</h2>
+            <p>shot noise 的标准差约 \(\sqrt{N}\)，无法完全消除，只能收集更多光子或合帧。read noise 来自读出链路，dark current 与温度和曝光时间相关，PRNU/DSNU 需要 flat/dark 校正。</p>
+            <div class="expl2-formula expl2-math">\[SNR=\frac{N_e}{\sqrt{N_e+N_d+\sigma_{read}^2+\sigma_q^2}}\]</div>
+            <p>Photon Transfer Curve 通过均值与方差关系估计 conversion gain、read noise、full well 和 PRNU。</p>
+            <div class="expl2-formula expl2-math">\[\sigma^2_{DN}=K\mu_{DN}+\sigma^2_{read,DN}\]</div>
+            <p>ISO 不会增加已收集光子数；它主要改变增益和读出模式。曝光不足后的增益不能消除 photon shot noise。</p>
+          </div>
+        </section>
+
+        <section id="readout" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">04 / CMOS pixel 与读出链路</p>
+            <h2>读出链路决定 raw 的时间结构和噪声下限</h2>
+            <p>3T pixel 简单但 reset noise 与暗电流难优化；4T PPD 支持 correlated double sampling，是现代高性能 CMOS 主流。</p>
+            <div class="expl2-formula expl2-math">\[V_{signal}=V_{reset}-V_{after\ transfer}\]</div>
+            <p>Column-parallel ADC 常见 single-slope、SAR、cyclic、pipeline。rolling shutter 逐行曝光/读出，会让运动转成几何形变：skew、wobble、闪光半帧和旋转形变。</p>
+          </div>
+        </section>
+
+        <section id="global" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">05 / Global shutter 与高速成像</p>
+            <h2>Global shutter 消除时间错位，但不是免费午餐</h2>
+            <p>机器视觉、机器人、无人机、车载和运动捕捉需要所有像素同时曝光。常见 GS 架构包括 charge-domain、voltage-domain 和 stacked GS。</p>
+            <p>GS 增加存储节点和转移结构，会挤占 photodiode 面积或引入额外噪声。寄生光敏感度 PLS 描述存储期间被光污染的程度，强光下可能造成残影或偏移。</p>
+          </div>
+        </section>
+
+        <section id="hdr" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">06 / Sensor-side HDR</p>
+            <h2>捕获 HDR 和显示 HDR 不是一回事</h2>
+            <p>单次曝光上限由 FWC 决定，下限由 read/dark noise 决定。多曝光 staggered HDR 用短曝光保高光、长曝光保暗部，但会遇到 motion ghost、LED flicker 和 rolling 时序问题。</p>
+            <div class="course-concept-list">
+              <article><h3>DCG</h3><p>同像素用高转换增益读暗部，低转换增益读高光，合并时要做 gain matching 和噪声建模。</p></article>
+              <article><h3>LOFIC</h3><p>photodiode 满井后让多余电荷流入额外电容，单次曝光扩展高光容量。</p></article>
+              <article><h3>Split pixel</h3><p>大/小 photodiode 分管暗部和高光，适合车载和手机，但空间采样与颜色校正复杂。</p></article>
+              <article><h3>Log pixel</h3><p>输出近似对数压缩动态范围，但固定图案噪声和颜色重建困难。</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section id="cfa" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">07 / CFA、多光谱与颜色采样</p>
+            <h2>传感器颜色采样是不可逆的光谱压缩</h2>
+            <p>Bayer CFA 在 2×2 中放两个 G、一个 R、一个 B，提高亮度相关采样密度，但每个像素只采一个颜色，需要 demosaic，可能产生 zipper、moiré 和 false color。</p>
+            <p>RGBW、RYYB、Quad Bayer、RGB-NIR、多光谱 mosaic 都是在灵敏度、颜色分离、空间分辨率、标定复杂度之间换取不同目标。</p>
+            <p>相机 RGB 是相机 spectral response 对光谱积分，不等于人眼 XYZ。若相机响应不能由 CIE CMF 线性组合表示，就存在颜色误差下限。</p>
+          </div>
+        </section>
+
+        <section id="spad" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">08 / SPAD、ToF 与 QIS</p>
+            <h2>单光子计数把成像推向时间和统计极限</h2>
+            <p>SPAD 在击穿电压以上工作，单光子触发 avalanche，输出数字脉冲。关键指标包括 PDP、DCR、timing jitter、dead time、afterpulsing 和 fill factor。</p>
+            <div class="expl2-formula expl2-math">\[d=\frac{c\Delta t}{2}\]</div>
+            <p>Direct ToF 用脉冲往返时间测距；1 ns 误差对应约 15 cm。强环境光或强返回会造成 pile-up。QIS 则用大量极小 jot 做 photon counting，再通过时空重建形成图像。</p>
+          </div>
+        </section>
+
+        <section id="event" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">09 / Event-based sensor</p>
+            <h2>事件相机输出变化，而不是完整帧</h2>
+            <p>当像素 log intensity 变化超过阈值，event camera 输出 \((x,y,t,p)\)。它低延迟、高动态、低冗余，但静态场景没有事件，也缺少绝对颜色和纹理。</p>
+            <div class="expl2-formula expl2-math">\[\Delta\log I(x,y,t)\ge C\Rightarrow e=(x,y,t,p)\]</div>
+            <p>高速运动跟踪、机器人避障和 HDR 逆光感知很适合事件数据；证件照、高质量摄影和静态纹理记录则不适合单独用 event camera。</p>
+          </div>
+        </section>
+
+        <section id="selection" class="expl2-section is-single" data-expl2-chapter>
+          <div class="expl2-copy">
+            <p class="expl2-eyebrow">10 / 表征、选型与前沿</p>
+            <h2>传感器选型要从任务倒推，而不是从参数表崇拜开始</h2>
+            <p>先定义最小特征、速度、光照、动态范围、颜色/光谱需求；再从光学估算像面 irradiance、FOV、magnification 和 Nyquist；随后估算 shot SNR、FWC、曝光时间、shutter、HDR 方案、CFA/mono/multispectral、接口、带宽、功耗和热。</p>
+            <p>前沿方向包括 sub-electron read noise、photon-counting CMOS、stacked sensor + in-sensor compute、高画质 global shutter、SPAD/QIS/Event 融合、车载 HDR 与 LED flicker mitigation、新材料和标准化指标。</p>
+          </div>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

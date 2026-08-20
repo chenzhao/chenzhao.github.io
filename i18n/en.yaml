@@ -1,0 +1,8 @@
+- id: article_label
+  translation: 'Article'
+
+- id: category_label
+  translation: 'Category'
+
+- id: tweets_label
+  translation: 'Tweets'

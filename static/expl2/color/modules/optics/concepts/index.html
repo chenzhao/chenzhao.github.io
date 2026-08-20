@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>光学核心概念</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Optics / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Concept index / 概念索引</p>
+        <h1 class="expl2-title">光学核心概念</h1>
+        <p class="expl2-lead">这些条目把成像光学里最常被混用的量和公式放在一起，方便回查。</p>
+      </header>
+      <section class="expl2-section is-single">
+        <div class="course-concept-grid">
+          <article class="expl2-card"><p class="expl2-eyebrow">Radiance</p><h2>辐亮度</h2><p>单位投影面积、单位立体角的光功率，近似对应场景“自身亮度”的物理量。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Irradiance</p><h2>辐照度</h2><p>落到表面单位面积的功率。传感器接收的是像面 irradiance，而不是场景 radiance。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Photon</p><h2>光子能量</h2><p class="expl2-math">单个光子能量 \(E=hc/\lambda\)。低照度噪声首先受光子统计限制。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Lens</p><h2>薄透镜</h2><p class="expl2-math">近轴成像满足 \(1/f=1/s+1/s'\)，横向放大率 \(m=-s'/s\)。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Aperture</p><h2>f-number / NA</h2><p class="expl2-math">\(N=f/D\)，空气小角度下 \(NA\approx1/(2N)\)。它们连接通光量、衍射和景深。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Invariant</p><h2>Étendue</h2><p class="expl2-math">\(G=n^2A\Omega\)。被动无损光学不能任意压缩面积和角度。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Diffraction</p><h2>Airy disk</h2><p class="expl2-math">圆孔第一暗环直径 \(d=2.44\lambda N\)。光圈越小，衍射斑越大。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Resolution</p><h2>Rayleigh 判据</h2><p class="expl2-math">角分辨率近似 \(\theta_R=1.22\lambda/D\)。它只是一个判据，不是唯一清晰度定义。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">PSF</p><h2>点扩散函数</h2><p>一个理想点经过系统后的像。离焦、衍射、像差、运动都会扩宽 PSF。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">MTF</p><h2>调制传递函数</h2><p>OTF 的幅值，描述不同空间频率的对比度被保留多少。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Aberration</p><h2>像差</h2><p>球差、彗差、像散、场曲、畸变与色差是镜头偏离理想成像的重要来源。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Polarization</p><h2>偏振</h2><p>反射、双折射、显示面板、挡风玻璃和 AR 光机都可能对偏振敏感。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

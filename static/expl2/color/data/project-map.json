@@ -1,0 +1,92 @@
+{
+  "slug": "color",
+  "status": "mixed-architecture-and-content-draft",
+  "title": {
+    "zh": "颜色、光与视觉计算",
+    "en": "Color, Light, and Visual Computing"
+  },
+  "moduleRoot": "modules/",
+  "modules": [
+    {
+      "order": 1,
+      "slug": "optics",
+      "status": "content-draft",
+      "title": {
+        "zh": "最基础的光学",
+        "en": "Foundational Optics"
+      },
+      "requiredTopics": ["refraction", "lenses", "luminance", "illuminance"],
+      "entryPoints": ["index.html", "chapters/index.html", "concepts/index.html", "labs/index.html"]
+    },
+    {
+      "order": 2,
+      "slug": "color-theory",
+      "status": "content-draft",
+      "title": {
+        "zh": "颜色理论",
+        "en": "Color Theory"
+      },
+      "requiredTopics": ["spectra", "tristimulus", "color spaces", "color management"],
+      "entryPoints": ["index.html", "chapters/index.html", "concepts/index.html", "labs/index.html"]
+    },
+    {
+      "order": 3,
+      "slug": "sensors",
+      "status": "content-draft",
+      "title": {
+        "zh": "传感器原理",
+        "en": "Sensor Principles"
+      },
+      "requiredTopics": ["pixels", "color filter arrays", "noise", "dynamic range"],
+      "entryPoints": ["index.html", "chapters/index.html", "concepts/index.html", "labs/index.html"]
+    },
+    {
+      "order": 4,
+      "slug": "image-formats-compression",
+      "status": "content-draft",
+      "title": {
+        "zh": "计算机图像格式和压缩",
+        "en": "Image Formats and Compression"
+      },
+      "requiredTopics": ["DCT", "JPEG block coding", "quantization", "entropy coding", "pixel formats", "bit depth", "sampling", "compression"],
+      "entryPoints": ["index.html", "chapters/index.html", "concepts/index.html", "labs/index.html"]
+    },
+    {
+      "order": 5,
+      "slug": "hdr",
+      "status": "content-draft",
+      "title": {
+        "zh": "HDR 专题",
+        "en": "HDR"
+      },
+      "requiredTopics": ["scene luminance", "PQ", "HLG", "tone mapping"],
+      "entryPoints": ["index.html", "chapters/index.html", "concepts/index.html", "labs/index.html"]
+    },
+    {
+      "order": 6,
+      "slug": "computer-graphics",
+      "title": {
+        "zh": "计算机图形学",
+        "en": "Computer Graphics"
+      },
+      "requiredTopics": ["rendering equation", "materials", "lighting", "camera models"]
+    },
+    {
+      "order": 7,
+      "slug": "computer-vision",
+      "title": {
+        "zh": "计算机视觉",
+        "en": "Computer Vision"
+      },
+      "requiredTopics": ["image formation", "features", "geometry", "recognition"]
+    }
+  ],
+  "moduleFileContract": [
+    "index.html",
+    "module.json",
+    "chapters/",
+    "concepts/",
+    "labs/",
+    "assets/"
+  ]
+}

@@ -1,0 +1,94 @@
+<header
+  class="site-header mx-auto flex h-[4.5rem] w-full max-w-(--w) items-center px-8 whitespace-nowrap"
+>
+  <style>
+    .site-brand { font-size: 1.125rem; line-height: 1.5rem; }
+    .site-language { align-self: center; margin-top: 2rem; }
+    .site-language-link {
+      display: inline-flex;
+      width: 82px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 .75rem !important;
+      border: 1px solid rgba(0, 0, 0, .22) !important;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, .045);
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      line-height: 1.25rem;
+      text-decoration: none;
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+    .site-language-link:hover {
+      border-color: rgba(0, 0, 0, .42);
+      background: rgba(0, 0, 0, .07);
+    }
+    .site-language-link:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+    @media (min-width: 1024px) {
+      .nav-wrapper { gap: 1.25rem; }
+      .site-brand { font-size: 1.25rem; line-height: 1.75rem; }
+      .site-primary { margin-left: 1.25rem; gap: 1rem; }
+      .site-primary a { line-height: 1.5rem; }
+      .site-language { align-self: auto; margin-top: 0; }
+    }
+  </style>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a class="site-brand -translate-y-[1px] font-medium" href="{{- site.Home.RelPermalink -}}"
+      >{{ site.Title }}</a
+    >
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-12 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => htmlClass.remove('not-ready'), 10);
+
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => htmlClass.toggle('open'));
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:items-center lg:bg-transparent! lg:pb-0 lg:transition-none"
+  >
+    {{- with site.Menus.main -}}
+    <nav class="site-primary lg:flex lg:flex-row lg:items-center rtl:space-x-reverse">
+      {{- range . -}}
+      {{- if or (not .Params.localOnly) (eq hugo.Environment "private") -}}
+      <a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="{{- .URL -}}"
+        >{{- .Name -}}</a
+      >
+      {{- end -}}
+      {{- end -}}
+    </nav>
+    {{- end -}}
+
+    <nav class="site-language relative z-50 flex shrink-0 items-center text-sm" aria-label="Language">
+      {{- $switchURL := cond (eq .Language.Lang "zh") "/en/" "/zh/" -}}
+      {{- $switchName := cond (eq .Language.Lang "zh") "English" "中文" -}}
+      {{- $switchLang := cond (eq .Language.Lang "zh") "en-US" "zh-CN" -}}
+      {{- range .Translations -}}
+        {{- if ne .Language.Lang $.Language.Lang -}}
+          {{- $switchURL = .RelPermalink -}}
+        {{- end -}}
+      {{- end -}}
+      <a
+        class="site-language-link"
+        href="{{- $switchURL -}}"
+        hreflang="{{- $switchLang -}}"
+        >{{- $switchName -}}</a
+      >
+    </nav>
+  </div>
+</header>

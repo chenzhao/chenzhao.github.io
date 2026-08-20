@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>传感器核心概念</title>
+    <link rel="stylesheet" href="../../../../_shared/expl2.css" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <script defer src="../../../../_shared/expl2.js"></script>
+    <script defer src="../../course-labs.js"></script>
+  </head>
+  <body class="expl2-page color-page course-page">
+    <main class="expl2-main expl2-secondary-page course-main">
+      <header class="expl2-header course-header">
+        <div class="expl2-topbar">
+          <a class="expl2-back" href="../">Sensors / 模块</a>
+          <a class="expl2-back" href="../chapters/">Chapters / 章节</a>
+        </div>
+        <p class="expl2-kicker">Concept index / 概念索引</p>
+        <h1 class="expl2-title">传感器核心概念</h1>
+        <p class="expl2-lead">把 datasheet 和论文里最常出现的传感器术语压成一个查表页。</p>
+      </header>
+      <section class="expl2-section is-single">
+        <div class="course-concept-grid">
+          <article class="expl2-card"><p class="expl2-eyebrow">QE</p><h2>量子效率</h2><p class="expl2-math">\(QE=\text{electrons}/\text{photons}\)，需看波长和角度。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">BSI</p><h2>背照式</h2><p>从硅背面入光，提高小像素 fill factor 和角度响应。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">PPD</p><h2>Pinned photodiode</h2><p>现代 4T pixel 的核心，支持 CDS、低暗电流和较完整电荷转移。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">FWC</p><h2>满井容量</h2><p>单像素可容纳最大电子数，影响高光容量和动态范围上限。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Shot</p><h2>Photon shot noise</h2><p class="expl2-math">\(\sigma=\sqrt{N}\)，信号相关且无法完全消除。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Read</p><h2>Read noise</h2><p>读出链路噪声，弱光和动态范围下限的关键。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">SNR</p><h2>信噪比</h2><p class="expl2-math">\(SNR=N_e/\sqrt{N_e+N_d+\sigma_{read}^2+\sigma_q^2}\)。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">PTC</p><h2>Photon Transfer Curve</h2><p>用均值-方差曲线估算 conversion gain、read noise、FWC 和 PRNU。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">CDS</p><h2>相关双采样</h2><p class="expl2-math">读 reset 和 signal 做差，抵消 reset noise 与部分 FPN。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Rolling</p><h2>Rolling shutter</h2><p>逐行曝光/读出，运动时产生 skew、wobble 和闪光半帧。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Global</p><h2>Global shutter</h2><p>所有像素同时曝光，但有面积、噪声、满井、PLS 和成本权衡。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">DCG</p><h2>Dual conversion gain</h2><p>高 gain 保暗部低噪，低 gain 保高光容量，合并得到更宽动态范围。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">CFA</p><h2>Color filter array</h2><p>Bayer、RGBW、RYYB、多光谱等都在光通量、颜色分离和空间采样间权衡。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">SPAD</p><h2>单光子雪崩二极管</h2><p>单光子触发数字脉冲，适合 ToF、LiDAR、低光和寿命成像。</p></article>
+          <article class="expl2-card"><p class="expl2-eyebrow">Event</p><h2>事件相机</h2><p>输出亮度变化事件 \((x,y,t,p)\)，不是完整帧。</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
