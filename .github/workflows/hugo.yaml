@@ -16,10 +16,12 @@ defaults:
     shell: bash
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
       DART_SASS_VERSION: 1.97.3
       GO_VERSION: 1.26.0
+      GOOGLE_ANALYTICS_ID: G-3RXXKBE1ZX
       HUGO_VERSION: 0.156.0
       NODE_VERSION: 24.13.1
       TZ: Europe/Oslo
@@ -81,12 +83,17 @@ jobs:
           restore-keys:
             hugo-
       - name: Build the site
+        env:
+          HUGO_SERVICES_GOOGLEANALYTICS_ID: ${{ env.GOOGLE_ANALYTICS_ID }}
         run: |
           hugo build \
             --gc \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
+      - name: Add Google Analytics to published HTML
+        run: |
+          python3 scripts/inject_google_analytics.py public "${GOOGLE_ANALYTICS_ID}"
       - name: Cache save
         id: cache-save
         uses: actions/cache/save@v5
