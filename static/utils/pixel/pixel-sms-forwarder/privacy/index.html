@@ -32,11 +32,12 @@
     <p><strong>Effective date:</strong> September 24, 2026</p>
 
     <h2>Purpose and scope</h2>
-    <p>Pixel SMS Forwarder is a personal Android utility. At the user's direction, it forwards newly received ordinary SMS messages as email through the user's Google Account. This policy describes the current Android build.</p>
+    <p>Pixel SMS Forwarder is a personal Android utility and default SMS handler. At the user's direction, it receives ordinary SMS messages, stores them in Android's system SMS database, and forwards newly received messages as email through the user's Google Account. This policy describes the current Android build.</p>
 
     <h2>Data the app handles</h2>
     <ul>
-      <li><strong>SMS data:</strong> sender address or number, message body, and received time for newly arriving SMS messages.</li>
+      <li><strong>SMS data:</strong> sender or recipient address, message body, and message time. Newly arriving SMS messages are stored locally and queued for forwarding. Existing SMS messages may be read from Android's system SMS database only to display them in the app's local SMS view; they are not added to the forwarding queue.</li>
+      <li><strong>Default-handler access:</strong> Android grants the app SMS receive, read, and send privileges while the user keeps it selected as the default SMS application.</li>
       <li><strong>Google Account data:</strong> the account's primary email address, used only to construct the From header.</li>
       <li><strong>Gmail access:</strong> permission to send an email on the user's behalf.</li>
       <li><strong>Operational data:</strong> a local queue identifier, retry state, and last successful send time.</li>
@@ -50,14 +51,14 @@
     <p>The app does not request permission to read, modify, or delete Gmail messages. Its use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
     <h2>Storage and retention</h2>
-    <p>If a message cannot be sent immediately, its sender and body are stored in an on-device queue encrypted with AES-256-GCM using a key held by Android Keystore. The queued record is deleted after Gmail confirms a successful send. Turning forwarding off clears the unsent queue. App data is excluded from cloud backup and device transfer.</p>
+    <p>As the default SMS handler, the app writes received and sent SMS messages to Android's system SMS database. Separately, if a newly received message cannot be emailed immediately, its sender and body are stored in an on-device queue encrypted with AES-256-GCM using a key held by Android Keystore. The queued copy is deleted after Gmail confirms a successful send. Turning forwarding off clears the unsent forwarding queue but does not delete messages from Android's system SMS database. App data is excluded from cloud backup and device transfer.</p>
     <p>OAuth credentials are managed by Google Play services. The app does not write access tokens to its own database or logs. Copies already sent remain subject to the retention controls of Gmail and the destination mailbox.</p>
 
     <h2>Sharing and transfers</h2>
     <p>The app sends data directly from the device to Google's Gmail API so Gmail can deliver the forwarding email to the destination mailbox configured in the app. The developer operates no intermediary server and does not sell, rent, or use the data for advertising or analytics.</p>
 
     <h2>User control</h2>
-    <p>The user can stop forwarding and clear the unsent local queue from the app. Android SMS and notification permissions can be revoked in system settings. Google Account access can be revoked from the Google Account's third-party access settings.</p>
+    <p>The user can stop forwarding and clear the unsent local queue from the app. The user can replace Pixel SMS Forwarder with another default SMS application at any time in Android settings, which removes role-based SMS privileges. Android notification permission can also be revoked in system settings. Google Account access can be revoked from the Google Account's third-party access settings.</p>
 
     <h2>Security</h2>
     <p>The app uses HTTPS for Google API traffic, disallows cleartext network traffic, encrypts queued SMS content on the device, and avoids logging SMS content or access tokens. No security measure can eliminate every risk, particularly when SMS messages contain sensitive or one-time authentication information.</p>
