@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Pixel SMS Forwarder</title>
+  <meta name="description" content="A personal Android utility that forwards newly received SMS messages through the Gmail API.">
+  <style>
+    :root { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17212b; background: #f4f7fb; }
+    body { margin: 0; }
+    main { width: min(760px, calc(100% - 40px)); margin: 64px auto; padding: 48px; box-sizing: border-box; background: #fff; border: 1px solid #dce3eb; border-radius: 20px; box-shadow: 0 18px 50px rgba(23, 33, 43, .08); }
+    h1 { margin-top: 0; font-size: clamp(2rem, 6vw, 3.5rem); letter-spacing: -.04em; }
+    h2 { margin-top: 2rem; }
+    p, li { line-height: 1.7; }
+    a { color: #0b57d0; }
+    .eyebrow { color: #52616f; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .notice { padding: 18px 20px; border-left: 4px solid #0b57d0; background: #eef4ff; border-radius: 8px; }
+    footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid #dce3eb; color: #52616f; }
+    @media (prefers-color-scheme: dark) {
+      :root { color: #e8eef5; background: #111820; }
+      main { background: #17212b; border-color: #30404f; box-shadow: none; }
+      a { color: #a8c7fa; }
+      .eyebrow, footer { color: #b6c2cf; }
+      .notice { background: #203552; border-left-color: #a8c7fa; }
+      footer { border-color: #30404f; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Personal Android utility</p>
+    <h1>Pixel SMS Forwarder</h1>
+    <p>Pixel SMS Forwarder receives newly arriving ordinary SMS messages on an authorized Android phone and forwards each one as an email using the Gmail API.</p>
+
+    <div class="notice">
+      The app is designed for personal use on a phone and Google Account controlled by the same user. It does not replace the default SMS app.
+    </div>
+
+    <h2>What it does</h2>
+    <ul>
+      <li>Receives new SMS messages after the user grants Android's SMS permission.</li>
+      <li>Uses the minimum Google OAuth scopes needed to identify the sending account and send email.</li>
+      <li>Sends directly from the phone to the Gmail API; the developer operates no relay server.</li>
+      <li>Encrypts an unsent local queue with an Android Keystore key and deletes each queued record after Gmail confirms delivery.</li>
+    </ul>
+
+    <h2>What it does not do</h2>
+    <ul>
+      <li>It does not read the Gmail inbox, contacts, or previously received SMS messages.</li>
+      <li>It does not process MMS or RCS conversations.</li>
+      <li>It does not sell data, serve advertising, or use analytics.</li>
+    </ul>
+
+    <h2 id="terms">Terms of use</h2>
+    <p>Use the app only with a device, Google Account, and destination mailbox that you are authorized to control. You are responsible for complying with applicable laws and for protecting any sensitive information contained in forwarded messages. The app is provided as-is for personal use.</p>
+
+    <footer>
+      <a href="privacy/">Privacy Policy</a>
+      <span aria-hidden="true"> · </span>
+      Last updated September 24, 2026
+    </footer>
+  </main>
+</body>
+</html>
