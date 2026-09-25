@@ -40,7 +40,7 @@
       <li><strong>Default-handler access:</strong> Android grants the app SMS receive, read, and send privileges while the user keeps it selected as the default SMS application.</li>
       <li><strong>Google Account data:</strong> the user-selected account's primary email address, stored locally so background sending remains pinned to that account and used to construct the From header.</li>
       <li><strong>Gmail access:</strong> permission to send an email on the user's behalf.</li>
-      <li><strong>Operational data:</strong> a local queue identifier, retry state, and last successful send time.</li>
+      <li><strong>Operational data:</strong> a local queue identifier, retry state, and timestamps for the most recent SMS broadcast, system SMS database write, and successful Gmail send. These timestamps contain no message body or sender address.</li>
     </ul>
 
     <h2>Google API scopes and use</h2>

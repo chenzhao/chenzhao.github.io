@@ -40,10 +40,11 @@
     <h2>What it does</h2>
     <ul>
       <li>Receives new SMS messages after the user grants Android's default SMS role.</li>
-      <li>Provides basic local SMS viewing, sending, and respond-via-message functions required of a default SMS handler.</li>
+      <li>Shows all SMS messages in Android's system SMS database on the main screen, refreshes the list when the database changes, and provides full-message viewing, copying, replying, sending, and respond-via-message functions.</li>
       <li>Lets the user explicitly select a Google Account, pins background sending to that account, and uses the minimum OAuth scopes needed to identify it and send email.</li>
       <li>Sends directly from the phone to the Gmail API; the developer operates no relay server.</li>
       <li>Encrypts an unsent local queue with an Android Keystore key and deletes each queued record after Gmail confirms delivery.</li>
+      <li>Records local timestamps for the most recent SMS broadcast, system-database write, and successful Gmail send so delivery problems can be diagnosed without logging message content.</li>
     </ul>
 
     <h2>What it does not do</h2>
