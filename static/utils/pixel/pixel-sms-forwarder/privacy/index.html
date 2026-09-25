@@ -29,7 +29,7 @@
   <main>
     <p class="eyebrow">Pixel SMS Forwarder</p>
     <h1>Privacy Policy</h1>
-    <p><strong>Effective date:</strong> September 24, 2026</p>
+    <p><strong>Effective date:</strong> September 25, 2026</p>
 
     <h2>Purpose and scope</h2>
     <p>Pixel SMS Forwarder is a personal Android utility and default SMS handler. At the user's direction, it receives ordinary SMS messages, stores them in Android's system SMS database, and forwards newly received messages as email through the user's Google Account. This policy describes the current Android build.</p>
@@ -38,7 +38,7 @@
     <ul>
       <li><strong>SMS data:</strong> sender or recipient address, message body, and message time. Newly arriving SMS messages are stored locally and queued for forwarding. Existing SMS messages may be read from Android's system SMS database only to display them in the app's local SMS view; they are not added to the forwarding queue.</li>
       <li><strong>Default-handler access:</strong> Android grants the app SMS receive, read, and send privileges while the user keeps it selected as the default SMS application.</li>
-      <li><strong>Google Account data:</strong> the account's primary email address, used only to construct the From header.</li>
+      <li><strong>Google Account data:</strong> the user-selected account's primary email address, stored locally so background sending remains pinned to that account and used to construct the From header.</li>
       <li><strong>Gmail access:</strong> permission to send an email on the user's behalf.</li>
       <li><strong>Operational data:</strong> a local queue identifier, retry state, and last successful send time.</li>
     </ul>
@@ -55,10 +55,10 @@
     <p>OAuth credentials are managed by Google Play services. The app does not write access tokens to its own database or logs. Copies already sent remain subject to the retention controls of Gmail and the destination mailbox.</p>
 
     <h2>Sharing and transfers</h2>
-    <p>The app sends data directly from the device to Google's Gmail API so Gmail can deliver the forwarding email to the destination mailbox configured in the app. The developer operates no intermediary server and does not sell, rent, or use the data for advertising or analytics.</p>
+    <p>The app sends data directly from the device to Google's Gmail API so Gmail can deliver the forwarding email to the destination mailbox configured in the app (currently <code>chenzhao.sg@gmail.com</code>). The developer operates no intermediary server and does not sell, rent, or use the data for advertising or analytics.</p>
 
     <h2>User control</h2>
-    <p>The user can stop forwarding and clear the unsent local queue from the app. The user can replace Pixel SMS Forwarder with another default SMS application at any time in Android settings, which removes role-based SMS privileges. Android notification permission can also be revoked in system settings. Google Account access can be revoked from the Google Account's third-party access settings.</p>
+    <p>The user can select or replace the sending Google Account, stop forwarding and clear the unsent local queue from the app. The user can replace Pixel SMS Forwarder with another default SMS application at any time in Android settings, which removes role-based SMS privileges. Android notification permission can also be revoked in system settings. Google Account access can be revoked from the Google Account's third-party access settings.</p>
 
     <h2>Security</h2>
     <p>The app uses HTTPS for Google API traffic, disallows cleartext network traffic, encrypts queued SMS content on the device, and avoids logging SMS content or access tokens. No security measure can eliminate every risk, particularly when SMS messages contain sensitive or one-time authentication information.</p>
